@@ -6,3 +6,10 @@
 This is login form
 
 {% endblock %}
+
+
+{% block extra_dependencies %}
+{% load static %}
+<script src="{% static 'js/login.js' %}"></script>
+
+{% endblock %}
