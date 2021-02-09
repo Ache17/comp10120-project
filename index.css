@@ -1,6 +1,6 @@
 header {
-background-color: #C0504D;
-color: white;
+background-color: #152238;
+color: #08E8DE;
 padding-bottom: 0px;
 margin-bottom: 0px;
 padding-top: 0px;
@@ -8,53 +8,54 @@ text-align: center;">
 }
 
 nav {
-  background-color:#E5B8B7;
+  background-color:#1c2e4a;
   text-align: center;
   line-height: 50px;
   margin: 0px;
   padding: 20px;
   border-top: 5px;
   border-top-style: solid;
-  border-top-color: black;
+  border-top-color: #08E8DE;
   border-bottom: 2px;
   border-bottom-style: solid;
   border-bottom-color: black
   }
 
 aside {
-    background-color: #E5B8B7;
+    background-color: #1c2e4a;
     width: 175px;
     line-height: 50px;
     text-align: center;
     border-right: 5px;
     border-right-style: groove;
-    border-right-color: black;
+    border-right-color: #08E8DE;
     border-top: 5px;
     border-top-style: solid;
-    border-top-color: black;
+    border-top-color: #08E8DE;
     border-bottom: 5px;
     border-bottom-style: solid;
-    border-bottom-color: black;
+    border-bottom-color: #08E8DE;
     padding: 10px;
     float:left;
     height: 300px;
     }
 
 main {
-    background-color: #F2DBDB;
+    background-color: #23395D;
     border-top: 5px;
     border-top-style: solid;
-    border-top-color: black;
+    border-top-color: #08E8DE;
     border-bottom: 5px;
     border-bottom-style: solid;
-    border-bottom-color: black;
+    border-bottom-color: #08E8DE;
     height: 300px;
     padding: 10px;
+    padding-left: 10%;
     }
 
 footer {
   height: 120px;
-  background-color: #C0504D;
+  background-color: #152238;
   padding-left: 200px;
   }
 .center {
