@@ -11,12 +11,10 @@
 
     <div id="app">
         <!-- source goes here -->
-
+        {% block content %}
+        {% endblock %}    
+    
     </div>
-
-    {% block content %}
-    {% endblock %}    
-
 
     <!-- imports -->
     <script  src="https://cdn.jsdelivr.net/npm/vue@^2.0.0/dist/vue.min.js"></script>

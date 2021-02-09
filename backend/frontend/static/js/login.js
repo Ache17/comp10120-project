@@ -1,1 +1,7 @@
-console.log("LOGIN JS SAYS");
+var app = new Vue({
+    el: '#app',
+    data: {
+        message : "Hello world!"
+    },
+    delimiters: ['[%', '%]'],
+  });
