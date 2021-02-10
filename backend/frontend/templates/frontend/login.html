@@ -1,7 +1,6 @@
 {% extends "frontend/base.html" %}
 
 {% block main_page %}
-Here is our content!
 <div class="q-pa-md" style="max-width: 400px">
     <q-form
       @submit="onSubmit"
@@ -17,7 +16,7 @@ Here is our content!
         :rules="[ val => val && val.length > 0 || 'Please type something']"
       ></q-input>
 
-      <q-input v-model="password" filled type="password" hint="Password" 
+      <q-input v-model="password" filled type="password" hint="Password"
         label="Password"
         hint="Please enter your password."
         lazy-rules

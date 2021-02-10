@@ -19,6 +19,11 @@ var app = new Vue({
         })
       }
       else {
+        console.log(this.name + this.password)
+        // var request = new XMLHttpRequest();
+        // request.addEventListener("load", reqListener);
+        // request.open("GET", "http://www.example.org/example.txt");
+        // request.send();
         this.$q.notify({
           color: 'green-4',
           textColor: 'white',

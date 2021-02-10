@@ -28,7 +28,10 @@
 
         <q-drawer show-if-above v-model="left" side="left" bordered>
           <!-- drawer content -->
-          <q-btn color="blue-grey-3" label="Home" class="full-width"> </q-btn>
+          <q-btn color="blue-grey-10" label="Discover" class="full-width" onclick="location.href = '/'"> </q-btn>
+          <q-btn color="blue-grey-9" label="Account Login" class="full-width" onclick="location.href = '/login'"> </q-btn>
+          <q-btn color="blue-grey-7" label="View Playlists" class="full-width" onclick="location.href = '/playlists'"> </q-btn>
+          <q-btn color="blue-grey-6" label="Settings" class="full-width" onclick="location.href = '/settings'"> </q-btn>
         </q-drawer>
 
         <q-page-container>
