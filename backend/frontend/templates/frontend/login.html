@@ -1,66 +1,41 @@
 {% extends "frontend/base.html" %}
 
+{% block main_page %}
+Here is our content!
+<div class="q-pa-md" style="max-width: 400px">
+    <q-form
+      @submit="onSubmit"
+      @reset="onReset"
+      class="q-gutter-md"
+    >
+      <q-input
+        filled
+        v-model="name"
+        label="Username"
+        hint="Please enter your username."
+        lazy-rules
+        :rules="[ val => val && val.length > 0 || 'Please type something']"
+      ></q-input>
 
-{% block content %}
+      <q-input v-model="password" filled type="password" hint="Password" 
+        label="Password"
+        hint="Please enter your password."
+        lazy-rules
+        :rules="[ val => val && val.length > 6 && val.length < 18 || 'Please type something']"
+      ></q-input>
 
-This is login form [% message %]
-  <q-layout view="hHh lpR fFf">
+      <q-toggle v-model="accept" label="I accept the license and terms"></q-toggle>
 
-    <q-header elevated class="bg-primary text-white" height-hint="98">
-      <q-toolbar>
-        <q-btn dense flat round icon="menu" @click="left = !left"> </q-btn>
+      <div>
+        <q-btn label="Submit" type="submit" color="primary"></q-btn>
+        <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm"></q-btn>
+      </div>
+    </q-form>
 
-        <q-toolbar-title>
-          <q-avatar>
-            <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">
-          </q-avatar>
-          Title
-        </q-toolbar-title>
-
-        <q-btn dense flat round icon="menu" @click="right = !right" ></q-btn>
-      </q-toolbar>
-
-      <q-tabs align="left">
-        <q-route-tab to="/page1" label="Page One" ></q-route-tab>
-        <q-route-tab to="/page2" label="Page Two" > </q-route-tab>
-        <q-route-tab to="/page3" label="Page Three" > </q-route-tab>
-      </q-tabs>
-    </q-header>
-
-    <q-drawer show-if-above v-model="left" side="left" bordered>
-      <!-- drawer content -->
-      {% block left_drawer %}
-      {% endblock %}
-    </q-drawer>
-
-    <q-drawer show-if-above v-model="right" side="right" bordered>
-      <!-- drawer content -->
-    </q-drawer>
-
-    <q-page-container>
-      <router-view > </router-view>
-    </q-page-container>
-
-    <q-footer elevated class="bg-grey-8 text-white">
-      <q-toolbar>
-        <q-toolbar-title>
-          <q-avatar>
-            <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">
-          </q-avatar>
-          Title
-        </q-toolbar-title>
-      </q-toolbar>
-    </q-footer>
-  </q-layout>
-
+  </div>
 {% endblock %}
-
-<!-- {% block left_drawer %}
-asdasdasdasdasds
-{% endblock %} -->
 
 {% block extra_dependencies %}
 {% load static %}
 <script src="{% static 'js/login.js' %}"></script>
-
 {% endblock %}
