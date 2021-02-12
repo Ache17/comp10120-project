@@ -13,13 +13,13 @@
 
     <div id="app">
       <q-layout view="hHh lpR fFf">
-        <q-header bordered class="bg-primary text-white">
+        <q-header bordered class="bg-blue-10 text-white">
           <q-toolbar>
-            <q-btn dense flat round icon="menu" @click="left = !left" />
+            <q-btn color="teal-12" dense flat round icon="menu" @click="left = !left"></q-btn>
 
             <q-toolbar-title>
               <q-avatar>
-                <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">
+                <img src="./SongSpaceLogo.png" alt="Logo" width="70" height="70" style="border:5px solid black">
               </q-avatar>
               SongSpace
             </q-toolbar-title>
@@ -28,10 +28,11 @@
 
         <q-drawer show-if-above v-model="left" side="left" bordered>
           <!-- drawer content -->
-          <q-btn color="blue-grey-10" label="Discover" class="full-width" onclick="location.href = '/'"> </q-btn>
-          <q-btn color="blue-grey-9" label="Account Login" class="full-width" onclick="location.href = '/login'"> </q-btn>
-          <q-btn color="blue-grey-7" label="View Playlists" class="full-width" onclick="location.href = '/playlists'"> </q-btn>
-          <q-btn color="blue-grey-6" label="Settings" class="full-width" onclick="location.href = '/settings'"> </q-btn>
+          <q-btn color="blue-9" padding="8px" label="Discover" class="full-width" onclick="location.href = '/'"> </q-btn>
+          <q-btn color="blue-8" padding="8px" label="Search" class="full-width" onclick="location.href = '/'"></q-btn>
+          <q-btn color="blue-7" padding="8px" label="Account Login" class="full-width" onclick="location.href = '/login'"> </q-btn>
+          <q-btn color="blue-6" padding="8px" label="View Playlists" class="full-width" onclick="location.href = '/playlists'"> </q-btn>
+          <q-btn color="blue-5" padding="8px" label="Settings" class="full-width" onclick="location.href = '/settings'"> </q-btn>
         </q-drawer>
 
         <q-page-container>
