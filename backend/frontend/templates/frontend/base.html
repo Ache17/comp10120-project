@@ -12,14 +12,13 @@
 <body>
 
     <div id="app">
-      <q-layout view="hHh lpR fFf">
-        <q-header bordered class="bg-blue-10 text-white">
-          <q-toolbar>
+      <q-layout view="hHh lpR fFf" class="bg-blue-grey-5 text-white">
+        <q-header elevated bordered class="bg-indigo-10 text-white">
+          <q-toolbar class="glossy">
             <q-btn color="teal-12" dense flat round icon="menu" @click="left = !left"></q-btn>
-
             <q-toolbar-title>
               <q-avatar>
-                <img src="./SongSpaceLogo.png" alt="Logo" width="70" height="70" style="border:5px solid black">
+                <img src="{% static 'images/SongSpaceLogo.png' %}" alt="Logo" label="Discover" onclick="location.href = '/'" width="100px" height="100px">
               </q-avatar>
               SongSpace
             </q-toolbar-title>
@@ -35,12 +34,29 @@
           <q-btn color="blue-5" padding="8px" label="Settings" class="full-width" onclick="location.href = '/settings'"> </q-btn>
         </q-drawer>
 
+        <q-footer reveal elevated>
+       <q-toolbar class="bg-indigo-10">
+         <q-toolbar-title>Footer Needs Information</q-toolbar-title>
+       </q-toolbar>
+     </q-footer>
+
         <q-page-container>
           <router-view>
             {% block main_page %}
+            <q-page padding>
+         <p v-for="n in 15" :key="n">
+           Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit nihil praesentium molestias a adipisci, dolore vitae odit, quidem consequatur optio voluptates asperiores pariatur eos numquam rerum delectus commodi perferendis voluptate?
+         </p>
+       </q-page>
             {% endblock %}
           </router-view>
-        </q-page-container>
+
+          <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[18, 18]">
+          <q-btn fab icon="keyboard_arrow_up" color="accent" />
+          </q-page-scroller>
+        </q-page>
+
+      </q-page-container>
 
       </q-layout>
     </div>
