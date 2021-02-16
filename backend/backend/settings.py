@@ -42,6 +42,18 @@ REST_FRAMEWORK = {
 
 # Application definition
 
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES' : [
+        'rest_framework.authentication.TokenAuthentication'
+    ]
+}
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS  = ["http://localhost:8000"]
+
+
 INSTALLED_APPS = [
     "frontend.apps.FrontendConfig",
     "REST.apps.RestConfig",
@@ -52,6 +64,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "rest_framework",
+    "rest_framework.authtoken",
     'corsheaders'
 ]
 

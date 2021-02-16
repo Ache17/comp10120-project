@@ -1,23 +1,204 @@
 {% extends "frontend/base.html" %}
 
-{% block content %}
 
-Here is our content!
-<div class="q-pa-md q-gutter-sm">
-    <q-btn color="white" text-color="black" label="Standard"> </q-btn>
-    <q-btn color="primary" label="Primary"> </q-btn>
-  <q-btn color="secondary" label="Secondary" > </q-btn>
-  <q-btn color="amber" glossy label="Amber" > </q-btn>
-  <q-btn color="brown-5" label="Brown 5" > </q-btn>
-  <q-btn color="deep-orange" glossy label="Deep Orange" > </q-btn>
-  <q-btn color="purple" label="Purple" ></q-btn>
-  <q-btn color="black" label="Black" ></q-btn>
-</div>
+{% block login_dialog %}
+<q-dialog v-model="login_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
+  <q-card>
 
+    <q-bar>
+      <q-space></q-space>
+      <q-btn dense flat icon="close" v-close-popup>
+        <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
+      </q-btn>
+    </q-bar>
+
+    <q-card-section>
+      <div class="text-h6">Login </div>
+    </q-card-section>
+
+    <q-card-section class="q-pt-none">
+
+      <q-form @submit="submitLogin" class="q-gutter-md">
+        <q-input filled  v-model="username" label="Username" hint="Username" lazy-rules :rules="[ val => val && val.length > 0 || 'Please type username']"></q-input>
+
+        <q-input v-model="password" filled :type="isPwd ? 'password' : 'text'" label="Password" hint="Password" lazy-rules :rules="[ val => val && val.length > 0 || 'Please type password']">
+          <template v-slot:append>
+            <q-icon
+              :name="isPwd ? 'visibility_off' : 'visibility'"
+              class="cursor-pointer"
+              @click="isPwd = !isPwd"
+            />
+          </template>
+        </q-input>
+
+          <div>
+            <q-btn label="Log in" type="submit" color="green"></q-btn>
+          </div>
+      </q-form>
+
+
+    </q-card-section>
+  </q-card>
+</q-dialog>
 {% endblock %}
+
+
+
+
+
+{% block register_dialog %}
+<q-dialog v-model="register_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
+  <q-card>
+
+    <q-bar>
+      <q-space></q-space>
+
+      <q-btn dense flat icon="close" v-close-popup>
+        <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
+      </q-btn>
+    </q-bar>
+
+    <q-card-section>
+      <div class="text-h6">Register new user </div>
+    </q-card-section>
+
+    <q-card-section class="q-pt-none">
+        
+      <q-form @submit="submitRegister" class="q-gutter-md">
+        <q-input filled  v-model="username" label="Username" hint="Username" lazy-rules :rules="[ val => val && val.length > 0 || 'Please type username']"></q-input>
+        <q-input filled  v-model="mail" type="email" label="email" hint="email"></q-input>
+        
+        <q-input v-model="password" filled :type="isPwd ? 'password' : 'text'" label="Password" hint="Password" lazy-rules :rules="[ val => val && val.length > 0 || 'Please type password']">
+          <template v-slot:append>
+            <q-icon
+              :name="isPwd ? 'visibility_off' : 'visibility'"
+              class="cursor-pointer"
+              @click="isPwd = !isPwd"
+            />
+          </template>
+        </q-input>
+          <div>
+            <q-btn label="Register !" type="submit" color="green"></q-btn>
+          </div>
+      </q-form>
+
+    </q-card-section>
+  </q-card>
+</q-dialog>
+{% endblock %}
+
+
+
+
+
+{% block discover_dialog %}
+<div class="q-pa-md q-gutter-sm">
+  <div>
+    <q-btn label="Discover new playlists" color="primary" @click="discover_dialog = true"></q-btn>
+  </div>
+  <q-dialog v-model="discover_dialog" :maximized="true" transition-show="slide-up" transition-hide="slide-down">
+    <q-card class="bg-primary text-white">
+
+      <q-bar>
+        <q-space></q-space>
+
+        <q-btn dense flat icon="minimize" @click="maximizedToggle = false" :disable="!maximizedToggle">
+          <q-tooltip v-if="maximizedToggle" content-class="bg-white text-primary">Minimize</q-tooltip>
+        </q-btn>
+
+        <q-btn dense flat icon="crop_square" @click="maximizedToggle = true" :disable="maximizedToggle">
+          <q-tooltip v-if="!maximizedToggle" content-class="bg-white text-primary">Maximize</q-tooltip>
+        </q-btn>
+
+        <q-btn dense flat icon="close" v-close-popup>
+          <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
+        </q-btn>
+      </q-bar>
+
+      <q-card-section>
+        <div class="text-h6">Discover new </div>
+      </q-card-section>
+
+      <q-card-section class="q-pt-none">
+          This is the content for discovery
+      </q-card-section>
+    </q-card>
+  </q-dialog>
+</div>
+{% endblock %}
+
+
+
+
+{% block search_block %}
+<div class="q-pa-md q-gutter-sm">
+  <div>
+    <q-btn label="Search new playlists" color="primary" @click="search_dialog = true"></q-btn>
+  </div>
+  <q-dialog v-model="search_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
+    <q-card class="bg-primary text-white">
+
+      <q-bar>
+        <q-space></q-space>
+        <q-btn dense flat icon="close" v-close-popup>
+          <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
+        </q-btn>
+      </q-bar>
+
+      <q-card-section>
+        <div class="text-h6">Search</div>
+      </q-card-section>
+
+      <q-card-section class="q-pt-none">
+          This is the content for Search
+      </q-card-section>
+    </q-card>
+  </q-dialog>
+</div>
+{% endblock %}
+
+
+
+{% block settings %}
+<div class="q-pa-md q-gutter-sm">
+  <div>
+    <q-btn label="Settings" color="primary" @click="settings_dialog = true"></q-btn>
+  </div>
+  <q-dialog v-model="settings_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
+    <q-card class="bg-primary text-white">
+
+      <q-bar>
+        <q-space></q-space>
+        <q-btn dense flat icon="close" v-close-popup>
+          <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
+        </q-btn>
+      </q-bar>
+
+      <q-card-section>
+        <div class="text-h6">Settings</div>
+      </q-card-section>
+
+      <q-card-section class="q-pt-none">
+          This is the content for settings
+      </q-card-section>
+    </q-card>
+  </q-dialog>
+</div>
+{% endblock %}
+
+
+
+
+{% block dashboard %}
+This is some content
+{% endblock %}
+
+
 
 
 {% block extra_dependencies %}
 {% load static %}
 <script src="{% static 'js/index.js' %}"></script>
 {% endblock %}
+
+

@@ -14,24 +14,64 @@
     <div id="app">
       <q-layout view="hHh lpR fFf" class="bg-blue-grey-5 text-white">
         <q-header elevated bordered class="bg-indigo-10 text-white">
-          <q-toolbar class="glossy">
-            <q-btn color="teal-12" dense flat round icon="menu" @click="left = !left"></q-btn>
+          <q-toolbar class="bg-primary text-white shadow-2 rounded-borders">
+            <q-btn flat round dense icon="menu" class="q-mr-sm" @click="left = !left"></q-btn>
+
             <q-toolbar-title>
               <q-avatar>
                 <img src="{% static 'images/SongSpaceLogo.png' %}" alt="Logo" label="Discover" onclick="location.href = '/'" width="100px" height="100px">
               </q-avatar>
               SongSpace
             </q-toolbar-title>
+    
+            <q-separator dark vertical inset ></q-separator>
+            <div>
+              [% username %]
+            </div>            
+
+            <q-separator dark vertical ></q-separator>
+            <q-btn stretch flat label="Login" @click="login_dialog = true"></q-btn>
+            {% block login_dialog %}
+            {% endblock %}
+
+            <q-separator dark vertical ></q-separator>
+            <q-btn stretch flat label="Register" @click="register_dialog = true"></q-btn>
+
+            
+            {% block register_dialog %}
+            {% endblock %}
+            
           </q-toolbar>
         </q-header>
 
+
+        <q-toolbar class="glossy">
+          <q-btn color="teal-12" dense flat round icon="menu" ></q-btn>
+          
+          <q-btn flat round dense label="LOGIN"></q-btn>
+          <q-separator vertical></q-separator>            
+          <q-btn flat round dense label="REGISTER"></q-btn>
+        </q-toolbar>
+
+
         <q-drawer show-if-above v-model="left" side="left" bordered>
           <!-- drawer content -->
-          <q-btn color="blue-9" padding="8px" label="Discover" class="full-width" onclick="location.href = '/'"> </q-btn>
-          <q-btn color="blue-8" padding="8px" label="Search" class="full-width" onclick="location.href = '/'"></q-btn>
-          <q-btn color="blue-7" padding="8px" label="Account Login" class="full-width" onclick="location.href = '/login'"> </q-btn>
-          <q-btn color="blue-6" padding="8px" label="View Playlists" class="full-width" onclick="location.href = '/playlists'"> </q-btn>
-          <q-btn color="blue-5" padding="8px" label="Settings" class="full-width" onclick="location.href = '/settings'"> </q-btn>
+          {% block discover_dialog %}
+          {% endblock %}
+          <q-separator></q-separator>
+
+          {% block search_block %}
+          {% endblock %}
+          <q-separator></q-separator>
+
+          {% block login_block %}
+          {% endblock %}
+          <q-separator></q-separator>
+
+          {% block settings %}
+          {% endblock %}
+          <q-separator></q-separator>
+
         </q-drawer>
 
         <q-footer reveal elevated>
@@ -42,13 +82,10 @@
 
         <q-page-container>
           <router-view>
-            {% block main_page %}
             <q-page padding>
-         <p v-for="n in 15" :key="n">
-           Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit nihil praesentium molestias a adipisci, dolore vitae odit, quidem consequatur optio voluptates asperiores pariatur eos numquam rerum delectus commodi perferendis voluptate?
-         </p>
-       </q-page>
-            {% endblock %}
+              {% block dashboard %}
+              {% endblock %}
+            </q-page>
           </router-view>
 
           <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[18, 18]">

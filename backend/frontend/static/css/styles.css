@@ -3,3 +3,9 @@ body
     font-size: 18px;
     font-weight: bold;
 }
+
+#center
+{
+    margin-left: auto;
+    margin-right: auto;
+}
