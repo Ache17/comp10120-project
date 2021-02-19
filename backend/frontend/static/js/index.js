@@ -8,6 +8,7 @@ var app = new Vue({
         right : false,
         maximizedToggle : true,
         my_playlists_dialog: false,
+        create_playlist_dialog: false,
         search_dialog : false,
         login_dialog : false,
         settings_dialog : false,

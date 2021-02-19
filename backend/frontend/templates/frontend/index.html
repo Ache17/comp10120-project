@@ -88,7 +88,14 @@
 {% endblock %}
 
 
-
+{% block create_playlist_dialog %}
+<div class="q-pa-md q-gutter-sm">
+  <div>
+    <q-btn label="Create New Playlist" color="primary" class="full-width" @click="create_playlist_dialog = true"></q-btn>
+    <!-- FAO Brodie, add a href link to the button above. Whatever page you are creating. Just use onlcick="". -->
+  </div>
+</div>
+{% endblock %}
 
 
 {% block my_playlists_dialog %}
