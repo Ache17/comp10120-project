@@ -20,8 +20,10 @@ var app = new Vue({
         isPwd : true,
         token : "",
         playlist_title : "",
+        playlist_genre : "",
         playlist_description : "",
-        number_of_tracks : 0
+        number_of_tracks : 0,
+        public: false
     },
     delimiters: ['[%', '%]'],
     methods: {
