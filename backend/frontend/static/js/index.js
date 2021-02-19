@@ -18,7 +18,10 @@ var app = new Vue({
         password : "",
         mail : "",
         isPwd : true,
-        token : ""
+        token : "",
+        playlist_title : "",
+        playlist_description : "",
+        number_of_tracks : 0
     },
     delimiters: ['[%', '%]'],
     methods: {
@@ -73,11 +76,11 @@ var app = new Vue({
             registerRequest.addEventListener("load", () => {
                 if (registerRequest.status < 300 && registerRequest.status >= 200)
                 {
-                    this.sucessNotification("registration sucessfull !");
+                    this.sucessNotification("Registration sucessful!");
                 }
                 else
                 {
-                    this.failureNotification("registration not sucessfull !");
+                    this.failureNotification("Registration not sucessful!");
                 }
             });
 
@@ -85,6 +88,10 @@ var app = new Vue({
             registerRequest.send(JSON.stringify({"username" : app.username, "password" : app.password, "mail" : app.mail}));
 
             // do XHR
+        },
+        submitPlaylist(msg)
+        {
+            this.sucessNotification("Function was called.");
         }
     }
   });

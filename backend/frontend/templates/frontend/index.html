@@ -94,21 +94,12 @@
     <q-btn label="Create Playlist" color="primary" class="full-width" @click="create_playlist_dialog = true"></q-btn>
   </div>
   <q-dialog v-model="create_playlist_dialog" :maximized="true" transition-show="slide-up" transition-hide="slide-down">
-    <q-card class="bg-primary text-white">
+    <q-card class="bg-light-blue-1 text-black">
 
-      <q-bar>
+      <q-bar class="bg-light-blue-10">
         <q-space></q-space>
-
-        <q-btn dense flat icon="minimize" @click="maximizedToggle = false" :disable="!maximizedToggle">
-          <q-tooltip v-if="maximizedToggle" content-class="bg-white text-primary">Minimize</q-tooltip>
-        </q-btn>
-
-        <q-btn dense flat icon="crop_square" @click="maximizedToggle = true" :disable="maximizedToggle">
-          <q-tooltip v-if="!maximizedToggle" content-class="bg-white text-primary">Maximize</q-tooltip>
-        </q-btn>
-
         <q-btn dense flat icon="close" v-close-popup>
-          <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
+          <q-tooltip content-class="bg-light-blue-10 text-white">Close</q-tooltip>
         </q-btn>
       </q-bar>
 
@@ -117,7 +108,25 @@
       </q-card-section>
 
       <q-card-section class="q-pt-none">
-          
+        <q-form @submit="submitPlaylist" class="q-gutter-md">
+          <div class="row">
+            <q-uploader color="light-blue-10" url="" max-files="1" accept=".jpg, image/*"></q-uploader>
+            <div class="col q-pa-sm">
+              <div class="row">
+                <div class="col q-pa-sm">
+                  <q-input color="light-blue-10" filled v-model="playlist_title" label="Playlist Title" lazy-rules :rules="[ val => val && val.length > 0 || 'Please enter playlist title.']"></q-input>
+                </div>
+                <div class="col q-pa-sm">
+                  <q-input color="light-blue-10" v-model.number="number_of_tracks" type="number" filled style="max-width: 200px"></q-input>
+                </div>
+                <div class="col q-pa-sm">
+                  <q-btn label="Create Playlist" type="submit" color="light-blue-10" padding="md xl"></q-btn>
+                </div>
+              </div>
+              <q-input color="light-blue-10" filled v-model="playlist_description" label="Playlist Description (optional)." type="textarea"></q-input>
+            </div>
+          </div>
+        </q-form>
       </q-card-section>
     </q-card>
   </q-dialog>
