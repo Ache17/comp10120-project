@@ -91,9 +91,36 @@
 {% block create_playlist_dialog %}
 <div class="q-pa-md q-gutter-sm">
   <div>
-    <q-btn label="Create New Playlist" color="primary" class="full-width" @click="create_playlist_dialog = true"></q-btn>
-    <!-- FAO Brodie, add a href link to the button above. Whatever page you are creating. Just use onlcick="". -->
+    <q-btn label="Create Playlist" color="primary" class="full-width" @click="create_playlist_dialog = true"></q-btn>
   </div>
+  <q-dialog v-model="create_playlist_dialog" :maximized="true" transition-show="slide-up" transition-hide="slide-down">
+    <q-card class="bg-primary text-white">
+
+      <q-bar>
+        <q-space></q-space>
+
+        <q-btn dense flat icon="minimize" @click="maximizedToggle = false" :disable="!maximizedToggle">
+          <q-tooltip v-if="maximizedToggle" content-class="bg-white text-primary">Minimize</q-tooltip>
+        </q-btn>
+
+        <q-btn dense flat icon="crop_square" @click="maximizedToggle = true" :disable="maximizedToggle">
+          <q-tooltip v-if="!maximizedToggle" content-class="bg-white text-primary">Maximize</q-tooltip>
+        </q-btn>
+
+        <q-btn dense flat icon="close" v-close-popup>
+          <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
+        </q-btn>
+      </q-bar>
+
+      <q-card-section>
+        <div class="text-h6">Create a New Playlist</div>
+      </q-card-section>
+
+      <q-card-section class="q-pt-none">
+          
+      </q-card-section>
+    </q-card>
+  </q-dialog>
 </div>
 {% endblock %}
 
