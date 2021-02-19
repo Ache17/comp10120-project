@@ -23,11 +23,11 @@
               </q-avatar>
               SongSpace
             </q-toolbar-title>
-    
+
             <q-separator dark vertical inset ></q-separator>
             <div>
               [% username %]
-            </div>            
+            </div>
 
             <q-separator dark vertical ></q-separator>
             <q-btn stretch flat label="Login" @click="login_dialog = true"></q-btn>
@@ -37,26 +37,34 @@
             <q-separator dark vertical ></q-separator>
             <q-btn stretch flat label="Register" @click="register_dialog = true"></q-btn>
 
-            
+
             {% block register_dialog %}
             {% endblock %}
-            
+
           </q-toolbar>
         </q-header>
 
 
         <q-toolbar class="glossy">
           <q-btn color="teal-12" dense flat round icon="menu" ></q-btn>
-          
+
           <q-btn flat round dense label="LOGIN"></q-btn>
-          <q-separator vertical></q-separator>            
+          <q-separator vertical></q-separator>
           <q-btn flat round dense label="REGISTER"></q-btn>
         </q-toolbar>
 
 
         <q-drawer show-if-above v-model="left" side="left" bordered>
           <!-- drawer content -->
-          {% block discover_dialog %}
+          <q-separator></q-separator>
+          <div class="q-pa-md q-gutter-sm">
+            <div>
+              <q-btn color="primary" label="Discover" class="full-width" onclick="location.href = '/'"> </q-btn>
+            </div>
+          </div>
+          <q-separator></q-separator>
+
+          {% block my_playlists_dialog %}
           {% endblock %}
           <q-separator></q-separator>
 

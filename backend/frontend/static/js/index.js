@@ -7,7 +7,7 @@ var app = new Vue({
         left : false,
         right : false,
         maximizedToggle : true,
-        discover_dialog: false,
+        my_playlists_dialog: false,
         search_dialog : false,
         login_dialog : false,
         settings_dialog : false,
@@ -41,7 +41,7 @@ var app = new Vue({
             var loginRequest = new XMLHttpRequest();
             loginRequest.open("POST", addr + "/api/auth", true);
             loginRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-            loginRequest.addEventListener("load", () => 
+            loginRequest.addEventListener("load", () =>
             {
                 var response = loginRequest.response;
                 var returned_json = JSON.parse(response);
@@ -59,7 +59,7 @@ var app = new Vue({
             });
             console.log({"username" : this.username, "password" : this.password});
             loginRequest.send(JSON.stringify({"username" : this.username, "password" : this.password}));
-            
+
         },
         submitRegister(evt)
         {

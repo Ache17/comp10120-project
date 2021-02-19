@@ -13,7 +13,7 @@
     </q-bar>
 
     <q-card-section>
-      <div class="text-h6">Login </div>
+      <div class="text-h6">Login</div>
     </q-card-section>
 
     <q-card-section class="q-pt-none">
@@ -63,11 +63,11 @@
     </q-card-section>
 
     <q-card-section class="q-pt-none">
-        
+
       <q-form @submit="submitRegister" class="q-gutter-md">
         <q-input filled  v-model="username" label="Username" hint="Username" lazy-rules :rules="[ val => val && val.length > 0 || 'Please type username']"></q-input>
         <q-input filled  v-model="mail" type="email" label="email" hint="email"></q-input>
-        
+
         <q-input v-model="password" filled :type="isPwd ? 'password' : 'text'" label="Password" hint="Password" lazy-rules :rules="[ val => val && val.length > 0 || 'Please type password']">
           <template v-slot:append>
             <q-icon
@@ -91,12 +91,12 @@
 
 
 
-{% block discover_dialog %}
+{% block my_playlists_dialog %}
 <div class="q-pa-md q-gutter-sm">
   <div>
-    <q-btn label="Discover new playlists" color="primary" @click="discover_dialog = true"></q-btn>
+    <q-btn label="My Playlists" color="primary" class="full-width" @click="my_playlists_dialog = true"></q-btn>
   </div>
-  <q-dialog v-model="discover_dialog" :maximized="true" transition-show="slide-up" transition-hide="slide-down">
+  <q-dialog v-model="my_playlists_dialog" :maximized="true" transition-show="slide-up" transition-hide="slide-down">
     <q-card class="bg-primary text-white">
 
       <q-bar>
@@ -116,11 +116,11 @@
       </q-bar>
 
       <q-card-section>
-        <div class="text-h6">Discover new </div>
+        <div class="text-h6">My Playlists</div>
       </q-card-section>
 
       <q-card-section class="q-pt-none">
-          This is the content for discovery
+          Here Are The Playlists You Have Created
       </q-card-section>
     </q-card>
   </q-dialog>
@@ -133,24 +133,33 @@
 {% block search_block %}
 <div class="q-pa-md q-gutter-sm">
   <div>
-    <q-btn label="Search new playlists" color="primary" @click="search_dialog = true"></q-btn>
+    <q-btn label="Search Playlists" color="primary" class="full-width" @click="search_dialog = true"></q-btn>
   </div>
-  <q-dialog v-model="search_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
+  <q-dialog v-model="search_dialog" :maximized="true" transition-show="slide-up" transition-hide="slide-down">
     <q-card class="bg-primary text-white">
 
       <q-bar>
         <q-space></q-space>
+
+        <q-btn dense flat icon="minimize" @click="maximizedToggle = false" :disable="!maximizedToggle">
+          <q-tooltip v-if="maximizedToggle" content-class="bg-white text-primary">Minimize</q-tooltip>
+        </q-btn>
+
+        <q-btn dense flat icon="crop_square" @click="maximizedToggle = true" :disable="maximizedToggle">
+          <q-tooltip v-if="!maximizedToggle" content-class="bg-white text-primary">Maximize</q-tooltip>
+        </q-btn>
+
         <q-btn dense flat icon="close" v-close-popup>
           <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
         </q-btn>
       </q-bar>
 
       <q-card-section>
-        <div class="text-h6">Search</div>
+        <div class="text-h6">Search For Playlists Created By Other Users</div>
       </q-card-section>
 
       <q-card-section class="q-pt-none">
-          This is the content for Search
+          Here Is Search
       </q-card-section>
     </q-card>
   </q-dialog>
@@ -162,7 +171,7 @@
 {% block settings %}
 <div class="q-pa-md q-gutter-sm">
   <div>
-    <q-btn label="Settings" color="primary" @click="settings_dialog = true"></q-btn>
+    <q-btn label="Settings" color="primary" class="full-width" @click="settings_dialog = true"></q-btn>
   </div>
   <q-dialog v-model="settings_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
     <q-card class="bg-primary text-white">
@@ -200,5 +209,3 @@ This is some content
 {% load static %}
 <script src="{% static 'js/index.js' %}"></script>
 {% endblock %}
-
-
