@@ -113,7 +113,6 @@
             <q-uploader color="light-blue-10" url="" max-files="1" accept=".jpg, image/*"></q-uploader>
 
             <div class="col q-pa-sm">
-
               <div class="row">
                 <div class="col q-px-sm">
                   <q-input color="light-blue-10" filled v-model="playlist_title" label="Playlist Title" lazy-rules :rules="[ val => val && val.length > 0 || 'Please enter playlist title.']"></q-input>
@@ -122,10 +121,9 @@
                   <q-input color="light-blue-10" filled v-model="playlist_genre" label="Playlist Genre"></q-input>
                 </div>
               </div>
-
               <div class="row">
                 <div class="col q-pa-s">
-                  <q-input color="light-blue-10" v-model.number="number_of_tracks" type="number" filled style="max-width: 200px"></q-input>
+                  <q-input color="light-blue-10" v-model.number="number_of_tracks" type="number" min="1" max="50" placeholder="1" filled style="max-width: 200px" id="number_of_tracks" onchange="TrackNumberChange();"></q-input>
                 </div>
                 <div class="col q-pa-sm">
                   <q-checkbox v-model="public" label="Public" />
@@ -134,11 +132,14 @@
                   <q-btn label="Create Playlist" type="submit" color="light-blue-10" padding="md xl"></q-btn>
                 </div>
               </div>
-              <q-input color="light-blue-10" filled v-model="playlist_description" label="Playlist Description (optional)." type="textarea" maxlength="200" autogrow></q-input>
+              <q-input color="light-blue-10" filled v-model="playlist_description" label="Playlist Description (optional)" type="textarea" maxlength="200" autogrow></q-input>
             </div>
-
           </div>
         </q-form>
+      </q-card-section>
+      <q-card-section>
+        <div id="TrackInputs" style="line-height:50%;">
+        </div>
       </q-card-section>
     </q-card>
   </q-dialog>
