@@ -171,11 +171,17 @@
       </q-bar>
 
       <q-card-section>
-        <div class="text-h6">My Playlists</div>
+        <h2 style="text-align:center">Here Are Your Playlists</h2>
       </q-card-section>
 
       <q-card-section class="q-pt-none">
-          Here Are The Playlists You Have Created
+        <div class="q-pa-md">
+          <div class="row q-col-gutter-x-xs q-col-gutter-y-lg">
+            <div class="col-4" v-for="n in 18" :key="`none-${n}`">
+              <div class="bg-yellow-2 my-content" style="height:400px">&nbsp;</div>
+            </div>
+          </div>
+        </div>
       </q-card-section>
     </q-card>
   </q-dialog>
@@ -253,14 +259,14 @@
 
 
 {% block dashboard %}
-
-  <div class="q-pa-md">
-  <div class="row q-col-gutter-x-xs q-col-gutter-y-lg">
-    <div class="col-4" v-for="n in 18" :key="`none-${n}`">
-      <div class="bg-yellow my-content" style="height:400px">&nbsp;</div>
+  <h2 style="text-align:center">Here Are The Top Playlists Of This Week</h2>
+    <div class="q-pa-md">
+      <div class="row q-col-gutter-x-xs q-col-gutter-y-lg">
+        <div class="col-4" v-for="n in 18" :key="`none-${n}`">
+          <div class="bg-yellow-2 my-content" style="height:400px">&nbsp;</div>
+        </div>
+      </div>
     </div>
-  </div>
-  </div>
 {% endblock %}
 
 
