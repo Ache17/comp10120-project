@@ -29,12 +29,20 @@
             </div>
 
             <q-separator dark vertical ></q-separator>
-            <q-btn stretch flat label="Login" @click="login_dialog = true"></q-btn>
+            <q-btn stretch flat label="Login" @click="login_dialog = true">
+              <q-tooltip transition-show="rotate" transition-hide="rotate">
+                 Login To Existing Account
+               </q-tooltip>
+            </q-btn>
             {% block login_dialog %}
             {% endblock %}
 
             <q-separator dark vertical ></q-separator>
-            <q-btn stretch flat label="Register" @click="register_dialog = true"></q-btn>
+            <q-btn stretch flat label="Register" @click="register_dialog = true">
+              <q-tooltip transition-show="rotate" transition-hide="rotate">
+                 Register A New Account
+               </q-tooltip>
+            </q-btn>
 
 
             {% block register_dialog %}
@@ -57,7 +65,11 @@
           <q-separator></q-separator>
           <div class="q-pa-md q-gutter-sm">
             <div>
-              <q-btn color="light-blue-10" label="Discover" class="full-width" onclick="location.href = '/'"> </q-btn>
+              <q-btn color="light-blue-10" label="Discover" class="full-width" onclick="location.href = '/'">
+                <q-tooltip transition-show="rotate" transition-hide="rotate">
+                   Discover Trending Playlists
+                 </q-tooltip>
+              </q-btn>
             </div>
           </div>
           <q-separator></q-separator>
