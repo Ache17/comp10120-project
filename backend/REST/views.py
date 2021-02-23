@@ -26,3 +26,9 @@ class registerView(APIView):
             serializer.save()
             return Response({"message" : "registation sucessfull"}, status=status.HTTP_201_CREATED)
         return Response({"message" : "registration not sucessfull"}, status=status.HTTP_400_BAD_REQUEST)
+
+class addPlaylist(APIView):
+    def post(self, request):
+        print(request.data)
+        print(request.data['PlaylistTitle'])
+        return Response({"message" : "not able to add the playlist"}, status=status.HTTP_400_BAD_REQUEST)

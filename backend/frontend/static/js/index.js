@@ -26,7 +26,8 @@ var app = new Vue({
         public: false
     },
     delimiters: ['[%', '%]'],
-    methods: {
+    methods: 
+    {
         sucessNotification(msg)
         {
             app.$q.notify({
@@ -99,7 +100,10 @@ var app = new Vue({
           var Track = {};
           for (var i = 1; i <= NumberOfTracks; i++)
           {
-            Track = {Title:document.getElementById("TitleInput" + i).value, Artist:document.getElementById("ArtistInput" + i).value, Year:document.getElementById("YearInput" + i).value, Rating:document.getElementById("YearInput" + i).value}
+            Track = {Title:document.getElementById("TitleInput" + i).value, 
+                     Artist:document.getElementById("ArtistInput" + i).value, 
+                     Year:document.getElementById("YearInput" + i).value, 
+                     Rating:document.getElementById("YearInput" + i).value}
             Tracks.push(Track)
           }
           data =
@@ -111,7 +115,28 @@ var app = new Vue({
             Public: this.public,
             Tracks: Tracks
           };
+
+          let addr = document.location.origin;
+          var addPlaylistRequest = new XMLHttpRequest();
+          addPlaylistRequest.open("POST", addr + "/api/addPlaylist", true);
+          addPlaylistRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+          addPlaylistRequest.addEventListener("load", () =>
+          {
+              var response = addPlaylistRequest.response;
+              var returned_json = JSON.parse(response);
+              console.log(returned_json);
+              if (addPlaylistRequest.status < 300 && addPlaylistRequest.status >= 200)
+              {
+
+              }
+              else
+              {
+
+              }
+          });
+          console.log("nice@");
           console.log(data);
+          addPlaylistRequest.send(JSON.stringify(data));
         }
     }
   });
