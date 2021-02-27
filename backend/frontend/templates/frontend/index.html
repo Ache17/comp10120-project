@@ -194,9 +194,9 @@
 {% block search_block %}
 <div class="q-pa-md q-gutter-sm">
   <div>
-    <q-btn label="Search Playlists" color="light-blue-10" class="full-width" @click="search_dialog = true">
+    <q-btn label="Search" color="light-blue-10" class="full-width" @click="search_dialog = true">
       <q-tooltip transition-show="rotate" transition-hide="rotate">
-         Find Playlists Or Users
+         Find Playlists, Songs Or Users
        </q-tooltip>
     </q-btn>
   </div>
@@ -210,14 +210,73 @@
         </q-btn>
       </q-bar>
 
-      <q-card-section>
-        <div class="text-h6">Search For Playlists Created By Other Users</div>
-      </q-card-section>
+      <q-tabs v-model="tab" class="bg-light-blue-10 text-white" align="justify" narrow-indicator>
+        <q-tab name="Playlists" label="Playlists"></q-tab>
+        <q-tab name="Songs" label="Songs"></q-tab>
+        <q-tab name="Users" label="Users"></q-tab>
+      </q-tabs>
 
-      <q-card-section class="q-pt-none">
-          Here Is Search
-      </q-card-section>
-    </q-card>
+      <q-separator></q-separator>
+
+      <q-tab-panels v-model="tab" animated class="bg-blue-grey-2 text-center">
+        <q-tab-panel name="Playlists">
+          <div class="text-h6">Search For Created Playlists</div>
+          <q-card-section class="q-pt-none">
+            <q-input standout bottom-slots v-model="playlist_search_text" label="Search For Playlist Name" :dense="dense">
+              <template v-slot:before>
+                <div>
+                  <q-spinner-gears color="dark" size="2em"></q-spinner-gears>
+                </div>
+              </template>
+              <template v-if="playlist_search_text" v-slot:append>
+                <q-icon name="cancel" @click.stop="playlist_search_text = null" class="cursor-pointer"></q-icon>
+              </template>
+              <template v-slot:hint>
+                To Search For Songs Or Users, Change Tab!
+              </template>
+            </q-input>
+          </q-card-section>
+        </q-tab-panel>
+
+        <q-tab-panel name="Songs">
+          <div class="text-h6">Search For Your Favourite Songs</div>
+          <q-card-section class="q-pt-none">
+            <q-input standout bottom-slots v-model="song_search_text" label="Search For Song Name" :dense="dense">
+              <template v-slot:before>
+                <div>
+                  <q-spinner-audio color="dark" size="2em"></q-spinner-audio>
+                </div>
+              </template>
+              <template v-if="song_search_text" v-slot:append>
+                <q-icon name="cancel" @click.stop="song_search_text = null" class="cursor-pointer"></q-icon>
+              </template>
+              <template v-slot:hint>
+                To Search For Playlists Or Users, Change Tab!
+              </template>
+            </q-input>
+          </q-card-section>
+        </q-tab-panel>
+
+        <q-tab-panel name="Users">
+          <div class="text-h6">Find Your Friends By Searching For Users</div>
+          <q-card-section class="q-pt-none">
+            <q-input standout bottom-slots v-model="user_search_text" label="Search For SongSpace User" :dense="dense">
+              <template v-slot:before>
+                <div>
+                  <q-spinner-comment color="dark" size="2em"></q-spinner-comment>
+                </div>
+              </template>
+              <template v-if="user_search_text" v-slot:append>
+                <q-icon name="cancel" @click.stop="user_search_text = null" class="cursor-pointer"></q-icon>
+              </template>
+              <template v-slot:hint>
+                To Search For Playlists Or Songs, Change Tab!
+              </template>
+            </q-input>
+          </q-card-section>
+        </q-tab-panel>
+       </q-tab-panels>
+     </q-card>
   </q-dialog>
 </div>
 {% endblock %}
@@ -255,6 +314,94 @@
 </div>
 {% endblock %}
 
+
+{% block ethics %}
+<div>
+  <q-dialog v-model="ethics_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
+    <q-card class="bg-blue-grey-2 text-black">
+
+      <q-bar class="bg-light-blue-10">
+        <q-space></q-space>
+        <q-btn dense flat icon="close" v-close-popup>
+          <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
+        </q-btn>
+      </q-bar>
+
+      <q-card-section>
+        <div class="text-h6 text-center">SongSpace Ethics</div>
+      </q-card-section>
+
+      <q-card-section class="q-pt-none">
+          This application was made following the ACM Code of Ethics and Professional Conduct, which can be found at the following link:
+          <a style="color: black;" href = "https://www.acm.org/code-of-ethics">https://www.acm.org/code-of-ethics.</a><br>
+          A happy and hardworking team spirit was of upmost importance throughout the development of this application.
+
+      </q-card-section>
+    </q-card>
+  </q-dialog>
+</div>
+{% endblock %}
+
+
+{% block external %}
+<div>
+  <q-dialog v-model="external_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
+    <q-card class="bg-blue-grey-2 text-black">
+
+      <q-bar class="bg-light-blue-10">
+        <q-space></q-space>
+        <q-btn dense flat icon="close" v-close-popup>
+          <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
+        </q-btn>
+      </q-bar>
+
+      <q-card-section>
+        <div class="text-h6 text-center">External Links From Our Site</div>
+      </q-card-section>
+
+      <q-card-section class="q-pt-none">
+        Please note this website may also include links to other websites. These links are provided for your convenience to provide further information.
+        They do not signify that we endorse the website(s). We have no responsibility for the content of the linked website(s).
+          <br><br>
+        Although we make every effort to ensure these external links are accurate, up to date and relevant, SongSpace cannot take responsibility for pages maintained by external providers.
+          <br><br>
+        If you come across any outdated or broken links, please <a style= "color: black;" href="mailto:luke.deaves-jarvis@student.manchester.ac.uk">contact our team</a> immediately.
+      </q-card-section>
+    </q-card>
+  </q-dialog>
+</div>
+{% endblock %}
+
+{% block ownership %}
+<div>
+  <q-dialog v-model="ownership_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
+    <q-card class="bg-blue-grey-2 text-black">
+
+      <q-bar class="bg-light-blue-10">
+        <q-space></q-space>
+        <q-btn dense flat icon="close" v-close-popup>
+          <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
+        </q-btn>
+      </q-bar>
+
+      <q-card-section>
+        <div class="text-h6 text-center">Ownership Of The Site</div>
+      </q-card-section>
+
+      <q-card-section class="q-pt-none">
+        This website contains material which is owned by or licensed to us. This material includes, but is not limited to, the design, layout, look, appearance and graphics.<br>
+        Copyright © 2021 SongSpace, All Rights Reserved.
+          <br><br>
+        Neither we nor any third parties provide any warranty or guarantee as to the accuracy, timeliness, performance, completeness or suitability of the information
+        and materials found or offered on this website for any particular purpose. You acknowledge that such information and materials may contain inaccuracies or errors
+        and we expressly exclude liability for any such inaccuracies or errors to the fullest extent permitted by law.
+          <br><br>
+        The content of the pages of this website is for your general information and use only. It is subject to change without notice.
+      </q-card-section>
+    </q-card>
+  </q-dialog>
+</div>
+{% endblock %}
 
 
 

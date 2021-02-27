@@ -12,6 +12,9 @@ var app = new Vue({
         search_dialog : false,
         login_dialog : false,
         settings_dialog : false,
+        ethics_dialog: false,
+        external_dialog: false,
+        ownership_dialog: false,
         login_dialog : false,
         register_dialog: false,
         username : "",
@@ -23,7 +26,12 @@ var app = new Vue({
         playlist_genre : "",
         playlist_description : "",
         number_of_tracks : 0,
-        public: false
+        public: false,
+        dense: true,
+        playlist_search_text: "",
+        song_search_text: "",
+        user_search_text: "",
+        tab: true
     },
     delimiters: ['[%', '%]'],
     methods: {
