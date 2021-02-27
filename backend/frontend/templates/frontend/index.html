@@ -372,6 +372,37 @@
 </div>
 {% endblock %}
 
+{% block ownership %}
+<div>
+  <q-dialog v-model="ownership_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
+    <q-card class="bg-blue-grey-2 text-black">
+
+      <q-bar class="bg-light-blue-10">
+        <q-space></q-space>
+        <q-btn dense flat icon="close" v-close-popup>
+          <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
+        </q-btn>
+      </q-bar>
+
+      <q-card-section>
+        <div class="text-h6 text-center">Ownership Of The Site</div>
+      </q-card-section>
+
+      <q-card-section class="q-pt-none">
+        This website contains material which is owned by or licensed to us. This material includes, but is not limited to, the design, layout, look, appearance and graphics.<br>
+        Copyright © 2021 SongSpace, All Rights Reserved.
+          <br><br>
+        Neither we nor any third parties provide any warranty or guarantee as to the accuracy, timeliness, performance, completeness or suitability of the information
+        and materials found or offered on this website for any particular purpose. You acknowledge that such information and materials may contain inaccuracies or errors
+        and we expressly exclude liability for any such inaccuracies or errors to the fullest extent permitted by law.
+          <br><br>
+        The content of the pages of this website is for your general information and use only. It is subject to change without notice.
+      </q-card-section>
+    </q-card>
+  </q-dialog>
+</div>
+{% endblock %}
+
 
 
 {% block dashboard %}

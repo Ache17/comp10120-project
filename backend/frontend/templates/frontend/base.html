@@ -111,7 +111,9 @@
            {% block external %}
            {% endblock %}
            <q-space></q-space>
-           <q-btn stretch flat label="Example Link"></q-btn>
+           <q-btn stretch flat label="Ownership" @click="ownership_dialog = true"></q-btn>
+           {% block ownership %}
+           {% endblock %}
            <q-space></q-space>
            <q-btn stretch flat>
              <q-avatar>
