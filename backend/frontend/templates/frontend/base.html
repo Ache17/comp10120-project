@@ -103,9 +103,13 @@
            <q-space></q-space>
            <q-btn stretch flat label="Contact Us"></q-btn>
            <q-space></q-space>
-           <q-btn stretch flat label="Example Link"></q-btn>
+           <q-btn stretch flat label="Ethics" @click="ethics_dialog = true"></q-btn>
+           {% block ethics %}
+           {% endblock %}
            <q-space></q-space>
-           <q-btn stretch flat label="Example Link"></q-btn>
+           <q-btn stretch flat label="External Links" @click="external_dialog = true"></q-btn>
+           {% block external %}
+           {% endblock %}
            <q-space></q-space>
            <q-btn stretch flat label="Example Link"></q-btn>
            <q-space></q-space>
