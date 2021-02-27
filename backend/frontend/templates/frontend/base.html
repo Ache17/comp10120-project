@@ -109,7 +109,12 @@
            <q-space></q-space>
            <q-btn stretch flat label="Example Link"></q-btn>
            <q-space></q-space>
-           <q-btn stretch flat label="Example Link"></q-btn>
+           <q-btn stretch flat>
+             <q-avatar>
+               <img src="{% static 'images/Spotify.png' %}" alt=" Spotify Logo" label="Spotify" onclick="location.href = 'https://www.spotify.com/us/'">
+             </q-avatar>
+           </q-btn>
+           <q-separator vertical inset></q-separator>
           </q-toolbar>
         </q-footer>
 
