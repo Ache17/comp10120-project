@@ -23,7 +23,12 @@ var app = new Vue({
         playlist_genre : "",
         playlist_description : "",
         number_of_tracks : 0,
-        public: false
+        public: false,
+        dense: true,
+        playlist_search_text: "",
+        song_search_text: "",
+        user_search_text: "",
+        tab: true
     },
     delimiters: ['[%', '%]'],
     methods: {
