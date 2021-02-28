@@ -99,9 +99,13 @@
         <q-footer reveal>
           <q-toolbar class="bg-light-blue-10">
            <q-separator vertical inset></q-separator>
-           <q-btn stretch flat label="About Us"></q-btn>
+           <q-btn stretch flat label="About Us" @click="about_us_dialog = true"></q-btn>
+           {% block about_us %}
+           {% endblock %}
            <q-space></q-space>
-           <q-btn stretch flat label="Contact Us"></q-btn>
+           <q-btn stretch flat label="Contact Us" @click="contact_us_dialog = true"></q-btn>
+           {% block contact_us %}
+           {% endblock %}
            <q-space></q-space>
            <q-btn stretch flat label="Ethics" @click="ethics_dialog = true"></q-btn>
            {% block ethics %}

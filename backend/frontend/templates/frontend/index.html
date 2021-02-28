@@ -315,6 +315,73 @@
 {% endblock %}
 
 
+{% block about_us %}
+<div>
+  <q-dialog v-model="about_us_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
+    <q-card class="bg-blue-grey-2 text-black">
+
+      <q-bar class="bg-light-blue-10">
+        <q-space></q-space>
+        <q-btn dense flat icon="close" v-close-popup>
+          <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
+        </q-btn>
+      </q-bar>
+
+      <q-card-section>
+        <div class="text-h6 text-center">Our Introduction</div>
+      </q-card-section>
+
+      <q-card-section class="q-pt-none">
+        We are students at the University of Manchester in the UK and we created SongSpace
+        <br><br>
+        This is a website that helps you manage and display your music list
+        <br><br>
+        You can use SongSpace to fully manage and enjoy music.
+        <br><br>
+        SongSpace provides an alternative means of creating, viewing, and sorting your actual playlists. You can post your custom to make playlists to a public space, which can then be reviewed by other users on the site.
+        <br><br>
+        You are welcome to contact us at any time.
+      </q-card-section>
+    </q-card>
+  </q-dialog>
+</div>
+{% endblock %}
+
+
+{% block contact_us %}
+<div>
+  <q-dialog v-model="contact_us_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
+    <q-card class="bg-blue-grey-2 text-black">
+
+      <q-bar class="bg-light-blue-10">
+        <q-space></q-space>
+        <q-btn dense flat icon="close" v-close-popup>
+          <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
+        </q-btn>
+      </q-bar>
+
+      <q-card-section>
+        <div class="text-h4 text-center">Our Address</div>
+      </q-card-section>
+
+      <q-card-section class="text-h20 text-center">
+        The University of Manchester
+        <br>
+        Oxford Rd
+        <br>
+        Manchester
+        <br>
+        M13 9PL
+        <br>
+        UK
+
+      </q-card-section>
+    </q-card>
+  </q-dialog>
+</div>
+{% endblock %}
+
+
 {% block ethics %}
 <div>
   <q-dialog v-model="ethics_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
