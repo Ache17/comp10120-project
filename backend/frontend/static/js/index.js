@@ -59,7 +59,7 @@ var app = new Vue({
           var authRequest = new XMLHttpRequest();
           authRequest.open(method, addr + path, true);
           authRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-          authRequest.setRequestHeader("Authorization", "Bearer " + this.token);
+          authRequest.setRequestHeader("Authorization", "Token " + this.token);
           authRequest.addEventListener("load", () => 
           { 
               var response = authRequest.response; 
