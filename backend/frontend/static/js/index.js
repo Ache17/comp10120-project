@@ -62,6 +62,7 @@ var app = new Vue({
                 if (loginRequest.status < 300 && loginRequest.status >= 200)
                 {
                     this.token = returned_json["token"];
+                    document.cookie = "test" + "=" + (returned_json["token"]);
                     this.sucessNotification("login sucessfull !");
                     this.login_dialog = false;
                 }
