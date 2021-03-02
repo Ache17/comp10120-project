@@ -12,6 +12,8 @@ var app = new Vue({
         search_dialog : false,
         login_dialog : false,
         settings_dialog : false,
+        about_us_dialog : false,
+        contact_us_dialog : false,
         ethics_dialog: false,
         external_dialog: false,
         ownership_dialog: false,
