@@ -45,14 +45,11 @@ REST_FRAMEWORK = {
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES' : [
-        'rest_framework.authentication.TokenAuthentication'
-    ],
-        #'DEFAULT_PERMISSION_CLASSES':[
-    #        'rest_framework.permissions.IsAuthenticated',
-    
-
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ]
 }
+
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS  = ["http://localhost:8000"]

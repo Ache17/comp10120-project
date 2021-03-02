@@ -50,6 +50,32 @@ var app = new Vue({
                     message : msg
                 });
         },
+        make_authenticated_request(data, method, path, success_callback, failure_callback)
+        {
+          if (this.token === "")
+            return;
+          
+          let addr = document.location.origin;
+          var authRequest = new XMLHttpRequest();
+          authRequest.open(method, addr + path, true);
+          authRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+          authRequest.setRequestHeader("Authorization", "Bearer " + this.token);
+          authRequest.addEventListener("load", () => 
+          { 
+              var response = authRequest.response; 
+              var returned_json = JSON.parse(response);
+              if (authRequest.status < 300 && authRequest.status >= 200)
+              {
+                success_callback(authRequest);
+              }
+              else 
+              {
+                failure_callback(authRequest);
+              }
+          });
+          authRequest.send(JSON.stringify(data));
+
+        },
         submitLogin(evt)
         {
             // console.log("@submit login", evt);
