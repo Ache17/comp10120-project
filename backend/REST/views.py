@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 from .serializers import UserSerializer
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .models import UserProfile
+from .models import UserProfile, Playlist, Item
 
 
 # Create your views here.
@@ -21,7 +21,6 @@ class testView(APIView):
     def post(self, request):
         return  Response("post request")
 
-
 class authenticatedTest(APIView):
     permission_classes = (IsAuthenticated,) 
     def get(self, request):
@@ -29,6 +28,36 @@ class authenticatedTest(APIView):
 
     def post(self, request):
         return Response("post success !")
+
+class userInfoView(APIView):
+    permission_classes = (IsAuthenticated,) 
+    def get(self, request):
+        user = request.user
+        profile = UserProfile.objects.get(user=user)
+        return Response({"username" : user.username, "first_name" : user.first_name, 
+                         "last_name" : user.last_name, "email" : user.email, 
+                         "last_login" : user.last_login, "date_joined" :     user.date_joined})
+
+class playlistsView(APIView):
+    permission_classes = (IsAuthenticated,) 
+    def get(self, request):
+        user = request.user
+        profile = UserProfile.objects.get(user=user)
+        playlists = Playlist.objects.filter(creator=profile)
+        response = []
+        for p in playlists:
+            songs_serialized = []
+            songs = Item.objects.filter(whichPlaylist=p)
+            for song in songs:
+                songs_serialized.append({"name" : song.name, "author" : song.author, "description" : song.description})
+            response.append({"name" : p.name, "genre" : p.genre, "description" : p.description, 
+                             "rating" : p.rating, "songs" : songs_serialized})
+        return Response(response)
+
+    def post(self, request):
+        print(request)
+
+        return Response({"data" : "nice!"})
 
 
 class registerView(APIView):
