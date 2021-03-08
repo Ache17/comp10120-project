@@ -50,6 +50,14 @@ var app = new Vue({
                     message : msg
                 });
         },
+        playlistSubmissionSuccess(req)
+        {
+          app.$q.notify({ type : "positive", message : "playlist submitted"});
+        },
+        playlistSubmissionFailure(req)
+        {
+          app.$q.notify({type : "negative", message : "playlist not submitted"});
+        },
         make_authenticated_request(data, method, path, success_callback, failure_callback)
         {
           if (this.token === "")
@@ -136,19 +144,20 @@ var app = new Vue({
           var Track = {};
           for (var i = 1; i <= NumberOfTracks; i++)
           {
-            Track = {Title:document.getElementById("TitleInput" + i).value, Artist:document.getElementById("ArtistInput" + i).value, Year:document.getElementById("YearInput" + i).value, Rating:document.getElementById("YearInput" + i).value}
+            Track = {"name":document.getElementById("TitleInput" + i).value, 
+                     "author":document.getElementById("ArtistInput" + i).value}
             Tracks.push(Track)
           }
           data =
           {
-            PlaylistTitle: this.playlist_title,
-          	PlaylistGenre: this.playlist_genre,
+            "name": this.playlist_title,
+          	"genre": this.playlist_genre,
           	// ImageURL: ImageURL,
-          	Description: this.playlist_description,
-            Public: this.public,
-            Tracks: Tracks
+          	"description": this.playlist_description,
+            "isPublic": this.public,
+            "Tracks": Tracks
           };
-          console.log(data);
+          this.make_authenticated_request(data, "POST", "/api/userPlaylists", this.playlistSubmissionSuccess, this.playlistSubmissionFailure);
         }
     }
   });

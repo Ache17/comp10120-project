@@ -10,12 +10,11 @@ class Playlist(models.Model):
     image = models.ImageField()
     genre = models.CharField(max_length=100)
     link = models.CharField(max_length=100)
-    description = models.CharField(max_length=256)
-    rating = models.IntegerField()
+    description = models.CharField(default="", max_length=256)
+    rating = models.IntegerField(default=0)
     isPublic = models.BooleanField()
 
 class Item(models.Model):
     whichPlaylist = models.ForeignKey(Playlist, on_delete=models.CASCADE)
     name = models.CharField(max_length=64)
     author = models.CharField(max_length=128)
-    description = models.CharField(max_length=256)

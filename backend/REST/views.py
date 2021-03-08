@@ -7,7 +7,7 @@ from rest_framework import serializers, status
 from rest_framework import authentication, permissions
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
-from .serializers import UserSerializer
+from .serializers import UserSerializer, playlistSerializer, ItemSerializer
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import UserProfile, Playlist, Item
@@ -54,10 +54,47 @@ class playlistsView(APIView):
                              "rating" : p.rating, "songs" : songs_serialized})
         return Response(response)
 
-    def post(self, request):
-        print(request)
+    def post(self, request):  
+        # manually setting up the user id's
+        # firstly serialize the playlist
+        request.data["creator"] = UserProfile.objects.get(user=request.user).id
+        serializer = playlistSerializer(data=request.data)
 
-        return Response({"data" : "nice!"})
+        if serializer.is_valid():
+            # if data provided is all good 
+            # save the object
+
+            playlistObj = serializer.save()
+            playlistId = playlistObj.id
+
+            # now save all the items ( songs ) that belong to
+            # that playlist
+            try:
+                Items = request.data["Tracks"]
+                for item in Items:
+                    item["whichPlaylist"] = playlistId
+
+                # validate all items in the serializer
+                items_serializer = ItemSerializer(data=Items, many=True)
+                if items_serializer.is_valid():
+                    # save the items associated with the playlist
+                    items_serializer.save()
+                    return Response({"message" : "playlist submission sucessfull"}, status=status.HTTP_201_CREATED)
+
+                # not valid items : playlist will be saved though
+                # someone messing with the REST
+                #print(serializer.errors)        
+                return Response({"message" : "playlist submission not sucessfull"}, status=status.HTTP_400_BAD_REQUEST)
+
+            # don't have Tracks : 
+            # someone messing with the REST
+            except KeyError:
+                return Response({"message" : "playlist submission not sucessfull"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message" : "playlist submission not sucessfull"}, status=status.HTTP_400_BAD_REQUEST)
+
+        #playlist serialization not valid !
+#        print(serializer.errors)        
+        return Response({"message" : "playlist submission not sucessfull"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class registerView(APIView):

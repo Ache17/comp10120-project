@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
+from .models import Playlist, Item
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -13,3 +14,14 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ("id", "username", "password", )
+
+
+class playlistSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Playlist
+        fields = ("creator", "name", "genre", "description", "isPublic")
+
+class ItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Item
+        fields = ("whichPlaylist", "name", "author")
