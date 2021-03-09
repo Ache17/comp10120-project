@@ -430,6 +430,39 @@
 </q-dialog>
 {% endblock %}
 
+{% block landing_dialog %}
+<div class="q-pa-md q-gutter-sm">
+  <q-dialog v-model="landing_dialog" :maximized="true" persistent transition-hide="slide-down">
+    <q-card class="bg-blue-grey-2 text-black">
+
+          <q-parallax class="no-margin full-height">
+            <template v-slot:media>
+              {% load static %}
+              <img src="static/images/Landing.jpg" alt="Background" label="Background">
+            </template>
+            <template v-slot:content="scope">
+              <div class="absolute column items-center" :style="{opacity: 0.55 + (1 - scope.percentScrolled) * 0.55, top: (scope.percentScrolled * 60) + '%', left: 0, right: 0}">
+                <img src="static/images/SongSpaceLogo.png" style="width: 450px; height: 450px">
+                <div class="text-h2 text-white text-center">SongSpace</div>
+                <div class="text-h4 text-grey-1 text-center">Explore the Playlists You Love</div>
+                <div class="q-mt-md row justify-center">
+                  <q-fab padding="30px" v-model="fab1" label="Menu" label-position="bottom" glossy color="light-blue-5" icon="keyboard_arrow_down" direction="down" :hide-label="hideLabels">
+                    <q-fab-action :hide-label="hideLabels" color="light-blue-6" @click="landing_dialog=false" icon="play_circle_outline" label="Explore"></q-fab-action>
+                    <q-fab-action :hide-label="hideLabels" color="light-blue-7" @click="register_dialog=true" icon="person_add" label="Register"></q-fab-action>
+                    <q-fab-action :hide-label="hideLabels" color="light-blue-8" @click="login_dialog=true" icon="person" label="Login"></q-fab-action>
+                    <q-fab-action :hide-label="hideLabels" color="light-blue-9" @click="about_us_dialog=true" icon="help_outline" label="Information"></q-fab-action>
+                  </q-fab>
+                </div>
+              </div>
+
+            </template>
+          </q-parallax>
+
+    </q-card>
+  </q-dialog>
+</div>
+{% endblock %}
+
 
 {% block about_us %}
 <div>
