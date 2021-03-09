@@ -11,7 +11,7 @@ var app = new Vue({
         create_playlist_dialog: false,
         search_dialog : false,
         login_dialog : false,
-        settings_dialog : false,
+        account_dialog : false,
         about_us_dialog : false,
         contact_us_dialog : false,
         ethics_dialog: false,
@@ -19,6 +19,7 @@ var app = new Vue({
         ownership_dialog: false,
         login_dialog : false,
         register_dialog: false,
+        new_password_dialog: false,
         username : "",
         password : "",
         mail : "",
@@ -33,7 +34,23 @@ var app = new Vue({
         playlist_search_text: "",
         song_search_text: "",
         user_search_text: "",
-        tab: true
+        tab: true,
+        loc: "",
+        num_of_playlists: 0,
+        profile_edit: false,
+        username_f: "",
+        mail_f: "",
+        password_f: "",
+        barStyle: {
+          right: '2px',
+          borderRadius: '9px',
+          backgroundColor: 'light-blue-10',
+          width: '9px',
+          opacity: 0.2
+        },
+        username_current: "",
+        password_old: "",
+        password_new: ""
     },
     delimiters: ['[%', '%]'],
     methods: {
@@ -62,21 +79,21 @@ var app = new Vue({
         {
           if (this.token === "")
             return;
-          
+
           let addr = document.location.origin;
           var authRequest = new XMLHttpRequest();
           authRequest.open(method, addr + path, true);
           authRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
           authRequest.setRequestHeader("Authorization", "Token " + this.token);
-          authRequest.addEventListener("load", () => 
-          { 
-              var response = authRequest.response; 
+          authRequest.addEventListener("load", () =>
+          {
+              var response = authRequest.response;
               var returned_json = JSON.parse(response);
               if (authRequest.status < 300 && authRequest.status >= 200)
               {
                 success_callback(authRequest);
               }
-              else 
+              else
               {
                 failure_callback(authRequest);
               }
@@ -100,6 +117,9 @@ var app = new Vue({
                     this.token = returned_json["token"];
                     document.cookie = "test" + "=" + (returned_json["token"]);
                     this.sucessNotification("login sucessfull !");
+                    this.username_f = this.username;
+                    this.password_f = password;
+                    this.mail_f = this.mail;
                     this.login_dialog = false;
                 }
                 else
@@ -124,6 +144,7 @@ var app = new Vue({
                 if (registerRequest.status < 300 && registerRequest.status >= 200)
                 {
                     this.sucessNotification("Registration sucessful!");
+                    this.submitLogin(evt);
                 }
                 else
                 {
@@ -144,7 +165,7 @@ var app = new Vue({
           var Track = {};
           for (var i = 1; i <= NumberOfTracks; i++)
           {
-            Track = {"name":document.getElementById("TitleInput" + i).value, 
+            Track = {"name":document.getElementById("TitleInput" + i).value,
                      "author":document.getElementById("ArtistInput" + i).value}
             Tracks.push(Track)
           }
@@ -158,6 +179,35 @@ var app = new Vue({
             "Tracks": Tracks
           };
           this.make_authenticated_request(data, "POST", "/api/userPlaylists", this.playlistSubmissionSuccess, this.playlistSubmissionFailure);
+        },
+        // Makes sure you're logged in before showing you the account page.
+        testFunc(){
+          if (this.token != ""){
+            this.account_dialog = true;
+          }
+          else{
+            this.failureNotification("You aren't logged in!");
+          }
+        },
+        // Requests changed account details to be amended.
+        submitAccountChanges(){
+          data =
+          {
+            Username: this.username_f,
+          	Email: this.mail_f,
+          	Location: this.loc,
+          };
+          // THIS NEEDS ADDING TO!
+        },
+        // Requests an account password change.
+        submitPasswordChange(){
+          data =
+          {
+            Username: this.username_current,
+          	OldPassword: this.password_old,
+            NewPassword: this.password_new
+          };
+          //THIS NEEDS TO VALIDATE THE CURRENT DETAILS THEN CHANGE THE PASSWORD FOR THE ACCOUNT
         }
     }
   });
