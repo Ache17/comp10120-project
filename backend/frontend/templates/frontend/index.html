@@ -321,22 +321,41 @@
                   <q-input bg-color="blue-grey-4" color="light-blue-10" filled v-model="loc" label="Location (Country)" :disable="!profile_edit"></q-input>
                 </div>
               </div>
+
+
               <div class="row">
                 <div class="col q-px-sm">
-                  <q-input bg-color="blue-grey-4" color="light-blue-10" filled v-model="num_of_playlists" label="Number of Playlists Created" type="number" disable readonly></q-input>
+                  <q-input bg-color="blue-grey-4" color="light-blue-10" filled v-model="first_name" label="First Name" :disable="!profile_edit"></q-input>
                 </div>
-                <div class="col q-pa-sm">
+                <div class="col q-px-sm">
+                  <q-input bg-color="blue-grey-4" color="light-blue-10" filled v-model="last_name" label="Last Name" :disable="!profile_edit"></q-input>
                 </div>
                 <div class="col q-pa-sm">
                   <q-toggle v-model="profile_edit" color="light-blue-10" label="Toggle Edit"></q-toggle>
                 </div>
                 <div class="col q-pa-sm">
-                  <q-btn label="Change Password" type="submit" color="light-blue-10" padding="md xl" :disable="!profile_edit" @click="new_password_dialog = true"></q-btn>
+                  <q-btn label="Change Password" class="full-width" type="submit" color="light-blue-10" padding="md xl" @click="new_password_dialog = true"></q-btn>
                 </div>
                 <div class="col q-pa-sm">
-                  <q-btn label="Submit Changes" type="submit" color="light-blue-10" padding="md xl" :disable="!profile_edit"></q-btn>
+                  <q-btn label="Submit Changes" class="full-width" type="submit" color="light-blue-10" padding="md xl" :disable="!profile_edit"></q-btn>
                 </div>
               </div>
+
+              <div class="row">
+                <div class="col q-px-sm">
+                  Number of Playlists: [% num_of_playlists %]
+                </div>
+                <div class="col q-px-sm">
+                  Date Joined:  [% date_joined %]
+                </div>
+                <div class="col q-px-sm">
+                  Last Visited:  [% last_visited %]
+                </div>
+                <div class="col q-px-sm"></div>
+                <div class="col q-px-sm"></div>
+                <div class="col q-px-sm"></div>
+              </div>
+
             </div>
           </div>
         </q-form>

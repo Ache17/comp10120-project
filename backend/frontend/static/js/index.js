@@ -36,6 +36,10 @@ var app = new Vue({
         user_search_text: "",
         tab: true,
         loc: "",
+        first_name: "",
+        last_name: "",
+        last_visited: "",
+        date_joined: "",
         landing_dialog: true,
         fab1: false,
         hideLabels: false,
@@ -196,11 +200,15 @@ var app = new Vue({
         submitAccountChanges(){
           data =
           {
-            Username: this.username_f,
-          	Email: this.mail_f,
-          	Location: this.loc,
+            "username": this.username_f,
+          	"email": this.mail_f,
+            "location": this.loc,
+            "first_name": this.first_name,
+            "second_name": this.second_name,
+            "date_joined": this.date_joined,
+            "last_visited": this.last_visited
           };
-          // THIS NEEDS ADDING TO!
+          // UPDATE USER DETAILS
         },
         // Requests an account password change.
         submitPasswordChange(){
