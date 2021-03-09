@@ -23,7 +23,6 @@
               SongSpace
             </q-toolbar-title>
 
-            <q-separator dark vertical inset ></q-separator>
             <div>
               [% username_f %]
             </div>
@@ -134,6 +133,8 @@
         <q-page-container>
           <router-view>
             <q-page padding>
+              {% block landing_dialog %}
+              {% endblock %}
               {% block dashboard %}
               {% endblock %}
             </q-page>
