@@ -12,7 +12,10 @@ from .serializers import UserSerializer, playlistSerializer, ItemSerializer
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import UserProfile, Playlist, Item
+from django.core.paginator import Paginator, EmptyPage
+from math import ceil
 
+PER_PAGE = 10
 
 # Create your views here.
 class testView(APIView):
@@ -75,6 +78,49 @@ class userInfoView(APIView):
             return Response({"message" : "Update sucessfull "}, status=status.HTTP_200_OK)
         return Response({"message" : "Update not sucessfull"}, status=status.HTTP_400_BAD_REQUEST)
 
+class searchPlaylistView(APIView):
+    permission_classes = (IsAuthenticated,) 
+    def get(self, request):
+        
+        page = 1
+        if "page" in request.data:
+            page = int(request.data["page"])
+        
+        entries = Playlist.objects.filter(isPublic=True)
+        paginator = Paginator(entries, PER_PAGE)
+        try:
+            playlists = paginator.page(page)
+        except EmptyPage:
+            return Response({"message" : "bad page !"}, status=status.HTTP_400_BAD_REQUEST) 
+
+        ret = []
+        for playlist in playlists:
+            creator = playlist.creator
+            user = creator.user
+            ret.append({"creator_username": user.username, "name" : playlist.name, "genre" : playlist.genre, "description" : playlist.description})
+        return Response(ret, status=status.HTTP_200_OK)
+
+class searchUsersView(APIView):
+    permission_classes = (IsAuthenticated,) 
+    def get(self, request):
+
+        page = 1
+        if "page" in request.data:
+            page = int(request.data["page"])
+
+        entries = User.objects.filter()
+        
+        paginator = Paginator(entries,  PER_PAGE)
+        try:
+            users = paginator.page(page)
+        except EmptyPage:
+            return Response({"message" : "bad page !"}, status=status.HTTP_400_BAD_REQUEST) 
+
+        ret = []
+        for user in users:
+            ret.append({"username" : user.username, "first_name" : user.first_name, "last_name" : user.last_name})
+        
+        return Response(ret, status=status.HTTP_200_OK)
 
 class playlistsView(APIView):
     permission_classes = (IsAuthenticated,) 
@@ -128,7 +174,6 @@ class playlistsView(APIView):
             # someone messing with the REST
             except KeyError:
                 return Response({"message" : "playlist submission not sucessfull"}, status=status.HTTP_400_BAD_REQUEST)
-            return Response({"message" : "playlist submission not sucessfull"}, status=status.HTTP_400_BAD_REQUEST)
 
         #playlist serialization not valid !
 #        print(serializer.errors)        
