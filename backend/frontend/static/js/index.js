@@ -160,7 +160,7 @@ var app = new Vue({
             });
 
 
-            registerRequest.send(JSON.stringify({"username" : app.username, "password" : app.password, "mail" : app.mail}));
+            registerRequest.send(JSON.stringify({"username" : app.username, "password" : app.password, "email" : app.mail}));
 
             // do XHR
         },

@@ -7,13 +7,13 @@ class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
 
     def create(self, validated_data):
-        user = User.objects.create_user(username=validated_data["username"], password=validated_data["password"])
+        user = User.objects.create_user(username=validated_data["username"], password=validated_data["password"], email=validated_data["email"])
         self.id = user.id
         return user
     
     class Meta:
         model = User
-        fields = ("id", "username", "password", )
+        fields = ("id", "username", "password", "email")
 
 
 class playlistSerializer(serializers.ModelSerializer):
