@@ -258,23 +258,29 @@
         </q-tab-panel>
 
         <q-tab-panel name="Users">
+
           <div class="text-h6">Find Your Friends By Searching For Users</div>
           <q-card-section class="q-pt-none">
-            <q-input standout bottom-slots v-model="user_search_text" label="Search For SongSpace User" :dense="dense">
-              <template v-slot:before>
-                <div>
-                  <q-spinner-comment color="dark" size="2em"></q-spinner-comment>
-                </div>
-              </template>
-              <template v-if="user_search_text" v-slot:append>
-                <q-icon name="cancel" @click.stop="user_search_text = null" class="cursor-pointer"></q-icon>
-              </template>
-              <template v-slot:hint>
-                To Search For Playlists Or Songs, Change Tab!
-              </template>
-            </q-input>
+            <q-form @submit="searchUsers">
+              <q-input standout bottom-slots v-model="user_search_text" label="Search For SongSpace User" :dense="dense">
+                <template v-slot:before>
+                  <div>
+                    <q-spinner-comment color="dark" size="2em"></q-spinner-comment>
+                  </div>
+                </template>
+                <template v-if="user_search_text" v-slot:append>
+                  <q-icon name="cancel" @click.stop="user_search_text = null" class="cursor-pointer"></q-icon>
+                </template>
+                <template v-slot:hint>
+                  To Search For Playlists Or Songs, Change Tab!
+                </template>
+              </q-input>
+            </q-form>
           </q-card-section>
         </q-tab-panel>
+        <div class="col q-pa-sm">
+          <q-btn label="Submit Changes" class="full-width" type="submit" @click="selectUser" color="light-blue-10" padding="md xl" :disable="!profile_edit"></q-btn>
+        </div>
        </q-tab-panels>
      </q-card>
   </q-dialog>
@@ -286,7 +292,7 @@
 {% block settings %}
 <div class="q-pa-md q-gutter-sm">
   <div>
-    <q-btn label="Account" color="light-blue-10" class="full-width" @click="testFunc">
+    <q-btn label="Account" color="light-blue-10" class="full-width" @click="retrieveAccount">
       <q-tooltip transition-show="rotate" transition-hide="rotate">
          Manage your Account
        </q-tooltip>
@@ -312,23 +318,23 @@
             <div class="col q-pa-sm">
               <div class="row">
                 <div class="col q-px-sm">
-                  <q-input bg-color="blue-grey-4" color="light-blue-10" filled v-model="username_f" label="Username" lazy-rules :rules="[ val => val && val.length > 0 || 'Please enter a valid username.']" :disable="!profile_edit"></q-input>
+                  <q-input bg-color="blue-grey-4" color="light-blue-10" filled v-model="username_f" label="Username" lazy-rules :rules="[ val => val && val.length > 0 || 'Please enter a valid username.']" :readonly="!profile_edit"></q-input>
                 </div>
                 <div class="col q-px-sm">
-                  <q-input bg-color="blue-grey-4" color="light-blue-10" filled v-model="mail_f" label="Email" :disable="!profile_edit"></q-input>
+                  <q-input bg-color="blue-grey-4" color="light-blue-10" filled v-model="mail_f" label="Email" :readonly="!profile_edit"></q-input>
                 </div>
                 <div class="col q-px-sm">
-                  <q-input bg-color="blue-grey-4" color="light-blue-10" filled v-model="loc" label="Location (Country)" :disable="!profile_edit"></q-input>
+                  <q-input bg-color="blue-grey-4" color="light-blue-10" filled v-model="loc" label="Location (Country)" :readonly="!profile_edit"></q-input>
                 </div>
               </div>
 
 
               <div class="row">
                 <div class="col q-px-sm">
-                  <q-input bg-color="blue-grey-4" color="light-blue-10" filled v-model="first_name" label="First Name" :disable="!profile_edit"></q-input>
+                  <q-input bg-color="blue-grey-4" color="light-blue-10" filled v-model="first_name" label="First Name" :readonly="!profile_edit"></q-input>
                 </div>
                 <div class="col q-px-sm">
-                  <q-input bg-color="blue-grey-4" color="light-blue-10" filled v-model="last_name" label="Last Name" :disable="!profile_edit"></q-input>
+                  <q-input bg-color="blue-grey-4" color="light-blue-10" filled v-model="last_name" label="Last Name" :readonly="!profile_edit"></q-input>
                 </div>
                 <div class="col q-pa-sm">
                   <q-toggle v-model="profile_edit" color="light-blue-10" label="Toggle Edit"></q-toggle>
@@ -349,7 +355,7 @@
                   Date Joined:  [% date_joined %]
                 </div>
                 <div class="col q-px-sm">
-                  Last Visited:  [% last_visited %]
+                  Last Visited:  [% last_login %]
                 </div>
                 <div class="col q-px-sm"></div>
                 <div class="col q-px-sm"></div>

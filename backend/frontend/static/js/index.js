@@ -38,7 +38,7 @@ var app = new Vue({
         loc: "",
         first_name: "",
         last_name: "",
-        last_visited: "",
+        last_login: "",
         date_joined: "",
         landing_dialog: true,
         fab1: false,
@@ -57,22 +57,18 @@ var app = new Vue({
         },
         username_current: "",
         password_old: "",
-        password_new: ""
+        password_new: "",
+        searchUser1: "1111"
     },
     delimiters: ['[%', '%]'],
     methods: {
         sucessNotification(msg)
         {
-            app.$q.notify({
-                    type : "positive",
-                    message : msg});
+            app.$q.notify({type : "positive", message : msg});
         },
         failureNotification(msg)
         {
-            app.$q.notify({
-                    type : "negative",
-                    message : msg
-                });
+            app.$q.notify({type : "negative", message : msg});
         },
         playlistSubmissionSuccess(req)
         {
@@ -123,15 +119,16 @@ var app = new Vue({
                 {
                     this.token = returned_json["token"];
                     document.cookie = "test" + "=" + (returned_json["token"]);
-                    this.sucessNotification("login sucessfull !");
+                    this.sucessNotification("Login Successful");
                     this.username_f = this.username;
-                    this.password_f = password;
+                    this.password_f = this.password;
                     this.mail_f = this.mail;
                     this.login_dialog = false;
+                    this.landing_dialog = false;
                 }
                 else
                 {
-                    this.failureNotification("login not sucessfull !");
+                    this.failureNotification("Login Unsuccessful");
                 }
 
             });
@@ -146,7 +143,6 @@ var app = new Vue({
             var registerRequest = new XMLHttpRequest();
             registerRequest.open("POST", addr + "/api/register", true);
             registerRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-
             registerRequest.addEventListener("load", () => {
                 if (registerRequest.status < 300 && registerRequest.status >= 200)
                 {
@@ -158,11 +154,7 @@ var app = new Vue({
                     this.failureNotification("Registration not sucessful!");
                 }
             });
-
-
             registerRequest.send(JSON.stringify({"username" : app.username, "password" : app.password, "email" : app.mail}));
-
-            // do XHR
         },
         // This is performed upon the user clicking the Submit Playlist button.
         submitPlaylist()
@@ -188,27 +180,56 @@ var app = new Vue({
           this.make_authenticated_request(data, "POST", "/api/userPlaylists", this.playlistSubmissionSuccess, this.playlistSubmissionFailure);
         },
         // Makes sure you're logged in before showing you the account page.
-        testFunc(){
+        retrieveAccount(){
           if (this.token != ""){
+            var data = {};
+            this.make_authenticated_request(data, "GET", "/api/userInfo", this.retrieveAccountSuccess, this.retrieveAccountFailure);
             this.account_dialog = true;
           }
           else{
             this.failureNotification("You aren't logged in!");
           }
         },
-        // Requests changed account details to be amended.
+        retrieveAccountSuccess(req){
+          data = JSON.parse(req.response);
+          this.loc = data.location;
+          this.mail_f = data.email;
+          this.first_name = data.first_name;
+          this.last_name = data.last_name;
+          this.date_joined = this.dateClean(data.date_joined);
+          this.last_login = data.last_login;
+          this.profile_edit = false;
+        },
+        retrieveAccountFailure(req){
+          this.failureNotification("Account Details Not Found");
+        },
+        dateClean(date){
+          var year = date.substring(0,4);
+          var month = date.substring(5,7);
+          var day = date.substring(8,10);
+          return day + "/" + month + "/" + year;
+        },
+        // Executes when the user submits their changed account details - object created and this is passed through to the server with a PUT request.
         submitAccountChanges(){
           data =
           {
             "username": this.username_f,
-          	"email": this.mail_f,
-            "location": this.loc,
             "first_name": this.first_name,
-            "second_name": this.second_name,
+            "last_name": this.last_name,
+          	"email": this.mail_f,
+            "last_login": this.last_login,
             "date_joined": this.date_joined,
-            "last_visited": this.last_visited
+            "location": this.loc
           };
-          // UPDATE USER DETAILS
+          this.make_authenticated_request(data, "PUT", "/api/userInfo", this.submitAccountSuccess, this.submitAccountFailure);
+        },
+        // Displays success message upon the account details being updated.
+        submitAccountSuccess(){
+          this.sucessNotification("Account Details Updated");
+        },
+        // Displays failure message upon the account details not being updated.
+        submitAccountFailure(){
+          this.failureNotification("Account Details Not Updated");
         },
         // Requests an account password change.
         submitPasswordChange(){
@@ -219,6 +240,19 @@ var app = new Vue({
             NewPassword: this.password_new
           };
           //THIS NEEDS TO VALIDATE THE CURRENT DETAILS THEN CHANGE THE PASSWORD FOR THE ACCOUNT
+        },
+        searchUsers(){
+          var data = {};
+          this.make_authenticated_request(data, "GET", "/api/searchUsers", this.searchUsersSuccess, this.searchUsersFailure);
+        },
+        searchUsersSuccess(req){
+          console.log(req);
+        },
+        searchUsersFailure(req){
+          this.failureNotification("Search Failed.");
+        },
+        selectUser(){
+          console.log("TEST");
         }
     }
   });

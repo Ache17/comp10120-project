@@ -21,25 +21,23 @@ PER_PAGE = 10
 class testView(APIView):
     def get(self, request):
         return Response("just a test")
-
     def post(self, request):
         return  Response("post request")
 
 class authenticatedTest(APIView):
-    permission_classes = (IsAuthenticated,) 
+    permission_classes = (IsAuthenticated,)
     def get(self, request):
         return Response("get  success !")
-
     def post(self, request):
         return Response("post success !")
 
 class userInfoView(APIView):
-    permission_classes = (IsAuthenticated,) 
+    permission_classes = (IsAuthenticated,)
     def get(self, request):
         user = request.user
         profile = UserProfile.objects.get(user=user)
-        return Response({"username" : user.username, "first_name" : user.first_name, 
-                         "last_name" : user.last_name, "email" : user.email, 
+        return Response({"username" : user.username, "first_name" : user.first_name,
+                         "last_name" : user.last_name, "email" : user.email,
                          "last_login" : user.last_login, "date_joined" : user.date_joined, "location" : profile.location})
 
     def put(self, request):
@@ -51,27 +49,27 @@ class userInfoView(APIView):
         if "first_name" in data:
             user.first_name = data["first_name"]
             changed = True
-        
+
         if "last_name" in data:
             user.last_name = data["last_name"]
             changed = True
-        
+
         if "location" in data:
             profile.location = data["location"]
             changed = True
-        
+
         # updating password / email should have different mechanism for security reasons
         # TODO: changing the way we update email and password
         # not wonderful idea
         if "email" in data:
             user.email = data["email"]
             changed = True
-        
+
         # even worst idea
         if "password" in data:
             user.password = make_password(data["password"])
             changed = True
-        
+
         if changed:
             profile.save()
             user.save()
@@ -79,19 +77,19 @@ class userInfoView(APIView):
         return Response({"message" : "Update not sucessfull"}, status=status.HTTP_400_BAD_REQUEST)
 
 class searchPlaylistView(APIView):
-    permission_classes = (IsAuthenticated,) 
+    permission_classes = (IsAuthenticated,)
     def get(self, request):
-        
+
         page = 1
         if "page" in request.data:
             page = int(request.data["page"])
-        
+
         entries = Playlist.objects.filter(isPublic=True)
         paginator = Paginator(entries, PER_PAGE)
         try:
             playlists = paginator.page(page)
         except EmptyPage:
-            return Response({"message" : "bad page !"}, status=status.HTTP_400_BAD_REQUEST) 
+            return Response({"message" : "bad page !"}, status=status.HTTP_400_BAD_REQUEST)
 
         ret = []
         for playlist in playlists:
@@ -101,7 +99,7 @@ class searchPlaylistView(APIView):
         return Response(ret, status=status.HTTP_200_OK)
 
 class searchUsersView(APIView):
-    permission_classes = (IsAuthenticated,) 
+    permission_classes = (IsAuthenticated,)
     def get(self, request):
 
         page = 1
@@ -109,21 +107,21 @@ class searchUsersView(APIView):
             page = int(request.data["page"])
 
         entries = User.objects.filter()
-        
+
         paginator = Paginator(entries,  PER_PAGE)
         try:
             users = paginator.page(page)
         except EmptyPage:
-            return Response({"message" : "bad page !"}, status=status.HTTP_400_BAD_REQUEST) 
+            return Response({"message" : "bad page !"}, status=status.HTTP_400_BAD_REQUEST)
 
         ret = []
         for user in users:
             ret.append({"username" : user.username, "first_name" : user.first_name, "last_name" : user.last_name})
-        
+
         return Response(ret, status=status.HTTP_200_OK)
 
 class playlistsView(APIView):
-    permission_classes = (IsAuthenticated,) 
+    permission_classes = (IsAuthenticated,)
     def get(self, request):
         user = request.user
         profile = UserProfile.objects.get(user=user)
@@ -134,18 +132,18 @@ class playlistsView(APIView):
             songs = Item.objects.filter(whichPlaylist=p)
             for song in songs:
                 songs_serialized.append({"name" : song.name, "author" : song.author, "description" : song.description})
-            response.append({"name" : p.name, "genre" : p.genre, "description" : p.description, 
+            response.append({"name" : p.name, "genre" : p.genre, "description" : p.description,
                              "rating" : p.rating, "songs" : songs_serialized})
         return Response(response)
 
-    def post(self, request):  
+    def post(self, request):
         # manually setting up the user id's
         # firstly serialize the playlist
         request.data["creator"] = UserProfile.objects.get(user=request.user).id
         serializer = playlistSerializer(data=request.data)
 
         if serializer.is_valid():
-            # if data provided is all good 
+            # if data provided is all good
             # save the object
 
             playlistObj = serializer.save()
@@ -167,24 +165,24 @@ class playlistsView(APIView):
 
                 # not valid items : playlist will be saved though
                 # someone messing with the REST
-                #print(serializer.errors)        
+                #print(serializer.errors)
                 return Response({"message" : "playlist submission not sucessfull"}, status=status.HTTP_400_BAD_REQUEST)
 
-            # don't have Tracks : 
+            # don't have Tracks :
             # someone messing with the REST
             except KeyError:
                 return Response({"message" : "playlist submission not sucessfull"}, status=status.HTTP_400_BAD_REQUEST)
 
         #playlist serialization not valid !
-#        print(serializer.errors)        
+#        print(serializer.errors)
         return Response({"message" : "playlist submission not sucessfull"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class registerView(APIView):
     permission_classes = [AllowAny]
-    def post(self, request):    
+    def post(self, request):
         print(request.data)
-        
+
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -193,4 +191,3 @@ class registerView(APIView):
 
             return Response({"message" : "registation sucessfull"}, status=status.HTTP_201_CREATED)
         return Response({"message" : "registration not sucessfull"}, status=status.HTTP_400_BAD_REQUEST)
-
