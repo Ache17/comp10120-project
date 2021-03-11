@@ -1,42 +1,29 @@
 {% extends "frontend/base.html" %}
 
-
 {% block login_dialog %}
 <q-dialog v-model="login_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
   <q-card>
-
     <q-bar class="bg-light-blue-10">
       <q-space></q-space>
       <q-btn dense flat icon="close" v-close-popup>
         <q-tooltip content-class="bg-light-blue-10 text-white">Close</q-tooltip>
       </q-btn>
     </q-bar>
-
     <q-card-section>
       <div class="text-h6">Login</div>
     </q-card-section>
-
     <q-card-section class="q-pt-none">
-
       <q-form @submit="submitLogin" class="q-gutter-md">
         <q-input filled  v-model="username" label="Username" hint="Username" lazy-rules :rules="[ val => val && val.length > 0 || 'Please type username']"></q-input>
-
         <q-input v-model="password" filled :type="isPwd ? 'password' : 'text'" label="Password" hint="Password" lazy-rules :rules="[ val => val && val.length > 0 || 'Please type password']">
           <template v-slot:append>
-            <q-icon
-              :name="isPwd ? 'visibility_off' : 'visibility'"
-              class="cursor-pointer"
-              @click="isPwd = !isPwd"
-            />
+            <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="isPwd = !isPwd"/>
           </template>
         </q-input>
-
           <div>
             <q-btn label="Submit Login" type="submit" color="light-blue-10"></q-btn>
           </div>
       </q-form>
-
-
     </q-card-section>
   </q-card>
 </q-dialog>
@@ -154,7 +141,7 @@
 {% block my_playlists_dialog %}
 <div class="q-pa-md q-gutter-sm">
   <div>
-    <q-btn label="My Playlists" color="light-blue-10" class="full-width" @click="my_playlists_dialog = true">
+    <q-btn label="My Playlists" color="light-blue-10" class="full-width" @click="my_playlists_dialog = true; retrievePlaylistCollection()">
       <q-tooltip transition-show="rotate" transition-hide="rotate">
          View Your Playlist Collection
        </q-tooltip>
@@ -258,21 +245,60 @@
         </q-tab-panel>
 
         <q-tab-panel name="Users">
+
           <div class="text-h6">Find Your Friends By Searching For Users</div>
           <q-card-section class="q-pt-none">
-            <q-input standout bottom-slots v-model="user_search_text" label="Search For SongSpace User" :dense="dense">
-              <template v-slot:before>
-                <div>
-                  <q-spinner-comment color="dark" size="2em"></q-spinner-comment>
-                </div>
-              </template>
-              <template v-if="user_search_text" v-slot:append>
-                <q-icon name="cancel" @click.stop="user_search_text = null" class="cursor-pointer"></q-icon>
-              </template>
-              <template v-slot:hint>
-                To Search For Playlists Or Songs, Change Tab!
-              </template>
-            </q-input>
+            <q-form @submit="userSearch">
+              <q-input standout bottom-slots v-model="user_search_text" label="Search For SongSpace User" :dense="dense">
+                <template v-slot:before>
+                  <div>
+                    <q-spinner-comment color="dark" size="2em"></q-spinner-comment>
+                  </div>
+                </template>
+                <template v-if="user_search_text" v-slot:append>
+                  <q-icon name="cancel" @click.stop="user_search_text = null" class="cursor-pointer"></q-icon>
+                </template>
+                <template v-slot:hint>
+                  To Search For Playlists Or Songs, Change Tab!
+                </template>
+              </q-input>
+            </q-form>
+
+            <div class="q-pa-md">
+              <q-list v-show="searchMade" bordered separator style="max-width: 50%">
+                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(0); profile_dialog = true;">
+                  <q-item-section>Username: [% searchUsers[0].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[0].first_name %]‏‏‎ ‎ [% searchUsers[0].last_name %]</q-item-section>
+                </q-item>
+                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(1); profile_dialog = true;">
+                  <q-item-section>Username: [% searchUsers[1].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[1].first_name %]‏‏‎ ‎ [% searchUsers[1].last_name %]</q-item-section>
+                </q-item>
+                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(2); profile_dialog = true;">
+                  <q-item-section>Username: [% searchUsers[2].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[2].first_name %]‏‏‎ ‎ [% searchUsers[2].last_name %]</q-item-section>
+                </q-item>
+                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(3); profile_dialog = true;">
+                  <q-item-section>Username: [% searchUsers[3].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[3].first_name %]‏‏‎ ‎ [% searchUsers[3].last_name %]</q-item-section>
+                </q-item>
+                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(4); profile_dialog = true;">
+                  <q-item-section>Username: [% searchUsers[4].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[4].first_name %]‏‏‎ ‎ [% searchUsers[4].last_name %]</q-item-section>
+                </q-item>
+                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(5); profile_dialog = true;">
+                  <q-item-section>Username: [% searchUsers[5].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[5].first_name %]‏‏‎ ‎ [% searchUsers[5].last_name %]</q-item-section>
+                </q-item>
+                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(6); profile_dialog = true;">
+                  <q-item-section>Username: [% searchUsers[6].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[6].first_name %]‏‏‎ ‎ [% searchUsers[6].last_name %]</q-item-section>
+                </q-item>
+                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(7); profile_dialog = true;">
+                  <q-item-section>Username: [% searchUsers[7].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[7].first_name %]‏‏‎ ‎ [% searchUsers[7].last_name %]</q-item-section>
+                </q-item>
+                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(8); profile_dialog = true;">
+                  <q-item-section>Username: [% searchUsers[8].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[8].first_name %]‏‏‎ ‎ [% searchUsers[8].last_name %]</q-item-section>
+                </q-item>
+                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(9); profile_dialog = true;">
+                  <q-item-section>Username: [% searchUsers[9].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[9].first_name %]‏‏‎ ‎ [% searchUsers[9].last_name %]</q-item-section>
+                </q-item>
+              </q-list>
+            </div>
+
           </q-card-section>
         </q-tab-panel>
        </q-tab-panels>
@@ -281,12 +307,34 @@
 </div>
 {% endblock %}
 
+{% block profile %}
+<div>
+  <q-dialog v-model="profile_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
+    <q-card class="bg-blue-grey-2 text-black">
 
+      <q-bar class="bg-light-blue-10">
+        <q-space></q-space>
+        <q-btn dense flat icon="close" v-close-popup>
+          <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
+        </q-btn>
+      </q-bar>
+
+      <q-card-section class="text-h20 text-center">
+        Username: [% searchUsers[this.current_profile].username %]<br>
+        ‎Name: [% searchUsers[current_profile].first_name %]‏‏‎ ‎ [% searchUsers[current_profile].last_name %]
+      </q-card-section>
+
+
+
+    </q-card>
+  </q-dialog>
+</div>
+{% endblock %}
 
 {% block settings %}
 <div class="q-pa-md q-gutter-sm">
   <div>
-    <q-btn label="Account" color="light-blue-10" class="full-width" @click="testFunc">
+    <q-btn label="Account" color="light-blue-10" class="full-width" @click="retrieveAccount">
       <q-tooltip transition-show="rotate" transition-hide="rotate">
          Manage your Account
        </q-tooltip>
@@ -312,29 +360,29 @@
             <div class="col q-pa-sm">
               <div class="row">
                 <div class="col q-px-sm">
-                  <q-input bg-color="blue-grey-4" color="light-blue-10" filled v-model="username_f" label="Username" lazy-rules :rules="[ val => val && val.length > 0 || 'Please enter a valid username.']" :disable="!profile_edit"></q-input>
+                  <q-input bg-color="blue-grey-4" color="light-blue-10" filled v-model="username_f" label="Username" lazy-rules :rules="[ val => val && val.length > 0 || 'Please enter a valid username.']" :readonly="!profile_edit"></q-input>
                 </div>
                 <div class="col q-px-sm">
-                  <q-input bg-color="blue-grey-4" color="light-blue-10" filled v-model="mail_f" label="Email" :disable="!profile_edit"></q-input>
+                  <q-input bg-color="blue-grey-4" color="light-blue-10" filled v-model="mail_f" label="Email" :readonly="!profile_edit"></q-input>
                 </div>
                 <div class="col q-px-sm">
-                  <q-input bg-color="blue-grey-4" color="light-blue-10" filled v-model="loc" label="Location (Country)" :disable="!profile_edit"></q-input>
+                  <q-input bg-color="blue-grey-4" color="light-blue-10" filled v-model="loc" label="Location (Country)" :readonly="!profile_edit"></q-input>
                 </div>
               </div>
 
 
               <div class="row">
                 <div class="col q-px-sm">
-                  <q-input bg-color="blue-grey-4" color="light-blue-10" filled v-model="first_name" label="First Name" :disable="!profile_edit"></q-input>
+                  <q-input bg-color="blue-grey-4" color="light-blue-10" filled v-model="first_name" label="First Name" :readonly="!profile_edit"></q-input>
                 </div>
                 <div class="col q-px-sm">
-                  <q-input bg-color="blue-grey-4" color="light-blue-10" filled v-model="last_name" label="Last Name" :disable="!profile_edit"></q-input>
+                  <q-input bg-color="blue-grey-4" color="light-blue-10" filled v-model="last_name" label="Last Name" :readonly="!profile_edit"></q-input>
                 </div>
                 <div class="col q-pa-sm">
                   <q-toggle v-model="profile_edit" color="light-blue-10" label="Toggle Edit"></q-toggle>
                 </div>
                 <div class="col q-pa-sm">
-                  <q-btn label="Change Password" class="full-width" type="submit" color="light-blue-10" padding="md xl" @click="new_password_dialog = true"></q-btn>
+                  <q-btn label="Change Password" class="full-width" color="light-blue-10" padding="md xl" @click="new_password_dialog = true"></q-btn>
                 </div>
                 <div class="col q-pa-sm">
                   <q-btn label="Submit Changes" class="full-width" type="submit" color="light-blue-10" padding="md xl" :disable="!profile_edit"></q-btn>
@@ -349,7 +397,7 @@
                   Date Joined:  [% date_joined %]
                 </div>
                 <div class="col q-px-sm">
-                  Last Visited:  [% last_visited %]
+                  Last Visited:  [% last_login %]
                 </div>
                 <div class="col q-px-sm"></div>
                 <div class="col q-px-sm"></div>
