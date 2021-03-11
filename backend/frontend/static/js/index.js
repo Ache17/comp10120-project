@@ -58,7 +58,17 @@ var app = new Vue({
         username_current: "",
         password_old: "",
         password_new: "",
-        searchUser1: "1111"
+        searchUsers: [{"username":"","first_name":"","last_name":""},
+                      {"username":"","first_name":"","last_name":""},
+                      {"username":"","first_name":"","last_name":""},
+                      {"username":"","first_name":"","last_name":""},
+                      {"username":"","first_name":"","last_name":""},
+                      {"username":"","first_name":"","last_name":""},
+                      {"username":"","first_name":"","last_name":""},
+                      {"username":"","first_name":"","last_name":""},
+                      {"username":"","first_name":"","last_name":""},
+                      {"username":"","first_name":"","last_name":""}],
+          searchMade: false
     },
     delimiters: ['[%', '%]'],
     methods: {
@@ -241,18 +251,26 @@ var app = new Vue({
           };
           //THIS NEEDS TO VALIDATE THE CURRENT DETAILS THEN CHANGE THE PASSWORD FOR THE ACCOUNT
         },
-        searchUsers(){
-          var data = {};
+        // retrieves ten user accounts' details upon the user entering their search
+        userSearch(){
+          var data = this.user_search_text;
           this.make_authenticated_request(data, "GET", "/api/searchUsers", this.searchUsersSuccess, this.searchUsersFailure);
         },
+        // Adds all the retrieved data in the users array
         searchUsersSuccess(req){
-          console.log(req);
+          data = JSON.parse(req.response);
+          var i;
+          for (i = 0; i < data.length; i++){
+            this.searchUsers[i] = data[i];
+          }
+          this.searchMade = true;
         },
         searchUsersFailure(req){
           this.failureNotification("Search Failed.");
         },
-        selectUser(){
-          console.log("TEST");
+        selectUser(num){
+          console.log(num);
+          // THIS WILL BE ADDED TO
         }
     }
   });

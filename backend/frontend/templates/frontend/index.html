@@ -261,7 +261,7 @@
 
           <div class="text-h6">Find Your Friends By Searching For Users</div>
           <q-card-section class="q-pt-none">
-            <q-form @submit="searchUsers">
+            <q-form @submit="userSearch">
               <q-input standout bottom-slots v-model="user_search_text" label="Search For SongSpace User" :dense="dense">
                 <template v-slot:before>
                   <div>
@@ -276,11 +276,44 @@
                 </template>
               </q-input>
             </q-form>
+
+            <div class="q-pa-md">
+              <q-list v-show="searchMade" bordered separator style="max-width: 50%">
+                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(0)">
+                  <q-item-section>Username: [% searchUsers[0].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[0].first_name %]‏‏‎ ‎ [% searchUsers[0].last_name %]</q-item-section>
+                </q-item>
+                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(1)">
+                  <q-item-section>Username: [% searchUsers[1].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[1].first_name %]‏‏‎ ‎ [% searchUsers[1].last_name %]</q-item-section>
+                </q-item>
+                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(2)">
+                  <q-item-section>Username: [% searchUsers[2].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[2].first_name %]‏‏‎ ‎ [% searchUsers[2].last_name %]</q-item-section>
+                </q-item>
+                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(3)">
+                  <q-item-section>Username: [% searchUsers[3].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[3].first_name %]‏‏‎ ‎ [% searchUsers[3].last_name %]</q-item-section>
+                </q-item>
+                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(4)">
+                  <q-item-section>Username: [% searchUsers[4].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[4].first_name %]‏‏‎ ‎ [% searchUsers[4].last_name %]</q-item-section>
+                </q-item>
+                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(5)">
+                  <q-item-section>Username: [% searchUsers[5].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[5].first_name %]‏‏‎ ‎ [% searchUsers[5].last_name %]</q-item-section>
+                </q-item>
+                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(6)">
+                  <q-item-section>Username: [% searchUsers[6].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[6].first_name %]‏‏‎ ‎ [% searchUsers[6].last_name %]</q-item-section>
+                </q-item>
+                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(7)">
+                  <q-item-section>Username: [% searchUsers[7].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[7].first_name %]‏‏‎ ‎ [% searchUsers[7].last_name %]</q-item-section>
+                </q-item>
+                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(8)">
+                  <q-item-section>Username: [% searchUsers[8].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[8].first_name %]‏‏‎ ‎ [% searchUsers[8].last_name %]</q-item-section>
+                </q-item>
+                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(9)">
+                  <q-item-section>Username: [% searchUsers[9].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[9].first_name %]‏‏‎ ‎ [% searchUsers[9].last_name %]</q-item-section>
+                </q-item>
+              </q-list>
+            </div>
+
           </q-card-section>
         </q-tab-panel>
-        <div class="col q-pa-sm">
-          <q-btn label="Submit Changes" class="full-width" type="submit" @click="selectUser" color="light-blue-10" padding="md xl" :disable="!profile_edit"></q-btn>
-        </div>
        </q-tab-panels>
      </q-card>
   </q-dialog>
