@@ -58,6 +58,7 @@ var app = new Vue({
         username_current: "",
         password_old: "",
         password_new: "",
+
         searchUsers: [{"username":"","first_name":"","last_name":""},
                       {"username":"","first_name":"","last_name":""},
                       {"username":"","first_name":"","last_name":""},
@@ -68,7 +69,9 @@ var app = new Vue({
                       {"username":"","first_name":"","last_name":""},
                       {"username":"","first_name":"","last_name":""},
                       {"username":"","first_name":"","last_name":""}],
-          searchMade: false
+          searchMade: false,
+          profile_dialog: false,
+          current_profile: 0
     },
     delimiters: ['[%', '%]'],
     methods: {
@@ -249,7 +252,8 @@ var app = new Vue({
           	OldPassword: this.password_old,
             NewPassword: this.password_new
           };
-          //THIS NEEDS TO VALIDATE THE CURRENT DETAILS THEN CHANGE THE PASSWORD FOR THE ACCOUNT
+          this.make_authenticated_request(data, "PUT", "/api/userInfo", this.submitAccountSuccess, this.submitAccountFailure);
+
         },
         // retrieves ten user accounts' details upon the user entering their search
         userSearch(){
@@ -269,11 +273,37 @@ var app = new Vue({
           this.failureNotification("Search Failed.");
         },
         selectUser(num){
+          this.current_profile = num;
           console.log(num);
-          // THIS WILL BE ADDED TO
+        },
+         //  ___   _                 _   _        _        ___         _   _              _     _                  ___   _             __    __
+         // | _ \ | |  __ _   _  _  | | (_)  ___ | |_     / __|  ___  | | | |  ___   __  | |_  (_)  ___   _ _     / __| | |_   _  _   / _|  / _|
+         // |  _/ | | / _` | | || | | | | | (_-< |  _|   | (__  / _ \ | | | | / -_) / _| |  _| | | / _ \ | ' \    \__ \ |  _| | || | |  _| |  _|
+         // |_|   |_| \__,_|  \_, | |_| |_| /__/  \__|    \___| \___/ |_| |_| \___| \__|  \__| |_| \___/ |_||_|   |___/  \__|  \_,_| |_|   |_|
+         //                   |__/
+        retrievePlaylistCollection(){
+          var data = {};
+          this.make_authenticated_request(data, "GET", "/api/userPlaylists", this.retrievePlaylistColectionSuccess, this.retrievePlaylistColectionFailure);
+        },
+        retrievePlaylistColectionSuccess(req){
+          console.log(req);
+        },
+        retrievePlaylistColectionFailure(req){
+          console.log(req);
         }
     }
   });
+
+ //  ______ ______ ______ ______ ______ ______ ______ ______ ______ ______ ______ ______ ______ ______ ______
+ // |______|______|______|______|______|______|______|______|______|______|______|______|______|______|______|
+ // |  __ \| |           | (_)   | |   |__   __|           | |    | |  | |               | | (_)
+ // | |__) | | __ _ _   _| |_ ___| |_     | |_ __ __ _  ___| | __ | |__| | __ _ _ __   __| | |_ _ __   __ _
+ // |  ___/| |/ _` | | | | | / __| __|    | | '__/ _` |/ __| |/ / |  __  |/ _` | '_ \ / _` | | | '_ \ / _` |
+ // | |    | | (_| | |_| | | \__ \ |_     | | | | (_| | (__|   <  | |  | | (_| | | | | (_| | | | | | | (_| |
+ // |_|    |_|\__,_|\__, |_|_|___/\__|    |_|_|  \__,_|\___|_|\_\ |_|  |_|\__,_|_| |_|\__,_|_|_|_| |_|\__, |
+ //                  __/ |                                                                             __/ |
+ //  ______ ______ _|___/ ______ ______ ______ ______ ______ ______ ______ ______ ______ ______ ______|___/__
+ // |______|______|______|______|______|______|______|______|______|______|______|______|______|______|______|
 
 // Function is called whenever the user changes the counter for the number of tracks to be in the playlist, and essentially generates the suitable number of inputs that is required.
 function TrackNumberChange()

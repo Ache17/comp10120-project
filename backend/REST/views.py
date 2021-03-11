@@ -131,7 +131,7 @@ class playlistsView(APIView):
             songs_serialized = []
             songs = Item.objects.filter(whichPlaylist=p)
             for song in songs:
-                songs_serialized.append({"name" : song.name, "author" : song.author, "description" : song.description})
+                songs_serialized.append({"name" : song.name, "author" : song.author})
             response.append({"name" : p.name, "genre" : p.genre, "description" : p.description,
                              "rating" : p.rating, "songs" : songs_serialized})
         return Response(response)
