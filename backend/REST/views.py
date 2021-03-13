@@ -215,7 +215,7 @@ class sharing(APIView):
     def get(self, request):
         playlistID = request.data["playlist_id"]
 
-        Object = Playlist.objects.get(id == {playlistID})
+        Object = Playlist.objects.get(link=playlistID)
 
         name = Object.name
 
