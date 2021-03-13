@@ -40,7 +40,7 @@ var app = new Vue({
         last_name: "",
         last_login: "",
         date_joined: "",
-        landing_dialog: true,
+        landing_dialog: false,               // REMEMBER TO CHANGE THIS BACK
         fab1: false,
         hideLabels: false,
         num_of_playlists: 0,
