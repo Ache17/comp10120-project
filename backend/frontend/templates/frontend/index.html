@@ -148,7 +148,7 @@
     </q-btn>
   </div>
   <q-dialog v-model="my_playlists_dialog" :maximized="true" transition-show="slide-up" transition-hide="slide-down">
-    <q-card class="bg-blue-grey-2 text-black">
+    <q-card class="bg-grey-9 text-black">
 
       <q-bar class="bg-light-blue-9">
         <q-space></q-space>
@@ -158,14 +158,14 @@
       </q-bar>
 
       <q-card-section>
-        <h2 style="text-align:center">Your Playlists</h2>
+        <div class="text-white text-center text-bold text-h3"><br>Your Playlists<br></div>
       </q-card-section>
 
       <q-card-section class="q-pt-none">
         <div class="q-pa-md">
           <div class="row q-col-gutter-x-xs q-col-gutter-y-lg">
             <div class="col-4" v-for="n in 18" :key="`none-${n}`">
-              <div class="bg-yellow-2 my-content" style="height:400px">&nbsp;</div>
+              <div class="bg-grey-8 my-content" style="height:400px">&nbsp;</div>
             </div>
           </div>
         </div>
