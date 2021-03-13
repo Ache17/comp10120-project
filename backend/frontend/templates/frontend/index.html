@@ -420,26 +420,35 @@
             <div>Following</div>
           </div>
         </div>
-        <div class="row">
-          <div class="col q-pa-sm">
+
+        <div class="q-pa-md q-gutter-md">
+        <div class="row justify-between">
+        <q-parallax :height="1300" src="static/images/accountBackground.jpg" alt="Background" label="AccountBackground">  <!-- Not Full Working Yet -->
+          <div class="row">
+
             <div class="q-ma-md">
-              <q-scroll-area :bar-style="barStyle" class="bg-grey-8" style="height: 200px; max-width: 500px;">
-                <div v-for="n in 100" :key="n" class="q-pa-xs text-white">
+              <q-scroll-area :bar-style="barStyle" class="bg-grey-2" visible style="height: 200px; max-width: 500px;">
+                <div v-for="n in 100" :key="n" class="q-pa-xs">
                   Words
                 </div>
               </q-scroll-area>
             </div>
-          </div>
-          <div class="col q-pa-sm">
+
+
             <div class="q-ma-md">
-              <q-scroll-area :bar-style="barStyle" class="bg-grey-8" style="height: 200px; max-width: 500px;">
-                <div v-for="n in 100" :key="n" class="q-pa-xs text-white">
+              <q-scroll-area :bar-style="barStyle" class="bg-grey-2" visible style="height: 200px; max-width: 500px;">
+                <div v-for="n in 100" :key="n" class="q-pa-xs">
                   Words
                 </div>
               </q-scroll-area>
+
             </div>
-          </div>
-        </div>
+            </div>
+      </q-parallax>
+      </div>
+      </div>
+
+
       </q-card-section>
     </q-card>
   </q-dialog>
