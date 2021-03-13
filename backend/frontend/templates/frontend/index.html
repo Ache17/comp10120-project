@@ -85,7 +85,7 @@
     </q-btn>
   </div>
   <q-dialog v-model="create_playlist_dialog" :maximized="true" transition-show="slide-up" transition-hide="slide-down">
-    <q-card class="bg-blue-grey-2 text-black">
+    <q-card class="bg-grey-9 text-black">
 
       <q-bar class="bg-light-blue-9">
         <q-space></q-space>
@@ -95,35 +95,35 @@
       </q-bar>
 
       <q-card-section>
-        <div class="text-h6">Create a New Playlist</div>
+        <div class="text-h3 text-white text-center text-bold"><br>Create a New Playlist<br></div>
       </q-card-section>
 
       <q-card-section class="q-pt-none">
         <q-form @submit="submitPlaylist" class="q-gutter-md">
           <div class="row">
-            <q-uploader color="light-blue-10" url="" max-files="1" accept=".jpg, image/*"></q-uploader>
+            <q-uploader color="light-blue-9" url="" max-files="1" accept=".jpg, image/*"></q-uploader>
 
             <div class="col q-pa-sm">
               <div class="row">
                 <div class="col q-px-sm">
-                  <q-input color="light-blue-9" filled v-model="playlist_title" label="Playlist Title" lazy-rules :rules="[ val => val && val.length > 0 || 'Please enter playlist title.']"></q-input>
+                  <q-input color="light-blue-6" bg-color="grey-6" filled v-model="playlist_title" label="Playlist Title" lazy-rules :rules="[ val => val && val.length > 0 || 'Please enter playlist title.']"></q-input>
                 </div>
                 <div class="col q-px-sm">
-                  <q-input color="light-blue-9" filled v-model="playlist_genre" label="Playlist Genre"></q-input>
+                  <q-input color="light-blue-6" bg-color="grey-6" filled v-model="playlist_genre" label="Playlist Genre"></q-input>
                 </div>
               </div>
               <div class="row">
                 <div class="col q-pa-s">
-                  <q-input color="light-blue-9" v-model.number="number_of_tracks" type="number" min="1" max="50" placeholder="1" filled style="max-width: 200px" id="number_of_tracks" onchange="TrackNumberChange();"></q-input>
+                  <q-input color="light-blue-6" bg-color="grey-6" v-model.number="number_of_tracks" type="number" min="1" max="50" placeholder="1" filled style="max-width: 200px" id="number_of_tracks" onchange="TrackNumberChange();"></q-input>
                 </div>
                 <div class="col q-pa-sm">
                   <q-checkbox v-model="public" label="Public" />
                 </div>
                 <div class="col q-pa-sm">
-                  <q-btn label="Create Playlist" type="submit" color="light-blue-10" padding="md xl"></q-btn>
+                  <q-btn label="Create Playlist" type="submit" color="light-blue-9" padding="md xl"></q-btn>
                 </div>
               </div>
-              <q-input color="light-blue-10" filled v-model="playlist_description" label="Playlist Description (optional)" type="textarea" maxlength="200" autogrow></q-input>
+              <q-input color="light-blue-6" bg-color="grey-6" filled v-model="playlist_description" label="Playlist Description (optional)" type="textarea" maxlength="200" autogrow></q-input>
             </div>
           </div>
         </q-form>
