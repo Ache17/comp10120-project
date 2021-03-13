@@ -212,9 +212,10 @@ class registerView(APIView):
 class sharing(APIView):
     permission_classes = (IsAuthenticated,)
 
-    def share(self, request):
-        currenturl = request.get.allpath
-        Object = Playlist.objects.filter(link_iexact == currenturl);
+    def get(self, request):
+        playlistID = request.data["playlist_id"]
+
+        Object = Playlist.objects.get(id == {playlistID})
 
         name = Object.name
 
