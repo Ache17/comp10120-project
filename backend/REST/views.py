@@ -36,7 +36,7 @@ class authenticatedTest(APIView):
 
     def post(self, request):
         return Response("post success !")
-
+        
 
 class userInfoView(APIView):
     permission_classes = (IsAuthenticated,)
@@ -121,7 +121,6 @@ class searchPlaylistView(APIView):
             ret.append({"creator_username": user.username, "name": playlist.name, "genre": playlist.genre,
                         "description": playlist.description})
         return Response(ret, status=status.HTTP_200_OK)
-
 
 class searchUsersView(APIView):
     permission_classes = (IsAuthenticated,)
@@ -230,25 +229,85 @@ class playlistsView(APIView):
         #        print(serializer.errors)
         return Response({"message": "playlist submission not sucessfull"}, status=status.HTTP_400_BAD_REQUEST)
 
+
 class songView(APIView):
     permission_classes = (IsAuthenticated,)
-    
+
     def get(self, request):
 
         try:
-            song_id = request.data["song_id"]
+            song_id = request.data['song_id']
         except KeyError:
-            return Response({"message" : "song id not specified"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message" : "song_id not provided"}, status=status.HTTP_400_BAD_REQUEST)
 
-        user = request.user 
-        profile = UserProfile.objects.get(user=user)
-
-        try:
+        try: 
             song = Item.objects.get(id=song_id)
         except Item.DoesNotExist:
-            return Response({"message" : "not valid song id"} ,status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message" : "song does not exists or is not public"}, status=status.HTTP_400_BAD_REQUEST)
 
-        playlist = song.whichPlaylist()
+        playlist = song.whichPlaylist
+        if playlist.isPublic:
+            return Response({"name" : song.name , "author" : song.author}, status=status.HTTP_200_OK)
+
+        user = request.user
+        profile = UserProfile.objects.get(user=user)
+        if playlist.creator == profile:
+            return Response({"name" : song.name , "author" : song.author}, status=status.HTTP_200_OK)
+
+        return Response({"message" : "song does not exists or is not public"}, status=status.HTTP_400_BAD_REQUEST)            
+
+    def delete(self, request):
+        try:
+            song_id = request.data['song_id']
+        except KeyError:
+            return Response({"message" : "song_id not provided"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try: 
+            song = Item.objects.get(id=song_id)
+        except Item.DoesNotExist:
+            return Response({"message" : "song does not exists or is not yours"}, status=status.HTTP_400_BAD_REQUEST)
+
+        playlist = song.whichPlaylist
+        user = request.user
+        profile = UserProfile.objects.get(user=user)
+
+        if playlist.creator == profile:
+            song.delete()
+            return Response({"message" : "song deleted"}, status=status.HTTP_200_OK)
+        return Response({"message": "song does not exists or is not yours"} ,status=status.HTTP_400_BAD_REQUEST)
+    
+    def put(self, request):
+        try:
+            song_id = request.data['song_id']
+        except KeyError:
+            return Response({"message" : "song_id not provided"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try: 
+            song = Item.objects.get(id=song_id)
+        except Item.DoesNotExist:
+            return Response({"message" : "song does not exists or is not yours"}, status=status.HTTP_400_BAD_REQUEST)
+
+        playlist = song.whichPlaylist
+        user = request.user
+        profile = UserProfile.objects.get(user=user)
+
+        if playlist.creator == profile:
+            
+            try:
+                name = request.data["name"]
+            except KeyError:
+                name = song.name
+            try:
+                author = request.data["author"]
+            except KeyError:
+                author = song.author 
+            
+            song.name = name
+            song.author = author
+            song.save()
+
+            return Response({"message" : "song updated"}, status=status.HTTP_200_OK)
+        return Response({"message": "song does not exists or is not yours"} ,status=status.HTTP_400_BAD_REQUEST)
 
 
 class registerView(APIView):

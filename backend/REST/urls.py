@@ -11,4 +11,5 @@ urlpatterns = [path("test", views.testView.as_view()),
                path("userPlaylists", views.playlistsView.as_view()),
                path("searchPlaylist", views.searchPlaylistView.as_view()),
                path("searchUsers", views.searchUsersView.as_view()),
-               path("share", views.sharing.as_view(), name='share')]
+               path("share", views.sharing.as_view(), name='share'),
+               path("song", views.songView.as_view(), name="songs")]
