@@ -74,7 +74,16 @@ var app = new Vue({
           current_profile: 0
     },
     delimiters: ['[%', '%]'],
-    methods: {
+    methods: 
+    {
+        getHeaders()
+        {
+          return [{name: 'Authorization', value: "Token " + this.token }];
+        },
+        getUrl(files)
+        {
+            return document.location.origin + "/api/upload";
+        },
         sucessNotification(msg)
         {
             app.$q.notify({type : "positive", message : msg});
