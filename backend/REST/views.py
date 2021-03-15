@@ -1,32 +1,30 @@
 import re
 from django.shortcuts import render
-from rest_framework import response
-from rest_framework.settings import APISettings, import_from_string
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import serializers, status
-from rest_framework import authentication, permissions
-from django.contrib.auth.hashers import make_password
+from rest_framework import response, serializers, status, authentication, permissions
+from django.contrib.auth.hashers import is_password_usable, make_password
 from django.contrib.auth.models import User
 from .serializers import UserSerializer, playlistSerializer, ItemSerializer
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import UserProfile, Playlist, Item
 from django.core.paginator import Paginator, EmptyPage
-from django.shortcuts import get_object_or_404, render
-from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import render
 
 from string import ascii_letters, digits
 from random import choice
 import os
+
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
+# sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id="5ef4bb85e1a9499593ac6a9477993c08",  client_secret="{Here goes the id}"))
 
 sigma = "".join([ascii_letters, digits])
 PER_PAGE = 10
 
 def getRand(n=16):
     return "".join([choice(sigma) for _ in range(n)])
-
-
 
 # Create your views here.
 class testView(APIView):
@@ -113,7 +111,10 @@ class searchPlaylistView(APIView):
         if "page" in request.data:
             page = int(request.data["page"])
 
-        entries = Playlist.objects.filter(isPublic=True)
+        if "filter" in request.data:
+            entries = Playlist.objects.filter(name=request.data["filter"], isPublic=True)
+        else:
+            entries = Playlist.objects.filter(isPublic=True)
         paginator = Paginator(entries, PER_PAGE)
         try:
             playlists = paginator.page(page)
@@ -137,7 +138,10 @@ class searchUsersView(APIView):
         if "page" in request.data:
             page = int(request.data["page"])
 
-        entries = User.objects.filter()
+        if "filter" in request.data:
+            entries = User.objects.filter(username=request.data["filter"])
+        else:
+            entries = User.objects.filter()
 
         paginator = Paginator(entries, PER_PAGE)
         try:
@@ -392,3 +396,18 @@ class imageUpload(APIView):
         
 
         return Response({"message" : "image has been saved"}, status=status.HTTP_200_OK)
+
+class spotifyQuery(APIView):
+    permission_classes = (IsAuthenticated,)
+    def get(self, request):
+        if "q" in request.data:
+            try:
+                results = sp.search(q=request.data["q"], type="track", limit=10)
+            except Exception:
+                return Response({"message" : "spotify service offline"}, status=status.HTTP_400_BAD_REQUEST)
+            res = []
+            for idx, track in enumerate(results['tracks']['items']):
+                res.append({"id" : idx, "name" : track["name"], "artists" : track["artists"], "spotify_id" : track["id"]})
+            return Response(res, status=status.HTTP_200_OK)
+        else:
+            return Response({"message" : "no query provided !"} , status=status.HTTP_400_BAD_REQUEST)
