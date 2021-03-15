@@ -157,7 +157,7 @@ class playlistsView(APIView):
         for p in playlists:
             songs_serialized = []
             songs = Item.objects.filter(whichPlaylist=p)
-            print(p.id)
+
             for song in songs:
                 songs_serialized.append({"id" : song.id, "name": song.name, "author": song.author})
             response.append({"id" : p.id, "name": p.name, "genre": p.genre, "description": p.description,
@@ -185,8 +185,45 @@ class playlistsView(APIView):
         return Response({"message" : f"it's not yours playlist"}, status=status.HTTP_200_OK)
 
     def put(self, request):
+        try:
+            playlist_id = request.data['playlist_id']
+        except KeyError:
+            return Response({"message" : "playlist id not specified"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        user = request.user
+        profile = UserProfile.objects.get(user=user)
+        try:
+            playlist = Playlist.objects.get(id=playlist_id)
+        except Playlist.DoesNotExist:
+            return Response({"message" : "not valid playlist id"}, status=status.HTTP_400_BAD_REQUEST) 
 
-        return Response({"message" : "update sucessful"}, status=status.HTTP_200_OK)
+
+        if playlist.creator == profile:
+            
+            if "name" in request.data:
+                playlist.name = request.data['name']
+            
+            if "genre" in request.data:
+                playlist.genre = request.data["genre"]
+            
+            if "description" in request.data:
+                playlist.description = request.data["description"]
+            
+            if "rating" in request.data:
+                playlist.rating = request.data["rating"]
+
+            if "isPublic" in request.data:
+                playlist.isPublic = request.data["isPublic"]
+            
+            # adding new song
+            if "new_song_author" in request.data and "new_song_name" in request.data:
+                new_song = Item(whichPlaylist= playlist, name=request.data["new_song_name"],author=request.data["new_song_author"])
+                new_song.save()
+            playlist.save()
+
+            return Response({"message" : "playlist have been updated"}, status=status.HTTP_200_OK)
+
+        return Response({"message" : "playlist does not exists or is not yours"}, status=status.HTTP_200_OK)
 
     def post(self, request):
         # manually setting up the user id's
@@ -293,17 +330,12 @@ class songView(APIView):
 
         if playlist.creator == profile:
             
-            try:
-                name = request.data["name"]
-            except KeyError:
-                name = song.name
-            try:
-                author = request.data["author"]
-            except KeyError:
-                author = song.author 
+            if "name" in request.data:
+                song.name = request.data["name"]
             
-            song.name = name
-            song.author = author
+            if "author" in request.data:
+                song.author = request.data["author"]
+            
             song.save()
 
             return Response({"message" : "song updated"}, status=status.HTTP_200_OK)
