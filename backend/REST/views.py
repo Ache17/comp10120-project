@@ -1,7 +1,7 @@
 import re
 from django.shortcuts import render
 from rest_framework import response
-from rest_framework.settings import import_from_string
+from rest_framework.settings import APISettings, import_from_string
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import serializers, status
@@ -13,8 +13,8 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import UserProfile, Playlist, Item
 from django.core.paginator import Paginator, EmptyPage
-from math import ceil
 from django.shortcuts import get_object_or_404, render
+from django.core.exceptions import ObjectDoesNotExist
 
 PER_PAGE = 10
 
@@ -44,9 +44,22 @@ class userInfoView(APIView):
     def get(self, request):
         user = request.user
         profile = UserProfile.objects.get(user=user)
+        following = profile.follows.all()
+        following_ser = []
+        for f in following:
+            _user = f.user
+            following_ser.append({"id" : f.id, "username" : _user.username})
+
+        followers = profile.followed_by.all()
+        followers_ser = []
+        for f in followers:
+            _user = f.user
+            followers_ser.append({"id" : f.id, "username" : _user.username})
+
         return Response({"username": user.username, "first_name": user.first_name,
                          "last_name": user.last_name, "email": user.email,
-                         "last_login": user.last_login, "date_joined": user.date_joined, "location": profile.location})
+                         "last_login": user.last_login, "date_joined": user.date_joined, 
+                         "location": profile.location, "followers" : followers, "following" : following_ser})
 
     def put(self, request):
         user = request.user
@@ -145,11 +158,36 @@ class playlistsView(APIView):
         for p in playlists:
             songs_serialized = []
             songs = Item.objects.filter(whichPlaylist=p)
+            print(p.id)
             for song in songs:
-                songs_serialized.append({"name": song.name, "author": song.author})
-            response.append({"name": p.name, "genre": p.genre, "description": p.description,
+                songs_serialized.append({"id" : song.id, "name": song.name, "author": song.author})
+            response.append({"id" : p.id, "name": p.name, "genre": p.genre, "description": p.description,
                              "rating": p.rating, "songs": songs_serialized})
         return Response(response)
+
+    def delete(self, request):
+        try:
+            playlist_id = request.data['playlist_id']
+        except KeyError:
+            return Response({"message" : "playlist id not specified"}, status=status.HTTP_400_BAD_REQUEST)
+
+        user = request.user
+        profile = UserProfile.objects.get(user=user)
+
+        try:
+            playlist = Playlist.objects.get(id=playlist_id)
+        except Playlist.DoesNotExist:
+            return Response({"message" : "not valid playlist id"}, status=status.HTTP_400_BAD_REQUEST) 
+
+        if playlist.creator == profile:
+            playlist.delete()
+            return Response({"message" : "playlist have been deleted"}, status=status.HTTP_200_OK)
+        
+        return Response({"message" : f"it's not yours playlist"}, status=status.HTTP_200_OK)
+
+    def put(self, request):
+
+        return Response({"message" : "update sucessful"}, status=status.HTTP_200_OK)
 
     def post(self, request):
         # manually setting up the user id's
@@ -191,6 +229,26 @@ class playlistsView(APIView):
         # playlist serialization not valid !
         #        print(serializer.errors)
         return Response({"message": "playlist submission not sucessfull"}, status=status.HTTP_400_BAD_REQUEST)
+
+class songView(APIView):
+    permission_classes = (IsAuthenticated,)
+    
+    def get(self, request):
+
+        try:
+            song_id = request.data["song_id"]
+        except KeyError:
+            return Response({"message" : "song id not specified"}, status=status.HTTP_400_BAD_REQUEST)
+
+        user = request.user 
+        profile = UserProfile.objects.get(user=user)
+
+        try:
+            song = Item.objects.get(id=song_id)
+        except Item.DoesNotExist:
+            return Response({"message" : "not valid song id"} ,status=status.HTTP_400_BAD_REQUEST)
+
+        playlist = song.whichPlaylist()
 
 
 class registerView(APIView):
