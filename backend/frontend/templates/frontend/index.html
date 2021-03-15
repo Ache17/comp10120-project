@@ -101,7 +101,7 @@
       <q-card-section class="q-pt-none">
         <q-form @submit="submitPlaylist" class="q-gutter-md">
           <div class="row">
-            <q-uploader color="light-blue-10" url="" max-files="1" accept=".jpg, image/*"></q-uploader>
+            <q-uploader color="light-blue-10" :url="getUrl" :headers="getHeaders" max-files="1" accept=".jpg, image/*"></q-uploader>
 
             <div class="col q-pa-sm">
               <div class="row">

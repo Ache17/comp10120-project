@@ -16,7 +16,16 @@ from django.core.paginator import Paginator, EmptyPage
 from django.shortcuts import get_object_or_404, render
 from django.core.exceptions import ObjectDoesNotExist
 
+from string import ascii_letters, digits
+from random import choice
+import os
+
+sigma = "".join([ascii_letters, digits])
 PER_PAGE = 10
+
+def getRand(n=16):
+    return "".join([choice(sigma) for _ in range(n)])
+
 
 
 # Create your views here.
@@ -27,7 +36,6 @@ class testView(APIView):
     def post(self, request):
         return Response("post request")
 
-
 class authenticatedTest(APIView):
     permission_classes = (IsAuthenticated,)
 
@@ -37,7 +45,6 @@ class authenticatedTest(APIView):
     def post(self, request):
         return Response("post success !")
         
-
 class userInfoView(APIView):
     permission_classes = (IsAuthenticated,)
 
@@ -97,7 +104,6 @@ class userInfoView(APIView):
             return Response({"message": "Update sucessfull "}, status=status.HTTP_200_OK)
         return Response({"message": "Update not sucessfull"}, status=status.HTTP_400_BAD_REQUEST)
 
-
 class searchPlaylistView(APIView):
     permission_classes = (IsAuthenticated,)
 
@@ -144,7 +150,6 @@ class searchUsersView(APIView):
             ret.append({"username": user.username, "first_name": user.first_name, "last_name": user.last_name})
 
         return Response(ret, status=status.HTTP_200_OK)
-
 
 class playlistsView(APIView):
     permission_classes = (IsAuthenticated,)
@@ -266,7 +271,6 @@ class playlistsView(APIView):
         #        print(serializer.errors)
         return Response({"message": "playlist submission not sucessfull"}, status=status.HTTP_400_BAD_REQUEST)
 
-
 class songView(APIView):
     permission_classes = (IsAuthenticated,)
 
@@ -341,7 +345,6 @@ class songView(APIView):
             return Response({"message" : "song updated"}, status=status.HTTP_200_OK)
         return Response({"message": "song does not exists or is not yours"} ,status=status.HTTP_400_BAD_REQUEST)
 
-
 class registerView(APIView):
     permission_classes = [AllowAny]
 
@@ -356,7 +359,6 @@ class registerView(APIView):
 
             return Response({"message": "registation sucessfull"}, status=status.HTTP_201_CREATED)
         return Response({"message": "registration not sucessfull"}, status=status.HTTP_400_BAD_REQUEST)
-
 
 class sharing(APIView):
     permission_classes = (IsAuthenticated,)
@@ -373,3 +375,20 @@ class sharing(APIView):
 
         else:
             return Response({"message": "Sharing available!"}, status=status.HTTP_200_OK)
+
+class imageUpload(APIView):
+    permission_classes = (IsAuthenticated,)
+    
+    def post(self, request):
+
+        # necessary info from the frontend 
+        hash = getRand() + ".jpg"
+        for file_name in request.FILES: 
+            with open("frontend/static/media/" + hash, "wb+") as dst:
+                for chunk in request.FILES[file_name].chunks():
+                    dst.write(chunk)
+
+        # need associating hash with the playlist 
+        
+
+        return Response({"message" : "image has been saved"}, status=status.HTTP_200_OK)
