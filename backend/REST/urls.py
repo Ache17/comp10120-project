@@ -14,4 +14,5 @@ urlpatterns = [path("test", views.testView.as_view()),
                path("share", views.sharing.as_view(), name='share'),
                path("song", views.songView.as_view(), name="songs"),
                path("upload", views.imageUpload.as_view(), name="upload_image"),
-               path("spotifyIDs", views.spotifyQuery.as_view(), name="spotify")]
+               path("spotifyIDs", views.spotifyQuery.as_view(), name="spotify"),
+               path("othersPlaylists", views.othersPlaylists.as_view(), name="others_playlists")]
