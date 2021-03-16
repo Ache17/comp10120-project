@@ -11,9 +11,9 @@
 <body>
 
     <div id="app">
-      <q-layout view="hHh lpR fFf" class="bg-blue-grey-2 text-black">
-        <q-header elevated bordered class="bg-light-blue-10 text-white">
-          <q-toolbar class="bg-light-blue-10 text-white shadow-2 rounded-borders">
+      <q-layout view="hHh lpR fFf" class="bg-grey-9 text-white">
+        <q-header elevated bordered class="bg-light-blue-9 text-white">
+          <q-toolbar class="bg-light-blue-9 text-white shadow-2 rounded-borders">
             <q-btn flat round dense icon="menu" class="q-mr-sm" @click="left = !left"></q-btn>
 
             <q-toolbar-title>
@@ -62,12 +62,12 @@
         </q-toolbar>
 
 
-        <q-drawer show-if-above v-model="left" side="left" bordered content-class="bg-blue-grey-3">
+        <q-drawer show-if-above v-model="left" side="left" bordered content-class="bg-grey-10">
           <!-- drawer content -->
           <q-separator></q-separator>
           <div class="q-pa-md q-gutter-sm">
             <div>
-              <q-btn color="light-blue-10" label="Discover" class="full-width" onclick="location.href = '/'">
+              <q-btn color="light-blue-12" label="Discover" class="full-width" onclick="location.href = '/'">
                 <q-tooltip transition-show="rotate" transition-hide="rotate">
                    Discover Trending Playlists
                  </q-tooltip>
@@ -86,7 +86,7 @@
 
           {% block search_block %}
           {% endblock %}
-          
+
           {% block profile %}
           {% endblock %}
           <q-separator></q-separator>
@@ -102,7 +102,7 @@
         </q-drawer>
 
         <q-footer reveal>
-          <q-toolbar class="bg-light-blue-10">
+          <q-toolbar class="bg-light-blue-9">
            <q-separator vertical inset></q-separator>
            <q-btn stretch flat label="About Us" @click="about_us_dialog = true"></q-btn>
            {% block about_us %}
@@ -134,6 +134,7 @@
         </q-footer>
 
         <q-page-container>
+          <h2 style="text-align:center"><strong>Discover New Playlists</strong></h2>          <!--Could we add Username here as a greeting? -->
           <router-view>
             <q-page padding>
               {% block landing_dialog %}
@@ -144,7 +145,7 @@
           </router-view>
 
           <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[18, 18]">
-          <q-btn fab icon="keyboard_arrow_up" color="accent" />
+          <q-btn fab icon="keyboard_arrow_up" color="light-blue-6" />
           </q-page-scroller>
         </q-page>
 

@@ -3,10 +3,10 @@
 {% block login_dialog %}
 <q-dialog v-model="login_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
   <q-card>
-    <q-bar class="bg-light-blue-10">
+    <q-bar class="bg-light-blue-9">
       <q-space></q-space>
       <q-btn dense flat icon="close" v-close-popup>
-        <q-tooltip content-class="bg-light-blue-10 text-white">Close</q-tooltip>
+        <q-tooltip content-class="bg-light-blue-9 text-white">Close</q-tooltip>
       </q-btn>
     </q-bar>
     <q-card-section>
@@ -37,11 +37,11 @@
 <q-dialog v-model="register_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
   <q-card>
 
-    <q-bar class="bg-light-blue-10">
+    <q-bar class="bg-light-blue-9">
       <q-space></q-space>
 
       <q-btn dense flat icon="close" v-close-popup>
-        <q-tooltip content-class="bg-light-blue-10 text-white">Close</q-tooltip>
+        <q-tooltip content-class="bg-light-blue-9 text-white">Close</q-tooltip>
       </q-btn>
     </q-bar>
 
@@ -78,52 +78,56 @@
 {% block create_playlist_dialog %}
 <div class="q-pa-md q-gutter-sm">
   <div>
-    <q-btn label="Create Playlist" color="light-blue-10" class="full-width" @click="create_playlist_dialog = true">
+    <q-btn label="Create Playlist" color="light-blue-12" class="full-width" @click="create_playlist_dialog = true">
       <q-tooltip transition-show="rotate" transition-hide="rotate">
          Make Your Own Playlist
        </q-tooltip>
     </q-btn>
   </div>
   <q-dialog v-model="create_playlist_dialog" :maximized="true" transition-show="slide-up" transition-hide="slide-down">
-    <q-card class="bg-blue-grey-2 text-black">
+    <q-card class="bg-grey-9 text-black">
 
-      <q-bar class="bg-light-blue-10">
+      <q-bar class="bg-light-blue-9">
         <q-space></q-space>
         <q-btn dense flat icon="close" v-close-popup>
-          <q-tooltip content-class="bg-light-blue-10 text-white">Close</q-tooltip>
+          <q-tooltip content-class="bg-light-blue-9 text-white">Close</q-tooltip>
         </q-btn>
       </q-bar>
 
       <q-card-section>
-        <div class="text-h6">Create a New Playlist</div>
+        <div class="text-h3 text-white text-center text-bold"><br>Create a New Playlist<br></div>
       </q-card-section>
 
       <q-card-section class="q-pt-none">
         <q-form @submit="submitPlaylist" class="q-gutter-md">
           <div class="row">
+<<<<<<< HEAD
             <q-uploader color="light-blue-10" :url="getUrl" :headers="getHeaders" max-files="1" accept=".jpg, image/*"></q-uploader>
+=======
+           <q-uploader color="light-blue-9" :url="getUrl" :headers="getHeaders" max-files="1" accept=".jpg, image/*"></q-uploader>
+>>>>>>> Styling
 
             <div class="col q-pa-sm">
               <div class="row">
                 <div class="col q-px-sm">
-                  <q-input color="light-blue-10" filled v-model="playlist_title" label="Playlist Title" lazy-rules :rules="[ val => val && val.length > 0 || 'Please enter playlist title.']"></q-input>
+                  <q-input color="white" bg-color="grey-6" filled v-model="playlist_title" label="Playlist Title" lazy-rules :rules="[ val => val && val.length > 0 || 'Please enter playlist title.']"></q-input>
                 </div>
                 <div class="col q-px-sm">
-                  <q-input color="light-blue-10" filled v-model="playlist_genre" label="Playlist Genre"></q-input>
+                  <q-input color="white" bg-color="grey-6" filled v-model="playlist_genre" label="Playlist Genre"></q-input>
                 </div>
               </div>
               <div class="row">
                 <div class="col q-pa-s">
-                  <q-input color="light-blue-10" v-model.number="number_of_tracks" type="number" min="1" max="50" placeholder="1" filled style="max-width: 200px" id="number_of_tracks" onchange="TrackNumberChange();"></q-input>
+                  <q-input color="white" bg-color="grey-6" v-model.number="number_of_tracks" type="number" min="1" max="50" placeholder="1" filled style="max-width: 200px" id="number_of_tracks" onchange="TrackNumberChange();"></q-input>
                 </div>
                 <div class="col q-pa-sm">
                   <q-checkbox v-model="public" label="Public" />
                 </div>
                 <div class="col q-pa-sm">
-                  <q-btn label="Create Playlist" type="submit" color="light-blue-10" padding="md xl"></q-btn>
+                  <q-btn label="Create Playlist" type="submit" color="light-blue-9" padding="md xl"></q-btn>
                 </div>
               </div>
-              <q-input color="light-blue-10" filled v-model="playlist_description" label="Playlist Description (optional)" type="textarea" maxlength="200" autogrow></q-input>
+              <q-input color="white" bg-color="grey-6" filled v-model="playlist_description" label="Playlist Description (optional)" type="textarea" maxlength="200" autogrow></q-input>
             </div>
           </div>
         </q-form>
@@ -141,16 +145,16 @@
 {% block my_playlists_dialog %}
 <div class="q-pa-md q-gutter-sm">
   <div>
-    <q-btn label="My Playlists" color="light-blue-10" class="full-width" @click="my_playlists_dialog = true; retrievePlaylistCollection()">
+    <q-btn label="My Playlists" color="light-blue-12" class="full-width" @click="my_playlists_dialog = true; retrievePlaylistCollection()">
       <q-tooltip transition-show="rotate" transition-hide="rotate">
          View Your Playlist Collection
        </q-tooltip>
     </q-btn>
   </div>
   <q-dialog v-model="my_playlists_dialog" :maximized="true" transition-show="slide-up" transition-hide="slide-down">
-    <q-card class="bg-blue-grey-2 text-black">
+    <q-card class="bg-grey-9 text-black">
 
-      <q-bar class="bg-light-blue-10">
+      <q-bar class="bg-light-blue-9">
         <q-space></q-space>
         <q-btn dense flat icon="close" v-close-popup>
           <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
@@ -158,14 +162,14 @@
       </q-bar>
 
       <q-card-section>
-        <h2 style="text-align:center">Your Playlists</h2>
+        <div class="text-white text-center text-bold text-h3"><br>Your Playlists<br></div>
       </q-card-section>
 
       <q-card-section class="q-pt-none">
         <div class="q-pa-md">
           <div class="row q-col-gutter-x-xs q-col-gutter-y-lg">
             <div class="col-4" v-for="n in 18" :key="`none-${n}`">
-              <div class="bg-yellow-2 my-content" style="height:400px">&nbsp;</div>
+              <div class="bg-grey-8 my-content" style="height:400px">&nbsp;</div>
             </div>
           </div>
         </div>
@@ -181,23 +185,23 @@
 {% block search_block %}
 <div class="q-pa-md q-gutter-sm">
   <div>
-    <q-btn label="Search" color="light-blue-10" class="full-width" @click="search_dialog = true">
+    <q-btn label="Search" color="light-blue-12" class="full-width" @click="search_dialog = true">
       <q-tooltip transition-show="rotate" transition-hide="rotate">
          Find Playlists, Songs Or Users
        </q-tooltip>
     </q-btn>
   </div>
   <q-dialog v-model="search_dialog" :maximized="true" transition-show="slide-up" transition-hide="slide-down">
-    <q-card class="bg-blue-grey-2 text-black">
+    <q-card class="bg-grey-9 text-white">
 
-      <q-bar class="bg-light-blue-10">
+      <q-bar class="bg-light-blue-9">
         <q-space></q-space>
         <q-btn dense flat icon="close" v-close-popup>
           <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
         </q-btn>
       </q-bar>
 
-      <q-tabs v-model="tab" class="bg-light-blue-10 text-white" align="justify" narrow-indicator>
+      <q-tabs v-model="tab" class="bg-light-blue-9 text-white" align="justify" narrow-indicator>
         <q-tab name="Playlists" label="Playlists"></q-tab>
         <q-tab name="Songs" label="Songs"></q-tab>
         <q-tab name="Users" label="Users"></q-tab>
@@ -205,40 +209,44 @@
 
       <q-separator></q-separator>
 
-      <q-tab-panels v-model="tab" animated class="bg-blue-grey-2 text-center">
+      <q-tab-panels v-model="tab" animated class="bg-grey-9 text-white text-center">
         <q-tab-panel name="Playlists">
-          <div class="text-h6">Search For Created Playlists</div>
+          <div class="text-h3">Search For Created Playlists</div>
           <q-card-section class="q-pt-none">
-            <q-input standout bottom-slots v-model="playlist_search_text" label="Search For Playlist Name" :dense="dense">
+            <q-input standout bottom-slots v-model="playlist_search_text" label="Search For Playlist Name" bg-color="grey-7" color="cyan-11">
               <template v-slot:before>
                 <div>
-                  <q-spinner-gears color="dark" size="2em"></q-spinner-gears>
+                  <q-spinner-gears color="light-blue-12" size="2em"></q-spinner-gears>
                 </div>
               </template>
               <template v-if="playlist_search_text" v-slot:append>
                 <q-icon name="cancel" @click.stop="playlist_search_text = null" class="cursor-pointer"></q-icon>
               </template>
               <template v-slot:hint>
+                <div class="text-white">
                 To Search For Songs Or Users, Change Tab!
+                <div>
               </template>
             </q-input>
           </q-card-section>
         </q-tab-panel>
 
         <q-tab-panel name="Songs">
-          <div class="text-h6">Search For Your Favourite Songs</div>
+          <div class="text-h3">Search For Your Favourite Songs</div>
           <q-card-section class="q-pt-none">
-            <q-input standout bottom-slots v-model="song_search_text" label="Search For Song Name" :dense="dense">
+            <q-input standout bottom-slots v-model="song_search_text" label="Search For Song Name" bg-color="grey-7" color="cyan-11">
               <template v-slot:before>
                 <div>
-                  <q-spinner-audio color="dark" size="2em"></q-spinner-audio>
+                  <q-spinner-audio color="light-blue-12" size="2em"></q-spinner-audio>
                 </div>
               </template>
               <template v-if="song_search_text" v-slot:append>
                 <q-icon name="cancel" @click.stop="song_search_text = null" class="cursor-pointer"></q-icon>
               </template>
               <template v-slot:hint>
+                <div class="text-white">
                 To Search For Playlists Or Users, Change Tab!
+                </div>
               </template>
             </q-input>
           </q-card-section>
@@ -246,20 +254,22 @@
 
         <q-tab-panel name="Users">
 
-          <div class="text-h6">Find Your Friends By Searching For Users</div>
+          <div class="text-h3">Find Your Friends By Searching For Users</div>
           <q-card-section class="q-pt-none">
             <q-form @submit="userSearch">
-              <q-input standout bottom-slots v-model="user_search_text" label="Search For SongSpace User" :dense="dense">
+              <q-input standout bottom-slots v-model="user_search_text" label="Search For SongSpace User" bg-color="grey-7" color="cyan-11">
                 <template v-slot:before>
                   <div>
-                    <q-spinner-comment color="dark" size="2em"></q-spinner-comment>
+                    <q-spinner-comment color="light-blue-12" size="2em"></q-spinner-comment>
                   </div>
                 </template>
                 <template v-if="user_search_text" v-slot:append>
                   <q-icon name="cancel" @click.stop="user_search_text = null" class="cursor-pointer"></q-icon>
                 </template>
                 <template v-slot:hint>
+                  <div class="text-white">
                   To Search For Playlists Or Songs, Change Tab!
+                  </div>
                 </template>
               </q-input>
             </q-form>
@@ -312,7 +322,7 @@
   <q-dialog v-model="profile_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
     <q-card class="bg-blue-grey-2 text-black">
 
-      <q-bar class="bg-light-blue-10">
+      <q-bar class="bg-light-blue-9">
         <q-space></q-space>
         <q-btn dense flat icon="close" v-close-popup>
           <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
@@ -334,69 +344,69 @@
 {% block settings %}
 <div class="q-pa-md q-gutter-sm">
   <div>
-    <q-btn label="Account" color="light-blue-10" class="full-width" @click="retrieveAccount">
+    <q-btn label="Account" color="light-blue-12" class="full-width" @click="retrieveAccount">
       <q-tooltip transition-show="rotate" transition-hide="rotate">
          Manage your Account
        </q-tooltip>
     </q-btn>
   </div>
   <q-dialog v-model="account_dialog" :maximized="true" transition-show="slide-up" transition-hide="slide-down">
-    <q-card class="bg-blue-grey-2 text-black">
+    <q-card class="bg-grey-9 text-black">
 
-      <q-bar class="bg-light-blue-10">
+      <q-bar class="bg-light-blue-9">
         <q-space></q-space>
         <q-btn dense flat icon="close" v-close-popup>
           <q-tooltip content-class="bg-light-blue-10 text-white">Close</q-tooltip>
         </q-btn>
       </q-bar>
 
-      <q-card-section class="text-h3 text-center text-bold bg-blue-grey-4">
+      <q-card-section class="text-h3 text-center text-white text-bold bg-grey-10">
         <div>Your Account</div>
       </q-card-section>
 
-      <q-card-section class="q-pt-none bg-blue-grey-3">
+      <q-card-section class="q-pt-none bg-grey-9">
         <q-form @submit="submitAccountChanges" class="q-gutter-md">
           <div class="row">
             <div class="col q-pa-sm">
               <div class="row">
                 <div class="col q-px-sm">
-                  <q-input bg-color="blue-grey-4" color="light-blue-10" filled v-model="username_f" label="Username" lazy-rules :rules="[ val => val && val.length > 0 || 'Please enter a valid username.']" :readonly="!profile_edit"></q-input>
+                  <q-input bg-color="blue-grey-2" color="blue-9" filled v-model="username_f" label="Username" lazy-rules :rules="[ val => val && val.length > 0 || 'Please enter a valid username.']" :readonly="!profile_edit"></q-input>
                 </div>
                 <div class="col q-px-sm">
-                  <q-input bg-color="blue-grey-4" color="light-blue-10" filled v-model="mail_f" label="Email" :readonly="!profile_edit"></q-input>
+                  <q-input bg-color="blue-grey-2" color="blue-9" filled v-model="mail_f" label="Email" :readonly="!profile_edit"></q-input>
                 </div>
                 <div class="col q-px-sm">
-                  <q-input bg-color="blue-grey-4" color="light-blue-10" filled v-model="loc" label="Location (Country)" :readonly="!profile_edit"></q-input>
+                  <q-input bg-color="blue-grey-2" color="blue-9" filled v-model="loc" label="Location (Country)" :readonly="!profile_edit"></q-input>
                 </div>
               </div>
 
 
               <div class="row">
                 <div class="col q-px-sm">
-                  <q-input bg-color="blue-grey-4" color="light-blue-10" filled v-model="first_name" label="First Name" :readonly="!profile_edit"></q-input>
+                  <q-input bg-color="blue-grey-2" color="blue-9" filled v-model="first_name" label="First Name" :readonly="!profile_edit"></q-input>
                 </div>
                 <div class="col q-px-sm">
-                  <q-input bg-color="blue-grey-4" color="light-blue-10" filled v-model="last_name" label="Last Name" :readonly="!profile_edit"></q-input>
+                  <q-input bg-color="blue-grey-2" color="blue-9" filled v-model="last_name" label="Last Name" :readonly="!profile_edit"></q-input>
+                </div>
+                <div class="col q-pa-sm text-white">
+                  <q-toggle v-model="profile_edit" text-white color="light-blue-6" label="Toggle Edit"></q-toggle>
                 </div>
                 <div class="col q-pa-sm">
-                  <q-toggle v-model="profile_edit" color="light-blue-10" label="Toggle Edit"></q-toggle>
+                  <q-btn label="Change Password" class="full-width" color="light-blue-6" padding="md xl" @click="new_password_dialog = true"></q-btn>
                 </div>
                 <div class="col q-pa-sm">
-                  <q-btn label="Change Password" class="full-width" color="light-blue-10" padding="md xl" @click="new_password_dialog = true"></q-btn>
-                </div>
-                <div class="col q-pa-sm">
-                  <q-btn label="Submit Changes" class="full-width" type="submit" color="light-blue-10" padding="md xl" :disable="!profile_edit"></q-btn>
+                  <q-btn label="Submit Changes" class="full-width" type="submit" color="light-blue-6" padding="md xl" :disable="!profile_edit"></q-btn>
                 </div>
               </div>
 
               <div class="row">
-                <div class="col q-px-sm">
+                <div class="col q-px-sm text-white">
                   Number of Playlists: [% num_of_playlists %]
                 </div>
-                <div class="col q-px-sm">
+                <div class="col q-px-sm text-white">
                   Date Joined:  [% date_joined %]
                 </div>
-                <div class="col q-px-sm">
+                <div class="col q-px-sm text-white">
                   Last Visited:  [% last_login %]
                 </div>
                 <div class="col q-px-sm"></div>
@@ -408,11 +418,11 @@
           </div>
         </q-form>
       </q-card-section>
-      <q-card-section class="text-h3 text-center text-bold bg-blue-grey-4">
+      <q-card-section class="text-h3 text-center text-bold text-white bg-grey-">
         <div></div>
       </q-card-section>
       <q-card-section>
-        <div class="row text-h7 text-center text-bold bg-blue-grey-4">
+        <div class="row text-h7 text-center text-bold text-white bg-grey-8">
           <div class="col">
             <div>Followers</div>
           </div>
@@ -420,26 +430,35 @@
             <div>Following</div>
           </div>
         </div>
-        <div class="row">
-          <div class="col q-pa-sm">
+
+        <div class="q-pa-md q-gutter-md">
+        <div class="row justify-between">
+        <q-parallax :height="1300" src="static/images/accountBackground.jpg" alt="Background" label="AccountBackground">  <!-- Not Full Working Yet -->
+          <div class="row">
+
             <div class="q-ma-md">
-              <q-scroll-area :bar-style="barStyle" class="bg-blue-grey-3" style="height: 200px; max-width: 500px;">
+              <q-scroll-area :bar-style="barStyle" class="bg-grey-2" visible style="height: 200px; max-width: 500px;">
                 <div v-for="n in 100" :key="n" class="q-pa-xs">
                   Words
                 </div>
               </q-scroll-area>
             </div>
-          </div>
-          <div class="col q-pa-sm">
+
+
             <div class="q-ma-md">
-              <q-scroll-area :bar-style="barStyle" class="bg-blue-grey-3" style="height: 200px; max-width: 500px;">
+              <q-scroll-area :bar-style="barStyle" class="bg-grey-2" visible style="height: 200px; max-width: 500px;">
                 <div v-for="n in 100" :key="n" class="q-pa-xs">
                   Words
                 </div>
               </q-scroll-area>
+
             </div>
-          </div>
-        </div>
+            </div>
+      </q-parallax>
+      </div>
+      </div>
+
+
       </q-card-section>
     </q-card>
   </q-dialog>
@@ -450,7 +469,7 @@
 <q-dialog v-model="new_password_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
   <q-card>
 
-    <q-bar class="bg-light-blue-10">
+    <q-bar class="bg-light-blue-9">
       <q-space></q-space>
       <q-btn dense flat icon="close" v-close-popup>
         <q-tooltip content-class="bg-light-blue-10 text-white">Close</q-tooltip>
@@ -517,7 +536,7 @@
                     <q-fab-action :hide-label="hideLabels" color="light-blue-6" @click="landing_dialog=false" icon="play_circle_outline" label="Explore"></q-fab-action>
                     <q-fab-action :hide-label="hideLabels" color="light-blue-7" @click="register_dialog=true" icon="person_add" label="Register"></q-fab-action>
                     <q-fab-action :hide-label="hideLabels" color="light-blue-8" @click="login_dialog=true" icon="person" label="Login"></q-fab-action>
-                    <q-fab-action :hide-label="hideLabels" color="light-blue-9" @click="about_us_dialog=true" icon="help_outline" label="Information"></q-fab-action>
+                    <q-fab-action :hide-label="hideLabels" color="light-blue-12" @click="about_us_dialog=true" icon="help_outline" label="Information"></q-fab-action>
                   </q-fab>
                 </div>
               </div>
@@ -536,7 +555,7 @@
   <q-dialog v-model="about_us_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
     <q-card class="bg-blue-grey-2 text-black">
 
-      <q-bar class="bg-light-blue-10">
+      <q-bar class="bg-light-blue-9">
         <q-space></q-space>
         <q-btn dense flat icon="close" v-close-popup>
           <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
@@ -569,7 +588,7 @@
   <q-dialog v-model="contact_us_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
     <q-card class="bg-blue-grey-2 text-black">
 
-      <q-bar class="bg-light-blue-10">
+      <q-bar class="bg-light-blue-9">
         <q-space></q-space>
         <q-btn dense flat icon="close" v-close-popup>
           <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
@@ -603,7 +622,7 @@
   <q-dialog v-model="ethics_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
     <q-card class="bg-blue-grey-2 text-black">
 
-      <q-bar class="bg-light-blue-10">
+      <q-bar class="bg-light-blue-9">
         <q-space></q-space>
         <q-btn dense flat icon="close" v-close-popup>
           <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
@@ -631,7 +650,7 @@
   <q-dialog v-model="external_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
     <q-card class="bg-blue-grey-2 text-black">
 
-      <q-bar class="bg-light-blue-10">
+      <q-bar class="bg-light-blue-9">
         <q-space></q-space>
         <q-btn dense flat icon="close" v-close-popup>
           <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
@@ -660,7 +679,7 @@
   <q-dialog v-model="ownership_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
     <q-card class="bg-blue-grey-2 text-black">
 
-      <q-bar class="bg-light-blue-10">
+      <q-bar class="bg-light-blue-9">
         <q-space></q-space>
         <q-btn dense flat icon="close" v-close-popup>
           <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
@@ -689,14 +708,13 @@
 
 
 {% block dashboard %}
-  <h2 style="text-align:center"><strong>Discover</strong> New Playlists</h2>
-    <div class="q-pa-md">
-      <div class="row q-col-gutter-x-xs q-col-gutter-y-lg">
-        <div class="col-4" v-for="n in 18">
-          <div class="bg-yellow-2 my-content" style="height:400px">&nbsp; Playlist Information Will Go Here</div>
-        </div>
-      </div>
+<div class="q-pa-md">
+  <div class="row q-col-gutter-x-xs q-col-gutter-y-lg">
+    <div class="col-4" v-for="n in 18">
+      <div class="bg-grey-8 my-content" style="height:400px">&nbsp; Playlist Information Will Go Here</div>
     </div>
+  </div>
+</div>
 {% endblock %}
 
 
