@@ -275,6 +275,27 @@ class playlistsView(APIView):
         #        print(serializer.errors)
         return Response({"message": "playlist submission not sucessfull"}, status=status.HTTP_400_BAD_REQUEST)
 
+class othersPlaylists(APIView):
+    permission_classes = (IsAuthenticated, )
+
+    def get(self, request):
+
+        if "username" in request.data:
+            try:
+                user = User.objects.get(username=request.data['username'])
+                userProfile = UserProfile.objects.get(user=user)
+
+                playlists = Playlist.objects.filter(creator=userProfile, isPublic=True)
+                ret = []
+                for playlist in playlists:
+                    ret.append({"name" : playlist.name, "genre" : playlist.genre, "description" : playlist.description, "rating" : playlist.rating})
+                return Response(ret, status=status.HTTP_200_OK)
+
+            except User.DoesNotExist:
+                return Response({"message" : "user does not exists"}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({"message" : "username not supplied"}, status=status.HTTP_400_BAD_REQUEST)
+
 class songView(APIView):
     permission_classes = (IsAuthenticated,)
 
