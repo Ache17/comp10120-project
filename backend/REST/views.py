@@ -439,7 +439,10 @@ class retreves(APIView):
 
     def get(self, request):
 
-        theUser = Playlist.objects.get(link=UserID)
+        try:
+            theUser = Playlist.objects.get(link=UserID)
+        except User.notexist:
+            return Response({"message": "user not found!"}, status=status.HTTP_400_BAD_REQUEST)
 
         username = theUser.username
         group = theUser.group
