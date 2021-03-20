@@ -28,7 +28,7 @@ var app = new Vue({
         playlist_title : "",
         playlist_genre : "",
         playlist_description : "",
-        number_of_tracks : 0,
+        number_of_tracks : 1,
         public: false,
         private: false,
         dense: true,
@@ -82,7 +82,9 @@ var app = new Vue({
           sort_options: ["Playlist Title [Alphabetical]", "Users' Ratings", "Genre [Alphabetical]"],
           sort_selection: "Playlist Title [Alphabetical]",
           order_options: ["Ascending", "Descending"],
-          order_selection: "Ascending"
+          order_selection: "Ascending",
+          populated: false,
+          tracks_shown: false
     },
     delimiters: ['[%', '%]'],
 
@@ -106,7 +108,8 @@ var app = new Vue({
         },
         playlistSubmissionSuccess(req)
         {
-          app.$q.notify({ type : "positive", message : "playlist submitted"});
+          app.$q.notify({ type : "positive", message : "Playlist successfully created!"});
+          this.create_playlist_dialog = false;
         },
         playlistSubmissionFailure(req)
         {
@@ -199,6 +202,7 @@ var app = new Vue({
         //               |__/
         createPlaylist(){
           if (this.token != ""){
+            this.number_of_tracks = 1;
             this.create_playlist_dialog = true;
           }
           else{
@@ -318,7 +322,6 @@ var app = new Vue({
         },
         selectUser(num){
           this.current_profile = num;
-          console.log(num);
         },
          //  ___   _                 _   _        _        ___         _   _              _     _                  ___   _             __    __
          // | _ \ | |  __ _   _  _  | | (_)  ___ | |_     / __|  ___  | | | |  ___   __  | |_  (_)  ___   _ _     / __| | |_   _  _   / _|  / _|
@@ -362,11 +365,13 @@ var app = new Vue({
         },
         // Opens the page for viewing / editing one of your selected playlists.
         selectPlaylist(id){
-          console.log(id);
           if (this.token != ""){
             this.current_playlist = this.playlists.filter(el => el.id == id)[0];
-            console.log(this.current_playlist);
+            this.number_of_tracks = this.current_playlist.songs.length;
             this.view_own_playlist_dialog = true;
+            console.log(this.current_playlist);
+            this.tracks_shown = false;
+            this.populated = false;
           }
           else{
             this.failureNotification("You aren't logged in!");
@@ -375,7 +380,6 @@ var app = new Vue({
         // When you select one of your playlists to edit, you can delete it too.
         deletePlaylist(){
           this.make_authenticated_request(this.current_playlist, "DELETE", "/api/userPlaylists", this.deletePlaylistSuccess, this.deletePlaylistFailure);
-          this.make_authenticated_request(data, "GET", "/api/userPlaylists", this.retrievePlaylistColectionSuccess, this.retrievePlaylistColectionFailure);
         },
         // When a request for one's playlists is successful, the response is parsed and stored in the relevant array.
         retrievePlaylistColectionSuccess(req){
@@ -385,15 +389,68 @@ var app = new Vue({
             this.playlists[i] = data[i];
           }
         },
+        updatePlaylist(){
+          this.make_authenticated_request(this.current_playlist, "DELETE", "/api/userPlaylists", this.noMsg, this.deletePlaylistFailure);
+          var NumberOfTracks = this.number_of_tracks;
+          var Tracks = [];
+          var Track = {};
+          for (var i = 1; i <= NumberOfTracks; i++)
+          {
+            Track = {"name":document.getElementById("TitleInput" + i).value,
+                     "author":document.getElementById("ArtistInput" + i).value}
+            Tracks.push(Track)
+          }
+          // This here is the file that is submitted.
+          console.log(this.playlist_image)
+          // Then this is the playlist data JSON file.
+          data =
+          {
+            "name": this.current_playlist.name,
+          	"genre": this.current_playlist.genre,
+          	"image": this.playlist_image,
+          	"description": this.current_playlist.description,
+            "isPublic": this.public,
+            "Tracks": Tracks
+          };
+          this.make_authenticated_request(data, "POST", "/api/userPlaylists", this.playlistUpdateSuccess, this.playlistUpdateFailure);
+        },
+        noMsg(req){
+
+        },
         retrievePlaylistColectionFailure(req){
           this.failureNotification("Failed to retrieve collection.");
         },
+        // For some reason, deleted playlists would only be removed if you
+        // refreshed the page (even if you made a new get request).
+        // The deletion DOES work on the backend, but I've just made it so it's
+        // removed from the local array as this was the only way it wouldn't bug out.
         deletePlaylistSuccess(req){
           this.sucessNotification("Playlist deleted.");
-          this.make_authenticated_request(data, "GET", "/api/userPlaylists", this.retrievePlaylistColectionSuccess, this.retrievePlaylistColectionFailure);
+          var index = null;
+          // runs through the playlists and find the one which has the id of
+          // the one deleted, and removes it from the array.
+          for (var i = 0; i < this.playlists.length; i++){
+            if (this.playlists[i].id == this.current_playlist.id){
+              index = i;
+            }
+          }
+          if (index !=null){
+            this.playlists.splice(index,1);
+          }
+          console.log(this.playlists);
+          this.view_own_playlist_dialog = false;
         },
         deletePlaylistFailure(req){
-          this.failureNotification("Failed to delete playlist!");
+          this.failureNotification("Failed to delete playlist! It may have already been deleted.");
+          this.view_own_playlist_dialog = false;
+        },
+        // Success/Error handling for when a user updates an existing playlist.
+        playlistUpdateSuccess(req){
+          this.sucessNotification("Successfully updated playlist!");
+          this.view_own_playlist_dialog = false;
+        },
+        playlistUpdateFailure(req){
+          this.failureNotification("Failed to update playlist!");
         }
     }
   });
@@ -431,6 +488,11 @@ function TrackNumberChange()
     $("#RatingInput" + i).remove();
     $("#Break" + i).remove();
   }
+  if (app.populated == false && app.view_own_playlist_dialog == true){
+    console.log(app.current_playlist);
+    PopulateExistingTracks(app.current_playlist.songs.length, app.current_playlist.songs);
+    app.populated = true;
+  }
 }
 
 // Takes a track number, and uses jQuery to dynamically append HTML elements to the document which can be identified by their track number.
@@ -444,4 +506,13 @@ function CreateTrackInput(i)
   BreakLine = $("<br><br>").attr("id", "Break" + i);
   // Appends all of these elements to the HTML document.
   $("#TrackInputs").append(TitleInput, ArtistInput, YearInput, RatingInput, BreakLine);
+}
+
+function PopulateExistingTracks(number, data){
+  for (var i = 1; i <= number; i++){
+    document.getElementById("TitleInput" + i).value = data[i-1].name;
+    document.getElementById("ArtistInput" + i).value = data[i-1].author;
+    // document.getElementById("YearInput" + i).value = data[0].year;
+    // document.getElementById("TitleInput" + i).value = data[0].name;
+  }
 }

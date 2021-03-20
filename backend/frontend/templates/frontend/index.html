@@ -253,7 +253,7 @@
       </q-card-section>
 
       <q-card-section class="q-pt-none">
-        <q-form @submit="submitPlaylist" class="q-gutter-md">
+        <q-form @submit="updatePlaylist" class="q-gutter-md">
           <div class="row">
 
             <q-file clearable color="bg-light-blue-9" v-model="playlist_image" label="Upload an Image">
@@ -275,17 +275,16 @@
 
               <div class="row">
                 <div class="col q-pa-s">
-                  <q-input color="white" bg-color="grey-6" v-model.number="number_of_tracks" type="number" min="1" max="50" placeholder="1" filled style="max-width: 200px" id="number_of_tracks" onchange="TrackNumberChange();"></q-input>
+                  <q-input color="white" bg-color="grey-6" v-model.number="number_of_tracks" type="number" min="1" max="50" placeholder="number_of_tracks" filled style="max-width: 200px" id="number_of_tracks" onchange="TrackNumberChange();"></q-input>
                 </div>
-                <div class="col q-pa-sm text-white">
-                  <q-checkbox v-model="public" label="Public" dark color="cyan"></q-checkbox>
-                  <q-checkbox v-model="private" label="Private" dark color="cyan"></q-checkbox>
+                <div class="col q-pa-sm">
+                  <q-checkbox v-model="public" label="Public" />
                 </div>
                 <div class="col q-pa-sm">
                   <q-btn label="Delete Playlist" @click="deletePlaylist" color="light-blue-9" padding="md xl"></q-btn>
                 </div>
                 <div class="col q-pa-sm">
-                  <q-btn label="Create Playlist" type="submit" color="light-blue-9" padding="md xl"></q-btn>
+                  <q-btn label="Update Playlist" type="submit" color="light-blue-9" padding="md xl"></q-btn>
                 </div>
               </div>
 
@@ -302,6 +301,7 @@
   </q-dialog>
 </div>
 {% endblock %}
+
 
 
 
