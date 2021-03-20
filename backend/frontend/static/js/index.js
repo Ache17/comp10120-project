@@ -30,6 +30,7 @@ var app = new Vue({
         playlist_description : "",
         number_of_tracks : 0,
         public: false,
+        private: false,
         dense: true,
         playlist_search_text: "",
         song_search_text: "",
@@ -58,7 +59,6 @@ var app = new Vue({
         username_current: "",
         password_old: "",
         password_new: "",
-
         searchUsers: [{"username":"","first_name":"","last_name":""},
                       {"username":"","first_name":"","last_name":""},
                       {"username":"","first_name":"","last_name":""},
@@ -71,20 +71,31 @@ var app = new Vue({
                       {"username":"","first_name":"","last_name":""}],
           searchMade: false,
           profile_dialog: false,
-          current_profile: 0
+          current_profile: 0,
+          playlists: [],
+
+          // image_name: "",
+          playlist_image: null,
+          view_own_playlist_dialog: false,
+          current_playlist: {},
+          sort_filter: "",
+          sort_options: ["Playlist Title [Alphabetical]", "Users' Ratings", "Genre [Alphabetical]"],
+          sort_selection: "Playlist Title [Alphabetical]",
+          order_options: ["Ascending", "Descending"],
+          order_selection: "Ascending"
     },
     delimiters: ['[%', '%]'],
 
     methods:
     {
-        getHeaders()
-        {
-          return [{name: 'Authorization', value: "Token " + this.token }];
-        },
-        getUrl(files)
-        {
-            return document.location.origin + "/api/upload";
-        },
+        // getHeaders()
+        // {
+        //   return [{name: 'Authorization', value: "Token " + this.token }];
+        // },
+        // getUrl(files)
+        // {
+        //     return document.location.origin + "/api/upload";
+        // },
         sucessNotification(msg)
         {
             app.$q.notify({type : "positive", message : msg});
@@ -148,6 +159,8 @@ var app = new Vue({
                     this.mail_f = this.mail;
                     this.login_dialog = false;
                     this.landing_dialog = false;
+                    var data = {};
+                    this.make_authenticated_request(data, "GET", "/api/userPlaylists", this.retrievePlaylistColectionSuccess, this.retrievePlaylistColectionFailure);
                 }
                 else
                 {
@@ -179,6 +192,19 @@ var app = new Vue({
             });
             registerRequest.send(JSON.stringify({"username" : app.username, "password" : app.password, "email" : app.mail}));
         },
+        // ___  _              _  _      _      ___                  _    _
+        // | _ \| | __ _  _  _ | |(_) ___| |_   / __| _ _  ___  __ _ | |_ (_) ___  _ _
+        // |  _/| |/ _` || || || || |(_-<|  _| | (__ | '_|/ -_)/ _` ||  _|| |/ _ \| ' \
+        // |_|  |_|\__,_| \_, ||_||_|/__/ \__|  \___||_|  \___|\__,_| \__||_|\___/|_||_|
+        //               |__/
+        createPlaylist(){
+          if (this.token != ""){
+            this.create_playlist_dialog = true;
+          }
+          else{
+            this.failureNotification("You aren't logged in!");
+          }
+        },
         // This is performed upon the user clicking the Submit Playlist button.
         submitPlaylist()
         {
@@ -191,16 +217,25 @@ var app = new Vue({
                      "author":document.getElementById("ArtistInput" + i).value}
             Tracks.push(Track)
           }
+          // This here is the file that is submitted.
+          console.log(this.playlist_image)
+          // Then this is the playlist data JSON file.
           data =
           {
             "name": this.playlist_title,
           	"genre": this.playlist_genre,
-          	// ImageURL: ImageURL,
+          	"image": this.playlist_image,
           	"description": this.playlist_description,
             "isPublic": this.public,
             "Tracks": Tracks
           };
           this.make_authenticated_request(data, "POST", "/api/userPlaylists", this.playlistSubmissionSuccess, this.playlistSubmissionFailure);
+        },
+        imgUploaded(info){
+          image_name = info.xhr.response;
+        },
+        imgNotUploaded(info){
+          image_name = "";
         },
         // Makes sure you're logged in before showing you the account page.
         retrieveAccount(){
@@ -263,7 +298,6 @@ var app = new Vue({
             NewPassword: this.password_new
           };
           this.make_authenticated_request(data, "PUT", "/api/userInfo", this.submitAccountSuccess, this.submitAccountFailure);
-
         },
         // retrieves ten user accounts' details upon the user entering their search
         userSearch(){
@@ -292,14 +326,74 @@ var app = new Vue({
          // |_|   |_| \__,_|  \_, | |_| |_| /__/  \__|    \___| \___/ |_| |_| \___| \__|  \__| |_| \___/ |_||_|   |___/  \__|  \_,_| |_|   |_|
          //                   |__/
         retrievePlaylistCollection(){
-          var data = {};
+          if (this.token != ""){
+            var data = {};
+            this.make_authenticated_request(data, "GET", "/api/userPlaylists", this.retrievePlaylistColectionSuccess, this.retrievePlaylistColectionFailure);
+            this.my_playlists_dialog = true;
+          }
+          else{
+            this.failureNotification("You aren't logged in!");
+          }
+        },
+        sortCollection(){
+          this.make_authenticated_request(data, "GET", "/api/userPlaylists", this.retrievePlaylistColectionSuccess, this.retrievePlaylistColectionFailure);
+          if (this.sort_filter != ""){
+            this.playlists = this.playlists.filter(el => el.name.includes(this.sort_filter));
+          }
+          if (this.sort_selection == this.sort_options[0]){
+            this.playlists = this.playlists.sort(this.sorting("name"));
+          }
+          else if (this.sort_selection == this.sort_options[1]){
+            this.playlists = this.playlists.sort(this.sorting("rating"));
+          }
+          else if (this.sort_selection == this.sort_options[2]){
+            this.playlists = this.playlists.sort(this.sorting("genre"));
+          }
+          if (this.order_selection == "Descending"){
+            this.playlists = this.playlists.reverse();
+          }
+        },
+        // Used for sorting an array of objects, in this case the array of playlists.
+        sorting(sortby) {
+            return function (a,b) {
+                var result = (a[sortby] < b[sortby]) ? -1 : (a[sortby] > b[sortby]) ? 1 : 0;
+                return result;
+            }
+        },
+        // Opens the page for viewing / editing one of your selected playlists.
+        selectPlaylist(id){
+          console.log(id);
+          if (this.token != ""){
+            this.current_playlist = this.playlists.filter(el => el.id == id)[0];
+            console.log(this.current_playlist);
+            this.view_own_playlist_dialog = true;
+          }
+          else{
+            this.failureNotification("You aren't logged in!");
+          }
+        },
+        // When you select one of your playlists to edit, you can delete it too.
+        deletePlaylist(){
+          this.make_authenticated_request(this.current_playlist, "DELETE", "/api/userPlaylists", this.deletePlaylistSuccess, this.deletePlaylistFailure);
           this.make_authenticated_request(data, "GET", "/api/userPlaylists", this.retrievePlaylistColectionSuccess, this.retrievePlaylistColectionFailure);
         },
+        // When a request for one's playlists is successful, the response is parsed and stored in the relevant array.
         retrievePlaylistColectionSuccess(req){
-          console.log(req);
+          data = JSON.parse(req.response);
+          var i;
+          for (i = 0; i < data.length; i++){
+            this.playlists[i] = data[i];
+          }
         },
         retrievePlaylistColectionFailure(req){
-          console.log(req);
+          this.failureNotification("Failed to retrieve collection.");
+        },
+        deletePlaylistSuccess(req){
+          this.sucessNotification("Playlist deleted.");
+          this.make_authenticated_request(data, "GET", "/api/userPlaylists", this.retrievePlaylistColectionSuccess, this.retrievePlaylistColectionFailure);
+        },
+        deletePlaylistFailure(req){
+          this.failureNotification("Failed to delete playlist!");
         }
     }
   });
@@ -343,10 +437,10 @@ function TrackNumberChange()
 function CreateTrackInput(i)
 {
   // Elements + attributes etc. for the appending of track inputs.
-  TitleInput = $("<input>").attr("id", "TitleInput" + i).attr("placeholder", "Track Title").attr("size", "40");
-  ArtistInput = $("<input>").attr("id", "ArtistInput" + i).attr("placeholder", "Artist Name").attr("size", "30"); // The value of the artist name can be automatically populated as the user has already entered this during the album's creation, although can be altered if desired.
-  YearInput = $("<input>").attr("id", "YearInput" + i).attr("type", "number").attr("min", "1860").attr("max", "2030").attr("placeholder", "Year");
-  RatingInput = $("<input>").attr("id", "RatingInput" + i).attr("type", "number").attr("min", "1").attr("max", "5").attr("placeholder", "Rating").attr("style", "width: 7em");;
+  TitleInput = $("<input>").attr("id", "TitleInput" + i).attr("placeholder", "Track Title").css("width", "40%").css("margin-left", "5%");
+  ArtistInput = $("<input>").attr("id", "ArtistInput" + i).attr("placeholder", "Artist Name").css("width", "30%"); // The value of the artist name can be automatically populated as the user has already entered this during the album's creation, although can be altered if desired.
+  YearInput = $("<input>").attr("id", "YearInput" + i).attr("type", "number").attr("min", "1860").attr("max", "2030").attr("placeholder", "Year").css("width", "10%");
+  RatingInput = $("<input>").attr("id", "RatingInput" + i).attr("type", "number").attr("min", "1").attr("max", "5").attr("placeholder", "Rating").css("width", "10%");;
   BreakLine = $("<br><br>").attr("id", "Break" + i);
   // Appends all of these elements to the HTML document.
   $("#TrackInputs").append(TitleInput, ArtistInput, YearInput, RatingInput, BreakLine);

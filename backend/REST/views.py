@@ -42,7 +42,7 @@ class authenticatedTest(APIView):
 
     def post(self, request):
         return Response("post success !")
-        
+
 class userInfoView(APIView):
     permission_classes = (IsAuthenticated,)
 
@@ -63,7 +63,7 @@ class userInfoView(APIView):
 
         return Response({"username": user.username, "first_name": user.first_name,
                          "last_name": user.last_name, "email": user.email,
-                         "last_login": user.last_login, "date_joined": user.date_joined, 
+                         "last_login": user.last_login, "date_joined": user.date_joined,
                          "location": profile.location, "followers" : followers, "following" : following_ser})
 
     def put(self, request):
@@ -175,7 +175,7 @@ class playlistsView(APIView):
 
     def delete(self, request):
         try:
-            playlist_id = request.data['playlist_id']
+            playlist_id = request.data['id']
         except KeyError:
             return Response({"message" : "playlist id not specified"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -185,12 +185,12 @@ class playlistsView(APIView):
         try:
             playlist = Playlist.objects.get(id=playlist_id)
         except Playlist.DoesNotExist:
-            return Response({"message" : "not valid playlist id"}, status=status.HTTP_400_BAD_REQUEST) 
+            return Response({"message" : "not valid playlist id"}, status=status.HTTP_400_BAD_REQUEST)
 
         if playlist.creator == profile:
             playlist.delete()
             return Response({"message" : "playlist have been deleted"}, status=status.HTTP_200_OK)
-        
+
         return Response({"message" : f"it's not yours playlist"}, status=status.HTTP_200_OK)
 
     def put(self, request):
@@ -198,32 +198,32 @@ class playlistsView(APIView):
             playlist_id = request.data['playlist_id']
         except KeyError:
             return Response({"message" : "playlist id not specified"}, status=status.HTTP_400_BAD_REQUEST)
-        
+
         user = request.user
         profile = UserProfile.objects.get(user=user)
         try:
             playlist = Playlist.objects.get(id=playlist_id)
         except Playlist.DoesNotExist:
-            return Response({"message" : "not valid playlist id"}, status=status.HTTP_400_BAD_REQUEST) 
+            return Response({"message" : "not valid playlist id"}, status=status.HTTP_400_BAD_REQUEST)
 
 
         if playlist.creator == profile:
-            
+
             if "name" in request.data:
                 playlist.name = request.data['name']
-            
+
             if "genre" in request.data:
                 playlist.genre = request.data["genre"]
-            
+
             if "description" in request.data:
                 playlist.description = request.data["description"]
-            
+
             if "rating" in request.data:
                 playlist.rating = request.data["rating"]
 
             if "isPublic" in request.data:
                 playlist.isPublic = request.data["isPublic"]
-            
+
             # adding new song
             if "new_song_author" in request.data and "new_song_name" in request.data:
                 new_song = Item(whichPlaylist= playlist, name=request.data["new_song_name"],author=request.data["new_song_author"])
@@ -306,7 +306,7 @@ class songView(APIView):
         except KeyError:
             return Response({"message" : "song_id not provided"}, status=status.HTTP_400_BAD_REQUEST)
 
-        try: 
+        try:
             song = Item.objects.get(id=song_id)
         except Item.DoesNotExist:
             return Response({"message" : "song does not exists or is not public"}, status=status.HTTP_400_BAD_REQUEST)
@@ -320,7 +320,7 @@ class songView(APIView):
         if playlist.creator == profile:
             return Response({"name" : song.name , "author" : song.author}, status=status.HTTP_200_OK)
 
-        return Response({"message" : "song does not exists or is not public"}, status=status.HTTP_400_BAD_REQUEST)            
+        return Response({"message" : "song does not exists or is not public"}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request):
         try:
@@ -328,7 +328,7 @@ class songView(APIView):
         except KeyError:
             return Response({"message" : "song_id not provided"}, status=status.HTTP_400_BAD_REQUEST)
 
-        try: 
+        try:
             song = Item.objects.get(id=song_id)
         except Item.DoesNotExist:
             return Response({"message" : "song does not exists or is not yours"}, status=status.HTTP_400_BAD_REQUEST)
@@ -341,14 +341,14 @@ class songView(APIView):
             song.delete()
             return Response({"message" : "song deleted"}, status=status.HTTP_200_OK)
         return Response({"message": "song does not exists or is not yours"} ,status=status.HTTP_400_BAD_REQUEST)
-    
+
     def put(self, request):
         try:
             song_id = request.data['song_id']
         except KeyError:
             return Response({"message" : "song_id not provided"}, status=status.HTTP_400_BAD_REQUEST)
 
-        try: 
+        try:
             song = Item.objects.get(id=song_id)
         except Item.DoesNotExist:
             return Response({"message" : "song does not exists or is not yours"}, status=status.HTTP_400_BAD_REQUEST)
@@ -358,13 +358,13 @@ class songView(APIView):
         profile = UserProfile.objects.get(user=user)
 
         if playlist.creator == profile:
-            
+
             if "name" in request.data:
                 song.name = request.data["name"]
-            
+
             if "author" in request.data:
                 song.author = request.data["author"]
-            
+
             song.save()
 
             return Response({"message" : "song updated"}, status=status.HTTP_200_OK)
@@ -403,20 +403,20 @@ class sharing(APIView):
 
 class imageUpload(APIView):
     permission_classes = (IsAuthenticated,)
-    
+
     def post(self, request):
 
-        # necessary info from the frontend 
+        # necessary info from the frontend
         hash = getRand() + ".jpg"
-        for file_name in request.FILES: 
+        for file_name in request.FILES:
             with open("frontend/static/media/" + hash, "wb+") as dst:
                 for chunk in request.FILES[file_name].chunks():
                     dst.write(chunk)
 
-        # need associating hash with the playlist 
-        
+        # need associating hash with the playlist
 
-        return Response({"message" : "image has been saved"}, status=status.HTTP_200_OK)
+
+        return Response(hash, status=status.HTTP_200_OK)
 
 class spotifyQuery(APIView):
     permission_classes = (IsAuthenticated,)
