@@ -398,39 +398,71 @@
                 </template>
               </q-input>
             </q-form>
+          </q-card-section>
 
-            <div class="q-pa-md">
-              <q-list v-show="searchMade" bordered separator style="max-width: 50%">
-                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(0); profile_dialog = true;">
+          <q-card-section>      <!-- NOTE WHEN A NAME IS GIVEN TO AN ACCOUNT, THE TEXT ALLIGNS AS IT SHOULD IN THE CENTER. THERE IS AN ISSUE WHEN AN ACCOUNT HAS NO NAME -->
+            <div class="q-pa-md q-pt-md" style="background-image: url(https://images.pexels.com/photos/761543/pexels-photo-761543.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260); background-size: contain; height:850px;">
+              <q-list v-show="searchMade" bordered class="text-center" separator style="max-width: 100%; min-height=100%;">
+                <div class="row">
+                <div class="col">
+                <q-item class="bg-grey-8 text-left text-weight-medium text-subtitle1" style="height: 20px"rounded clickable v-ripple @click="selectUser(0); profile_dialog = true;">
                   <q-item-section>Username: [% searchUsers[0].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[0].first_name %]‏‏‎ ‎ [% searchUsers[0].last_name %]</q-item-section>
                 </q-item>
-                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(1); profile_dialog = true;">
+                </div>
+                <div class="col">
+                <q-item class="bg-grey-8 text-left text-weight-medium text-subtitle1" style="height: 20px" rounded clickable v-ripple @click="selectUser(1); profile_dialog = true;">
                   <q-item-section>Username: [% searchUsers[1].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[1].first_name %]‏‏‎ ‎ [% searchUsers[1].last_name %]</q-item-section>
                 </q-item>
-                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(2); profile_dialog = true;">
+                </div>
+                </div>
+                <div class="row">
+                <div class="col">
+                <q-item class="bg-grey-8 text-left text-weight-medium text-subtitle1" style="height: 20px" rounded clickable v-ripple @click="selectUser(2); profile_dialog = true;">
                   <q-item-section>Username: [% searchUsers[2].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[2].first_name %]‏‏‎ ‎ [% searchUsers[2].last_name %]</q-item-section>
                 </q-item>
-                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(3); profile_dialog = true;">
+                </div>
+                <div class="col">
+                <q-item class="bg-grey-8 text-left text-weight-medium text-subtitle1"style="height: 20px" rounded clickable v-ripple @click="selectUser(3); profile_dialog = true;">
                   <q-item-section>Username: [% searchUsers[3].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[3].first_name %]‏‏‎ ‎ [% searchUsers[3].last_name %]</q-item-section>
                 </q-item>
-                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(4); profile_dialog = true;">
+                </div>
+                </div>
+                <div class ="row">
+                <div class="col">
+                <q-item class="bg-grey-8 text-left text-weight-medium text-subtitle1" style="height: 20px" rounded clickable v-ripple @click="selectUser(4); profile_dialog = true;">
                   <q-item-section>Username: [% searchUsers[4].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[4].first_name %]‏‏‎ ‎ [% searchUsers[4].last_name %]</q-item-section>
                 </q-item>
-                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(5); profile_dialog = true;">
+                </div>
+                <div class="col">
+                <q-item class="bg-grey-8 text-left text-weight-medium text-subtitle1" style="height: 20px" rounded clickable v-ripple @click="selectUser(5); profile_dialog = true;">
                   <q-item-section>Username: [% searchUsers[5].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[5].first_name %]‏‏‎ ‎ [% searchUsers[5].last_name %]</q-item-section>
                 </q-item>
-                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(6); profile_dialog = true;">
+                </div>
+                </div>
+                <div class="row">
+                <div class="col">
+                <q-item class="bg-grey-8 text-left text-weight-medium text-subtitle1" style="height: 20px" rounded clickable v-ripple @click="selectUser(6); profile_dialog = true;">
                   <q-item-section>Username: [% searchUsers[6].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[6].first_name %]‏‏‎ ‎ [% searchUsers[6].last_name %]</q-item-section>
                 </q-item>
-                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(7); profile_dialog = true;">
+                </div>
+                <div class="col">
+                <q-item class="bg-grey-8 text-left text-weight-medium text-subtitle1" style="height: 20px" rounded clickable v-ripple @click="selectUser(7); profile_dialog = true;">
                   <q-item-section>Username: [% searchUsers[7].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[7].first_name %]‏‏‎ ‎ [% searchUsers[7].last_name %]</q-item-section>
                 </q-item>
-                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(8); profile_dialog = true;">
+                </div>
+                </div>
+                <div class="row">
+                <div class="col">
+                <q-item class="bg-grey-8 text-left text-weight-medium text-subtitle1" style="height: 20px" rounded clickable v-ripple @click="selectUser(8); profile_dialog = true;">
                   <q-item-section>Username: [% searchUsers[8].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[8].first_name %]‏‏‎ ‎ [% searchUsers[8].last_name %]</q-item-section>
                 </q-item>
-                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(9); profile_dialog = true;">
+                </div>
+                <div class="col">
+                <q-item class="bg-grey-8 text-left text-weight-medium text-subtitle1" style="height: 20px" rounded clickable v-ripple @click="selectUser(9); profile_dialog = true;">
                   <q-item-section>Username: [% searchUsers[9].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[9].first_name %]‏‏‎ ‎ [% searchUsers[9].last_name %]</q-item-section>
                 </q-item>
+                </div>
+                </div>
               </q-list>
             </div>
 
@@ -563,7 +595,7 @@
                 <div v-for="n in 100" :key="n" class="q-py-xs text-center">
                   Lorem ipsum dolor sit amet, consectetur adipisicing
                   elit, sed do eiusmod tempor incididunt ut labore et
-                  dolore magna aliqua.
+                  dolore magna aliqua.                                                                                    <!-- NEED TO CHOOSE TEXT COLOUR FOR HERE -->
                 </div>
               </q-scroll-area>
               <q-scroll-area visible style="height: 500px; width: 30%;" class="col q-pl-lg q-pt-xl">
@@ -575,7 +607,7 @@
               </q-scroll-area>
             </div>
       </q-card-section>
-      
+
     </q-card>
   </q-dialog>
 </div>
