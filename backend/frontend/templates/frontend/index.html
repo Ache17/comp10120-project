@@ -555,36 +555,27 @@
             <div>Following</div>
           </div>
         </div>
+        </q-card-section>
 
-        <div class="q-pa-md q-gutter-md">
-        <div class="row justify-between">
-        <q-parallax :height="1300" src="static/images/accountBackground.jpg" alt="Background" label="AccountBackground">  <!-- Not Full Working Yet -->
-          <div class="row">
-
-            <div class="q-ma-md">
-              <q-scroll-area :bar-style="barStyle" class="bg-grey-2" visible style="height: 200px; max-width: 500px;">
-                <div v-for="n in 100" :key="n" class="q-pa-xs">
-                  Words
+        <q-card-section>
+          <div class="q-ma-md row no-wrap" style="background-image: url(https://images.pexels.com/photos/6966/abstract-music-rock-bw.jpg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260); background-size: contain; height:850px;">
+              <q-scroll-area visible style="height: 500px; width: 30%;" class="col text-light-blue-9 q-pr-lg q-pt-xl">
+                <div v-for="n in 100" :key="n" class="q-py-xs text-center">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing
+                  elit, sed do eiusmod tempor incididunt ut labore et
+                  dolore magna aliqua.
+                </div>
+              </q-scroll-area>
+              <q-scroll-area visible style="height: 500px; width: 30%;" class="col q-pl-lg q-pt-xl">
+                <div v-for="n in 100" :key="n" class="q-py-xs text-center">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing
+                  elit, sed do eiusmod tempor incididunt ut labore et
+                  dolore magna aliqua.
                 </div>
               </q-scroll-area>
             </div>
-
-
-            <div class="q-ma-md">
-              <q-scroll-area :bar-style="barStyle" class="bg-grey-2" visible style="height: 200px; max-width: 500px;">
-                <div v-for="n in 100" :key="n" class="q-pa-xs">
-                  Words
-                </div>
-              </q-scroll-area>
-
-            </div>
-            </div>
-      </q-parallax>
-      </div>
-      </div>
-
-
       </q-card-section>
+      
     </q-card>
   </q-dialog>
 </div>
