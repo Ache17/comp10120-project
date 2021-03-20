@@ -278,8 +278,8 @@
                   <q-input color="white" bg-color="grey-6" v-model.number="number_of_tracks" type="number" min="1" max="50" placeholder="1" filled style="max-width: 200px" id="number_of_tracks" onchange="TrackNumberChange();"></q-input>
                 </div>
                 <div class="col q-pa-sm text-white">
-                  <q-checkbox v-model="public" label="Public" dark color="cyan" true-value="public"></q-checkbox>
-                  <q-checkbox v-model="private" label="Private" dark color="cyan" true-value="private"></q-checkbox>
+                  <q-checkbox v-model="public" label="Public" dark color="cyan"></q-checkbox>
+                  <q-checkbox v-model="private" label="Private" dark color="cyan"></q-checkbox>
                 </div>
                 <div class="col q-pa-sm">
                   <q-btn label="Delete Playlist" @click="deletePlaylist" color="light-blue-9" padding="md xl"></q-btn>
