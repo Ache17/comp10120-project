@@ -432,3 +432,23 @@ class spotifyQuery(APIView):
             return Response(res, status=status.HTTP_200_OK)
         else:
             return Response({"message" : "no query provided !"} , status=status.HTTP_400_BAD_REQUEST)
+
+class retreves(APIView):
+
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+    
+        if "userid" in request.data:
+            UserID = request.data["userid"]
+        try:
+            theUser = Playlist.objects.get(link=UserID)
+        except User.DoseNotExists:
+            return Response({"message": "user not found!"}, status=status.HTTP_400_BAD_REQUEST)
+
+        username = theUser.username
+        group = theUser.group
+        last_login = theUser.last_login
+        date_joined = theUser.date_joined
+        return Response({"username" : theUser.username}, status=status.HTTP_200_OK)
+

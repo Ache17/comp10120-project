@@ -15,4 +15,5 @@ urlpatterns = [path("test", views.testView.as_view()),
                path("song", views.songView.as_view(), name="songs"),
                path("upload", views.imageUpload.as_view(), name="upload_image"),
                path("spotifyIDs", views.spotifyQuery.as_view(), name="spotify"),
-               path("othersPlaylists", views.othersPlaylists.as_view(), name="others_playlists")]
+               path("othersPlaylists", views.othersPlaylists.as_view(), name="others_playlists"),
+               path("retreves", views.retreves.as_view(), name="retreves")]
