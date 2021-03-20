@@ -432,3 +432,17 @@ class spotifyQuery(APIView):
             return Response(res, status=status.HTTP_200_OK)
         else:
             return Response({"message" : "no query provided !"} , status=status.HTTP_400_BAD_REQUEST)
+
+class retreves(APIView):
+
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+
+        theUser = Playlist.objects.get(link=UserID)
+
+        username = theUser.username
+        group = theUser.group
+        last_login = theUser.last_login
+        date_joined = theUser.date_joined
+
