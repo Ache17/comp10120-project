@@ -1,4 +1,4 @@
-let test;
+
 
 var app = new Vue({
     el: '#app',
@@ -64,16 +64,6 @@ var app = new Vue({
         username_current: "",
         password_old: "",
         password_new: "",
-        searchUsers: [{"username":"","first_name":"","last_name":""},
-                      {"username":"","first_name":"","last_name":""},
-                      {"username":"","first_name":"","last_name":""},
-                      {"username":"","first_name":"","last_name":""},
-                      {"username":"","first_name":"","last_name":""},
-                      {"username":"","first_name":"","last_name":""},
-                      {"username":"","first_name":"","last_name":""},
-                      {"username":"","first_name":"","last_name":""},
-                      {"username":"","first_name":"","last_name":""},
-                      {"username":"","first_name":"","last_name":""}],
           searchMade: false,
           profile_dialog: false,
           current_profile: 0,
@@ -89,7 +79,21 @@ var app = new Vue({
           sort_selection: "Playlist Title [Alphabetical]",
           order_options: ["Ascending", "Descending"],
           order_selection: "Ascending",
-          populated: false
+          populated: false,
+
+          // search users functionality
+          search_users : [],
+          user_search_pagination_idx : 1,
+          inspect_user : false,
+          inspected_user_data : {},
+          user_search_pages : 0,
+
+          // search playlists functionality
+          search_playlists : [],
+          playlist_search_pagination_idx : 1,
+          inspect_playlist : false,
+          inspected_playlist_data : {},
+          playlist_search_pages : 0
     },
 
     delimiters: ['[%', '%]'],
@@ -127,14 +131,14 @@ var app = new Vue({
         // Arbitrary authenticated request method.
         make_authenticated_request(data, method, path, success_callback, failure_callback)
         {
-          if (this.token === "")
-            return;
+          // store token in cookies
+          let token = $cookies.get("token");
 
           let addr = document.location.origin;
           var authRequest = new XMLHttpRequest();
           authRequest.open(method, addr + path, true);
           authRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-          authRequest.setRequestHeader("Authorization", "Token " + this.token);
+          authRequest.setRequestHeader("Authorization", "Token " + token);
           authRequest.addEventListener("load", () =>
           {
               var response = authRequest.response;
@@ -172,7 +176,9 @@ var app = new Vue({
                 if (loginRequest.status < 300 && loginRequest.status >= 200)
                 {
                     this.token = returned_json["token"];
-                    document.cookie = "test" + "=" + (returned_json["token"]);
+                    
+                    $cookies.set("token", this.token);
+                    
                     this.sucessNotification("Login Successful");
                     this.username_f = this.username;
                     this.password_f = this.password;
@@ -338,14 +344,56 @@ var app = new Vue({
    // / __| | __|   /_\   | _ \  / __| | || |     | __|  / _ \  | _ \     | _ \ | |      /_\   \ \ / / | |    |_ _| / __| |_   _| / __|
    // \__ \ | _|   / _ \  |   / | (__  | __ |     | _|  | (_) | |   /     |  _/ | |__   / _ \   \ V /  | |__   | |  \__ \   | |   \__ \
    // |___/ |___| /_/ \_\ |_|_\  \___| |_||_|     |_|    \___/  |_|_\     |_|   |____| /_/ \_\   |_|   |____| |___| |___/   |_|   |___/
+        searchPlaylistsSuccess(req)
+        {
+          let data = JSON.parse(req.response);
+          this.search_playlists = [];
+          this.playlist_search_pages = data["pages"];
 
-        playlistSearch(){
+          data["data"].forEach(el => {
+            if (el.name == "")
+              el.name = "Unknown";
+            if (el.genre == "")
+              el.genre = "No genre";
+            if (el.description == "")
+              el.description = "No description";
 
-
+            app.search_playlists.push({ "id" : el["id"], "creator" : el.creator_username, "name" : el.name, "genre" : el.genre, 
+                                       "description" : el.description, "rating" : el.rating});
+          });
         },
-
-
-
+        searchPlaylistsFailure(req)
+        {
+          this.failureNotification("failed getting back playlists!");
+        },
+        playlistSearch()
+        {
+          let json = {"filter" : this.playlist_search_text};
+          this.make_authenticated_request(json, "POST", "/api/searchPlaylist", this.searchPlaylistsSuccess, this.searchPlaylistsFailure);
+        },
+        playlistSearchPage(val)
+        {
+          let json = {"filter" : this.playlist_search_text, "page" : this.playlist_search_pagination_idx};
+          this.make_authenticated_request(json, "POST", "/api/searchPlaylist", this.searchPlaylistsSuccess, this.searchPlaylistsFailure);
+        },
+        inspectPlaylistSuccess(req)
+        {
+            this.inspected_playlist_data = JSON.parse(req.response);
+            if (this.inspected_playlist_data["genre"] == "")
+              this.inspected_playlist_data["genre"] = "not specified";
+            if (this.inspected_playlist_data["description"] == "")
+              this.inspected_playlist_data["genre"] = "not specified";
+            
+            this.inspect_playlist = true; 
+        },
+        inspectPlaylistFailure(req)
+        {
+          this.failureNotification("could not display playlist");
+        },
+        viewPlaylist(val)
+        {
+            this.make_authenticated_request({"playlist_id" : val}, "POST", "/api/playlistView", this.inspectPlaylistSuccess, this.inspectPlaylistFailure);
+        },
     //    ___ ___   _   ___  ___ _  _     ___ ___  ___     ___  ___  _  _  ___ ___
     //   / __| __| /_\ | _ \/ __| || |   | __/ _ \| _ \   / __|/ _ \| \| |/ __/ __|
     //   \__ \ _| / _ \|   / (__| __ |   | _| (_) |   /   \__ \ (_) | .` | (_ \__ \
@@ -356,24 +404,59 @@ var app = new Vue({
 
         },
 
-
+        displaySong(val)
+        {
+            console.log(val);
+        },
      //    ____                         __         ___                  __  __
      //   / __/ ___  ___ _  ____ ____  / /        / _/ ___   ____      / / / /  ___ ___   ____  ___
      //  _\ \  / -_)/ _ `/ / __// __/ / _ \      / _/ / _ \ / __/     / /_/ /  (_-</ -_) / __/ (_-<
      // /___/  \__/ \_,_/ /_/   \__/ /_//_/     /_/   \___//_/        \____/  /___/\__/ /_/   /___/
         // retrieves ten user accounts' details upon the user entering their search
         userSearch(){
-          var data = this.user_search_text;
-          this.make_authenticated_request(data, "GET", "/api/searchUsers", this.searchUsersSuccess, this.searchUsersFailure);
+          let json = {"filter" : this.user_search_text, "page" : 1};
+          this.make_authenticated_request(json, "POST", "/api/searchUsers", this.searchUsersSuccess, this.searchUsersFailure);
         },
+        userSearchPage(val)
+        {
+          let json = {"filter" : this.user_search_text, "page" : this.user_search_pagination_idx};
+          this.make_authenticated_request(json, "POST", "/api/searchUsers", this.searchUsersSuccess, this.searchUsersFailure);
+        }, 
+        
+
+        inspectUserSuccess(req)
+        {
+          this.inspected_user_data = JSON.parse(req.response);
+          this.inspect_user = true;
+        },
+        inspectUserFailure(req)
+        {
+            this.failureNotification("Display user failed");
+        },
+
+        viewUserProfile(username)
+        {
+          this.make_authenticated_request({"username" : username}, "POST", "/api/inspectUser", this.inspectUserSuccess, this.inspectUserFailure); 
+        },
+      
         // Adds all the retrieved data in the users array
         searchUsersSuccess(req){
           data = JSON.parse(req.response);
-          var i;
-          for (i = 0; i < data.length; i++){
-            this.searchUsers[i] = data[i];
-          }
-          this.searchMade = true;
+          this.search_users = [];
+          this.user_search_pages = data["page_nums"];
+
+          data["data"].forEach(el => {
+            if (el["first_name"] === "")
+              el["first_name"] = "not specified";
+            if (el["last_name"] === "")
+              el["last_name"] = "not specified";
+            
+            if (el["location"] == "")
+              el["location"] = el["location"];
+
+              app.search_users.push({"id" : el["id"], "username" : el["username"], "first_name" : el["first_name"], 
+              "last_name" : el["last_name"], "location" : el["location"]});
+          });
         },
         searchUsersFailure(req){
           this.failureNotification("Search Failed.");
@@ -396,6 +479,8 @@ var app = new Vue({
             this.failureNotification("You aren't logged in!");
           }
         },
+
+
         // Resorts the playlists array according to the sorting parameters.
         sortCollection(){
           this.make_authenticated_request(data, "GET", "/api/userPlaylists", this.retrievePlaylistColectionSuccess, this.retrievePlaylistColectionFailure);
@@ -511,6 +596,10 @@ var app = new Vue({
         },
         playlistUpdateFailure(req){
           this.failureNotification("Failed to update playlist!");
+        },
+        Len(val)
+        {
+          return val == null ? "" : val.length; 
         }
     }
   });
@@ -575,4 +664,5 @@ function PopulateExistingTracks(number, data){
     // document.getElementById("YearInput" + i).value = data[0].year;
     // document.getElementById("TitleInput" + i).value = data[0].name;
   }
+  
 }

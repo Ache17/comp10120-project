@@ -10,6 +10,24 @@ body
     margin-right: auto;
 }
 
+.userResults
+{
+  
+}
+
+.my-card
+{
+  max-height: 200px;
+  max-width: 50%;
+  margin-left: 25%;
+}
+
+.inspect
+{
+  width: 75%;
+  height: 80%;
+}
+
 /* This is the old styling from the HTML/CSS Luke did in case we need it. */
 /* header {
 background-color: #152238;

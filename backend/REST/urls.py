@@ -11,9 +11,9 @@ urlpatterns = [path("test", views.testView.as_view()),
                path("userPlaylists", views.playlistsView.as_view()),
                path("searchPlaylist", views.searchPlaylistView.as_view()),
                path("searchUsers", views.searchUsersView.as_view()),
-               path("share", views.sharing.as_view(), name='share'),
+               path("playlistView", views.playlistView.as_view(), name='playlistView'),
                path("song", views.songView.as_view(), name="songs"),
                path("upload", views.imageUpload.as_view(), name="upload_image"),
                path("spotifyIDs", views.spotifyQuery.as_view(), name="spotify"),
                path("othersPlaylists", views.othersPlaylists.as_view(), name="others_playlists"),
-               path("retreves", views.retreves.as_view(), name="retreves")]
+               path("inspectUser", views.inspectUserInfo.as_view(), name="retreves")]
