@@ -6,7 +6,7 @@
     <q-bar class="bg-light-blue-9">
       <q-space></q-space>
       <q-btn dense flat icon="close" v-close-popup>
-        <q-tooltip content-class="bg-light-blue-9 text-white">Close</q-tooltip>
+        <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
       </q-btn>
     </q-bar>
     <q-card-section>
@@ -41,7 +41,7 @@
       <q-space></q-space>
 
       <q-btn dense flat icon="close" v-close-popup>
-        <q-tooltip content-class="bg-light-blue-9 text-white">Close</q-tooltip>
+        <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
       </q-btn>
     </q-bar>
 
@@ -89,8 +89,8 @@
 
       <q-bar class="bg-light-blue-9">
         <q-space></q-space>
-        <q-btn dense flat icon="close" v-close-popup>
-          <q-tooltip content-class="bg-light-blue-9 text-white">Close</q-tooltip>
+        <q-btn dense color="white" flat icon="close" v-close-popup>
+          <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
         </q-btn>
       </q-bar>
 
@@ -165,7 +165,7 @@
 
       <q-bar class="bg-light-blue-9">
         <q-space></q-space>
-        <q-btn dense flat icon="close" v-close-popup>
+        <q-btn dense color="white" flat icon="close" v-close-popup>
           <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
         </q-btn>
       </q-bar>
@@ -194,7 +194,7 @@
       </q-card-section>
 
       <q-card-section class="q-pt-none">
-        <div class="q-pa-md">
+        <div class="q-pa-md q-pt-md" style="background-image: url(https://i.pinimg.com/originals/0b/a8/df/0ba8dfceaa16c47b713cbed42c1e6b34.jpg); background-size: contain; height:1500px;">
           <div class="row q-col-gutter-x-xs q-col-gutter-y-lg">
             <div class="col-4" v-for="p in this.playlists" :key="p.id">
               <div class="bg-grey-8 my-content" style="height:300px">
@@ -204,26 +204,26 @@
                     <q-img src="" :ratio="1"></q-img>
                   </div>
                   <div class="col q-pa-sm">
-                    <div class="row text-h3 q-py-md q-gutter-sm">[% p.name %]</div>
+                    <div class="row text-h3 text-white q-py-md q-gutter-sm">[% p.name %]</div>
 
                     <div class="row">
-                      <div class="col">Description:</div>
-                      <div class="col q-px-sm">[% p.description %]</div>
+                      <div class="col text-white">Description:</div>
+                      <div class="col q-px-sm text-white">[% p.description %]</div>
                     </div>
                     <div class="row">
-                      <div class="col">Genre:</div>
-                      <div class="col q-px-sm">[% p.genre %]</div>
+                      <div class="col text-white">Genre:</div>
+                      <div class="col q-px-sm text-white">[% p.genre %]</div>
                     </div>
                     <div class="row">
-                      <div class="col">Number of Tracks:</div>
-                      <div class="col q-px-sm">[% p.songs.length %]</div>
+                      <div class="col text-white">Number of Tracks:</div>
+                      <div class="col q-px-sm text-white">[% p.songs.length %]</div>
                     </div>
                     <div class="row">
-                      <div class="col">Rating:</div>
-                      <div class="col q-px-sm">[% p.rating %]★</div>
+                      <div class="col text-white">Rating:</div>
+                      <div class="col q-px-sm text-white">[% p.rating %]★</div>
                     </div>
                     <div class="row">‏‏‎ ‎</div>
-                    <div class="row"><q-btn text-color="light-blue-12" color="light-blue-9" class="full-width" label="View Playlist" @click="selectPlaylist(p.id)"></q-btn></div>
+                    <div class="row"><q-btn text-color="white" color="light-blue-9" class="full-width" label="View Playlist" @click="selectPlaylist(p.id)"></q-btn></div>
                   </div>
                 </div>
               </div>
@@ -244,7 +244,7 @@
       <q-bar class="bg-light-blue-9">
         <q-space></q-space>
         <q-btn dense flat icon="close" v-close-popup>
-          <q-tooltip content-class="bg-light-blue-9 text-white">Close</q-tooltip>
+          <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
         </q-btn>
       </q-bar>
 
@@ -278,7 +278,7 @@
                   <q-input color="white" bg-color="grey-6" v-model.number="number_of_tracks" type="number" min="1" max="50" placeholder="number_of_tracks" filled style="max-width: 200px" id="number_of_tracks" onchange="TrackNumberChange();"></q-input>
                 </div>
                 <div class="col q-pa-sm">
-                  <q-checkbox v-model="public" label="Public" />
+                  <q-checkbox v-model="public" label="Public"></q-checkbox>
                 </div>
                 <div class="col q-pa-sm">
                   <q-btn label="Delete Playlist" @click="deletePlaylist" color="light-blue-9" padding="md xl"></q-btn>
@@ -338,43 +338,60 @@
         <q-tab-panel name="Playlists">
           <div class="text-h3">Search For Created Playlists</div>
           <q-card-section class="q-pt-none">
-            <q-input standout bottom-slots v-model="playlist_search_text" label="Search For Playlist Name" bg-color="grey-7" color="cyan-11">
-              <template v-slot:before>
-                <div>
-                  <q-spinner-gears color="light-blue-12" size="2em"></q-spinner-gears>
-                </div>
-              </template>
-              <template v-if="playlist_search_text" v-slot:append>
-                <q-icon name="cancel" @click.stop="playlist_search_text = null" class="cursor-pointer"></q-icon>
-              </template>
-              <template v-slot:hint>
-                <div class="text-white">
-                To Search For Songs Or Users, Change Tab!
-                <div>
-              </template>
-            </q-input>
+            <q-form @submit="playlistSearch">
+              <q-input standout bottom-slots v-model="playlist_search_text" label="Search For Playlist Name" bg-color="grey-7" color="cyan-11">
+                <template v-slot:before>
+                  <div>
+                    <q-spinner-gears color="light-blue-12" size="2em"></q-spinner-gears>
+                  </div>
+                </template>
+                <template v-if="playlist_search_text" v-slot:append>
+                  <q-icon name="cancel" @click.stop="playlist_search_text = null" class="cursor-pointer"></q-icon>
+                </template>
+                <template v-slot:hint>
+                  <div class="text-white">
+                  To Search For Songs Or Users, Change Tab!
+                  <div>
+                </template>
+              </q-input>
+            </q-form>
+          </q-card-section>
+
+          <q-card-section>
+          <div class="q-pa-md q-pt-md" style="background-image: url(https://data.whicdn.com/images/145282643/original.jpg); background-size: contain; height:70vh;">
+
+          </div>
           </q-card-section>
         </q-tab-panel>
 
         <q-tab-panel name="Songs">
           <div class="text-h3">Search For Your Favourite Songs</div>
           <q-card-section class="q-pt-none">
-            <q-input standout bottom-slots v-model="song_search_text" label="Search For Song Name" bg-color="grey-7" color="cyan-11">
-              <template v-slot:before>
-                <div>
-                  <q-spinner-audio color="light-blue-12" size="2em"></q-spinner-audio>
-                </div>
-              </template>
-              <template v-if="song_search_text" v-slot:append>
-                <q-icon name="cancel" @click.stop="song_search_text = null" class="cursor-pointer"></q-icon>
-              </template>
-              <template v-slot:hint>
-                <div class="text-white">
-                To Search For Playlists Or Users, Change Tab!
-                </div>
-              </template>
-            </q-input>
+            <q-form @submit="songSearch">
+              <q-input standout bottom-slots v-model="song_search_text" label="Search For Song Name" bg-color="grey-7" color="cyan-11">
+                <template v-slot:before>
+                  <div>
+                    <q-spinner-audio color="light-blue-12" size="2em"></q-spinner-audio>
+                  </div>
+                </template>
+                <template v-if="song_search_text" v-slot:append>
+                  <q-icon name="cancel" @click.stop="song_search_text = null" class="cursor-pointer"></q-icon>
+                </template>
+                <template v-slot:hint>
+                  <div class="text-white">
+                  To Search For Playlists Or Users, Change Tab!
+                  </div>
+                </template>
+              </q-input>
+            </q-form>
           </q-card-section>
+
+          <q-card-section>
+          <div class="q-pa-md q-pt-md" style="background-image: url(https://unlocktheguitar.net/wp-content/uploads/2017/04/guitarstock.jpg); background-size: contain; height:70vh;">
+
+          </div>
+          </q-card-section>
+
         </q-tab-panel>
 
         <q-tab-panel name="Users">
@@ -398,39 +415,71 @@
                 </template>
               </q-input>
             </q-form>
+          </q-card-section>
 
-            <div class="q-pa-md">
-              <q-list v-show="searchMade" bordered separator style="max-width: 50%">
-                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(0); profile_dialog = true;">
+          <q-card-section>      <!-- NOTE WHEN A NAME IS GIVEN TO AN ACCOUNT, THE TEXT ALLIGNS AS IT SHOULD IN THE CENTER. THERE IS AN ISSUE WHEN AN ACCOUNT HAS NO NAME -->
+            <div class="q-pa-md q-pt-md" style="background-image: url(https://images.pexels.com/photos/761543/pexels-photo-761543.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260); background-size: contain; height:70vh;">
+              <q-list v-show="searchMade" bordered class="text-center" separator style="max-width: 100%; min-height=100%;">
+                <div class="row">
+                <div class="col">
+                <q-item class="bg-grey-8 text-left text-weight-medium text-subtitle1" style="height: 20px"rounded clickable v-ripple @click="selectUser(0); profile_dialog = true;">
                   <q-item-section>Username: [% searchUsers[0].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[0].first_name %]‏‏‎ ‎ [% searchUsers[0].last_name %]</q-item-section>
                 </q-item>
-                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(1); profile_dialog = true;">
+                </div>
+                <div class="col">
+                <q-item class="bg-grey-8 text-left text-weight-medium text-subtitle1" style="height: 20px" rounded clickable v-ripple @click="selectUser(1); profile_dialog = true;">
                   <q-item-section>Username: [% searchUsers[1].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[1].first_name %]‏‏‎ ‎ [% searchUsers[1].last_name %]</q-item-section>
                 </q-item>
-                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(2); profile_dialog = true;">
+                </div>
+                </div>
+                <div class="row">
+                <div class="col">
+                <q-item class="bg-grey-8 text-left text-weight-medium text-subtitle1" style="height: 20px" rounded clickable v-ripple @click="selectUser(2); profile_dialog = true;">
                   <q-item-section>Username: [% searchUsers[2].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[2].first_name %]‏‏‎ ‎ [% searchUsers[2].last_name %]</q-item-section>
                 </q-item>
-                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(3); profile_dialog = true;">
+                </div>
+                <div class="col">
+                <q-item class="bg-grey-8 text-left text-weight-medium text-subtitle1"style="height: 20px" rounded clickable v-ripple @click="selectUser(3); profile_dialog = true;">
                   <q-item-section>Username: [% searchUsers[3].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[3].first_name %]‏‏‎ ‎ [% searchUsers[3].last_name %]</q-item-section>
                 </q-item>
-                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(4); profile_dialog = true;">
+                </div>
+                </div>
+                <div class ="row">
+                <div class="col">
+                <q-item class="bg-grey-8 text-left text-weight-medium text-subtitle1" style="height: 20px" rounded clickable v-ripple @click="selectUser(4); profile_dialog = true;">
                   <q-item-section>Username: [% searchUsers[4].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[4].first_name %]‏‏‎ ‎ [% searchUsers[4].last_name %]</q-item-section>
                 </q-item>
-                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(5); profile_dialog = true;">
+                </div>
+                <div class="col">
+                <q-item class="bg-grey-8 text-left text-weight-medium text-subtitle1" style="height: 20px" rounded clickable v-ripple @click="selectUser(5); profile_dialog = true;">
                   <q-item-section>Username: [% searchUsers[5].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[5].first_name %]‏‏‎ ‎ [% searchUsers[5].last_name %]</q-item-section>
                 </q-item>
-                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(6); profile_dialog = true;">
+                </div>
+                </div>
+                <div class="row">
+                <div class="col">
+                <q-item class="bg-grey-8 text-left text-weight-medium text-subtitle1" style="height: 20px" rounded clickable v-ripple @click="selectUser(6); profile_dialog = true;">
                   <q-item-section>Username: [% searchUsers[6].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[6].first_name %]‏‏‎ ‎ [% searchUsers[6].last_name %]</q-item-section>
                 </q-item>
-                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(7); profile_dialog = true;">
+                </div>
+                <div class="col">
+                <q-item class="bg-grey-8 text-left text-weight-medium text-subtitle1" style="height: 20px" rounded clickable v-ripple @click="selectUser(7); profile_dialog = true;">
                   <q-item-section>Username: [% searchUsers[7].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[7].first_name %]‏‏‎ ‎ [% searchUsers[7].last_name %]</q-item-section>
                 </q-item>
-                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(8); profile_dialog = true;">
+                </div>
+                </div>
+                <div class="row">
+                <div class="col">
+                <q-item class="bg-grey-8 text-left text-weight-medium text-subtitle1" style="height: 20px" rounded clickable v-ripple @click="selectUser(8); profile_dialog = true;">
                   <q-item-section>Username: [% searchUsers[8].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[8].first_name %]‏‏‎ ‎ [% searchUsers[8].last_name %]</q-item-section>
                 </q-item>
-                <q-item class="bg-blue-2 text-left text-weight-medium text-subtitle1" rounded clickable v-ripple @click="selectUser(9); profile_dialog = true;">
+                </div>
+                <div class="col">
+                <q-item class="bg-grey-8 text-left text-weight-medium text-subtitle1" style="height: 20px" rounded clickable v-ripple @click="selectUser(9); profile_dialog = true;">
                   <q-item-section>Username: [% searchUsers[9].username %] ‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Name: [% searchUsers[9].first_name %]‏‏‎ ‎ [% searchUsers[9].last_name %]</q-item-section>
                 </q-item>
+                </div>
+                </div>
               </q-list>
             </div>
 
@@ -480,8 +529,8 @@
 
       <q-bar class="bg-light-blue-9">
         <q-space></q-space>
-        <q-btn dense flat icon="close" v-close-popup>
-          <q-tooltip content-class="bg-light-blue-10 text-white">Close</q-tooltip>
+        <q-btn color="white" dense flat icon="close" v-close-popup>
+          <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
         </q-btn>
       </q-bar>
 
@@ -495,23 +544,23 @@
             <div class="col q-pa-sm">
               <div class="row">
                 <div class="col q-px-sm">
-                  <q-input bg-color="blue-grey-2" color="blue-9" filled v-model="username_f" label="Username" lazy-rules :rules="[ val => val && val.length > 0 || 'Please enter a valid username.']" :readonly="!profile_edit"></q-input>
+                  <q-input bg-color="grey-4" color="blue-9" filled v-model="username_f" label="Username" lazy-rules :rules="[ val => val && val.length > 0 || 'Please enter a valid username.']" :readonly="!profile_edit"></q-input>
                 </div>
                 <div class="col q-px-sm">
-                  <q-input bg-color="blue-grey-2" color="blue-9" filled v-model="mail_f" label="Email" :readonly="!profile_edit"></q-input>
+                  <q-input bg-color="grey-4" color="blue-9" filled v-model="mail_f" label="Email" :readonly="!profile_edit"></q-input>
                 </div>
                 <div class="col q-px-sm">
-                  <q-input bg-color="blue-grey-2" color="blue-9" filled v-model="loc" label="Location (Country)" :readonly="!profile_edit"></q-input>
+                  <q-input bg-color="grey-4" color="blue-9" filled v-model="loc" label="Location (Country)" :readonly="!profile_edit"></q-input>
                 </div>
               </div>
 
 
               <div class="row">
                 <div class="col q-px-sm">
-                  <q-input bg-color="blue-grey-2" color="blue-9" filled v-model="first_name" label="First Name" :readonly="!profile_edit"></q-input>
+                  <q-input bg-color="grey-4" color="blue-9" filled v-model="first_name" label="First Name" :readonly="!profile_edit"></q-input>
                 </div>
                 <div class="col q-px-sm">
-                  <q-input bg-color="blue-grey-2" color="blue-9" filled v-model="last_name" label="Last Name" :readonly="!profile_edit"></q-input>
+                  <q-input bg-color="grey-4" color="blue-9" filled v-model="last_name" label="Last Name" :readonly="!profile_edit"></q-input>
                 </div>
                 <div class="col q-pa-sm text-white">
                   <q-toggle v-model="profile_edit" text-white color="light-blue-6" label="Toggle Edit"></q-toggle>
@@ -555,36 +604,27 @@
             <div>Following</div>
           </div>
         </div>
+        </q-card-section>
 
-        <div class="q-pa-md q-gutter-md">
-        <div class="row justify-between">
-        <q-parallax :height="1300" src="static/images/accountBackground.jpg" alt="Background" label="AccountBackground">  <!-- Not Full Working Yet -->
-          <div class="row">
-
-            <div class="q-ma-md">
-              <q-scroll-area :bar-style="barStyle" class="bg-grey-2" visible style="height: 200px; max-width: 500px;">
-                <div v-for="n in 100" :key="n" class="q-pa-xs">
-                  Words
+        <q-card-section>
+          <div class="q-ma-md row no-wrap" style="background-image: url(https://images.pexels.com/photos/6966/abstract-music-rock-bw.jpg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260); background-size: contain; height:850px;">
+              <q-scroll-area visible style="height: 500px; width: 30%;" class="col text-light-blue-9 q-pr-lg q-pt-xl">
+                <div v-for="n in 100" :key="n" class="q-py-xs text-center">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing
+                  elit, sed do eiusmod tempor incididunt ut labore et
+                  dolore magna aliqua.                                                                                    <!-- NEED TO CHOOSE TEXT COLOUR FOR HERE -->
+                </div>
+              </q-scroll-area>
+              <q-scroll-area visible style="height: 500px; width: 30%;" class="col q-pl-lg q-pt-xl">
+                <div v-for="n in 100" :key="n" class="q-py-xs text-center">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing
+                  elit, sed do eiusmod tempor incididunt ut labore et
+                  dolore magna aliqua.
                 </div>
               </q-scroll-area>
             </div>
-
-
-            <div class="q-ma-md">
-              <q-scroll-area :bar-style="barStyle" class="bg-grey-2" visible style="height: 200px; max-width: 500px;">
-                <div v-for="n in 100" :key="n" class="q-pa-xs">
-                  Words
-                </div>
-              </q-scroll-area>
-
-            </div>
-            </div>
-      </q-parallax>
-      </div>
-      </div>
-
-
       </q-card-section>
+
     </q-card>
   </q-dialog>
 </div>
@@ -678,9 +718,9 @@
 {% block about_us %}
 <div>
   <q-dialog v-model="about_us_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
-    <q-card class="bg-blue-grey-2 text-black">
+    <q-card class="bg-grey-9 text-white">
 
-      <q-bar class="bg-light-blue-9">
+      <q-bar class="bg-light-blue-12">
         <q-space></q-space>
         <q-btn dense flat icon="close" v-close-popup>
           <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
@@ -688,20 +728,29 @@
       </q-bar>
 
       <q-card-section>
-        <div class="text-h6 text-center">Our Introduction</div>
+        <div class="text-h6 text-center text-weight-medium">About Us</div>
       </q-card-section>
 
-      <q-card-section class="q-pt-none">
-        We are students at the University of Manchester in the UK and we created SongSpace
+      <q-card-section class="text-h8 text-center text-weight-light q-py-sm">
+        We are First-Year Undergraduate Students of Computer Science at the University of Manchester (UK).
         <br><br>
-        This is a website that helps you manage and display your music list
-        <br><br>
-        You can use SongSpace to fully manage and enjoy music.
-        <br><br>
-        SongSpace provides an alternative means of creating, viewing, and sorting your actual playlists. You can post your custom to make playlists to a public space, which can then be reviewed by other users on the site.
-        <br><br>
-        You are welcome to contact us at any time.
+        We are pleased to present our web application SongSpace which has been
+        under development from Feb - April 2021. SongSpace intends to provide a
+        subscription-independent means of creating and sharing playlists with others.
       </q-card-section>
+
+      <q-card-section class="text-h8 text-center text-weight-light q-py-sm">
+        <q-img src="static/images/RecordsHeadphones.jpg" alt="Background" label="Background">
+      </q-card-section>
+
+      <q-card-section class="text-h8 text-center text-weight-light q-py-sm">
+        SongSpace allows you to create, view, and share your playlists with other users
+        without having to worry about whether you're using the same streaming platform.
+        <br><br>
+        Please feel free to contact us with any queries or suggestions.
+        <br>
+      </q-card-section>
+
     </q-card>
   </q-dialog>
 </div>
@@ -711,9 +760,9 @@
 {% block contact_us %}
 <div>
   <q-dialog v-model="contact_us_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
-    <q-card class="bg-blue-grey-2 text-black">
+    <q-card class="bg-grey-9 text-white">
 
-      <q-bar class="bg-light-blue-9">
+      <q-bar class="bg-light-blue-12">
         <q-space></q-space>
         <q-btn dense flat icon="close" v-close-popup>
           <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
@@ -721,21 +770,23 @@
       </q-bar>
 
       <q-card-section>
-        <div class="text-h4 text-center">Our Address</div>
+        <div class="text-h6 text-center text-weight-medium">Contact Us</div>
       </q-card-section>
 
-      <q-card-section class="text-h20 text-center">
-        The University of Manchester
-        <br>
-        Oxford Rd
-        <br>
-        Manchester
-        <br>
-        M13 9PL
-        <br>
-        UK
-
+      <q-card-section class="text-h8 text-center text-weight-light q-py-sm">
+        If you would like to contact our team regarding this website, please
+        direct your queries towards the Department of Computer Science. Contact
+        details may be found
+        <a style="color: white;" target="_blank" href = "https://www.cs.manchester.ac.uk/connect/contact/">here</a>.
       </q-card-section>
+
+      <q-card-section class="text-h8 text-center text-weight-light q-py-sm">
+        <q-img src="static/images/Talking.jpg" alt="Background" label="Background">
+      </q-card-section>
+
+      <q-card-section class="text-h8 text-center text-weight-light q-py-sm">
+      </q-card-section>
+
     </q-card>
   </q-dialog>
 </div>
@@ -745,9 +796,9 @@
 {% block ethics %}
 <div>
   <q-dialog v-model="ethics_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
-    <q-card class="bg-blue-grey-2 text-black">
+    <q-card class="bg-grey-9 text-white">
 
-      <q-bar class="bg-light-blue-9">
+      <q-bar class="bg-light-blue-12">
         <q-space></q-space>
         <q-btn dense flat icon="close" v-close-popup>
           <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
@@ -755,15 +806,23 @@
       </q-bar>
 
       <q-card-section>
-        <div class="text-h6 text-center">SongSpace Ethics</div>
+        <div class="text-h6 text-center text-weight-medium">Ethics</div>
       </q-card-section>
 
-      <q-card-section class="q-pt-none">
-          This application was made following the ACM Code of Ethics and Professional Conduct, which can be found at the following link:
-          <a style="color: black;" href = "https://www.acm.org/code-of-ethics">https://www.acm.org/code-of-ethics.</a><br>
-          A happy and hardworking team spirit was of upmost importance throughout the development of this application.
-
+      <q-card-section class="text-h8 text-center text-weight-light q-py-sm">
+        This web application was developed in accordance with the ACM Code of
+        Ethics and Professional Conduct, which instructed our development
+        practices and considerations. This can be found
+        <a style="color: white;" target="_blank" href = "https://www.acm.org/code-of-ethics">here</a>.
       </q-card-section>
+
+      <q-card-section class="text-h8 text-center text-weight-light q-py-sm">
+        <q-img src="static/images/Teamwork.jpg" alt="Background" label="Background">
+      </q-card-section>
+
+      <q-card-section class="text-h8 text-center text-weight-light q-py-sm">
+      </q-card-section>
+
     </q-card>
   </q-dialog>
 </div>
@@ -773,9 +832,9 @@
 {% block external %}
 <div>
   <q-dialog v-model="external_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
-    <q-card class="bg-blue-grey-2 text-black">
+    <q-card class="bg-grey-9 text-white">
 
-      <q-bar class="bg-light-blue-9">
+      <q-bar class="bg-light-blue-12">
         <q-space></q-space>
         <q-btn dense flat icon="close" v-close-popup>
           <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
@@ -783,17 +842,31 @@
       </q-bar>
 
       <q-card-section>
-        <div class="text-h6 text-center">External Links From Our Site</div>
+        <div class="text-h6 text-center text-weight-medium">Disclaimer on External Links</div>
       </q-card-section>
 
-      <q-card-section class="q-pt-none">
-        Please note this website may also include links to other websites. These links are provided for your convenience to provide further information.
-        They do not signify that we endorse the website(s). We have no responsibility for the content of the linked website(s).
-          <br><br>
-        Although we make every effort to ensure these external links are accurate, up to date and relevant, SongSpace cannot take responsibility for pages maintained by external providers.
-          <br><br>
-        If you come across any outdated or broken links, please <a style= "color: black;" href="mailto:luke.deaves-jarvis@student.manchester.ac.uk">contact our team</a> immediately.
+      <q-card-section class="text-h8 text-center text-weight-light q-py-sm">
+        Please note this website may also include links to other websites.
+        These links are provided for your convenience to provide further
+        information. They do not signify that we endorse the website(s).
+        We have no responsibility for the content of the linked website(s).
       </q-card-section>
+
+      <q-card-section class="text-h8 text-center text-weight-light q-py-sm">
+        <q-img src="static/images/Links.jpg" alt="Background" label="Background">
+      </q-card-section>
+
+      <q-card-section class="text-h8 text-center text-weight-light q-py-sm">
+        Although we make every effort to ensure these external links are
+        accurate, up to date and relevant, SongSpace cannot take responsibility
+        for pages maintained by external providers.
+        <br><br>
+        If you come across any outdated or broken links, please
+        <a style= "color: white;"
+        href="mailto:luke.deaves-jarvis@student.manchester.ac.uk">
+        contact our team</a> immediately.
+      </q-card-section>
+
     </q-card>
   </q-dialog>
 </div>
@@ -802,9 +875,9 @@
 {% block ownership %}
 <div>
   <q-dialog v-model="ownership_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
-    <q-card class="bg-blue-grey-2 text-black">
+    <q-card class="bg-grey-9 text-white">
 
-      <q-bar class="bg-light-blue-9">
+      <q-bar class="bg-light-blue-12">
         <q-space></q-space>
         <q-btn dense flat icon="close" v-close-popup>
           <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
@@ -812,19 +885,32 @@
       </q-bar>
 
       <q-card-section>
-        <div class="text-h6 text-center">Ownership Of The Site</div>
+        <div class="text-h6 text-center text-weight-medium">Site Ownership</div>
       </q-card-section>
 
-      <q-card-section class="q-pt-none">
-        This website contains material which is owned by or licensed to us. This material includes, but is not limited to, the design, layout, look, appearance and graphics.<br>
+      <q-card-section class="text-h8 text-center text-weight-light q-py-sm">
+        This website contains material which is owned by or licensed to us.
+        This material includes, but is not limited to, the design, layout,
+        ook, appearance and graphics.
+        <br>
         Copyright © 2021 SongSpace, All Rights Reserved.
-          <br><br>
-        Neither we nor any third parties provide any warranty or guarantee as to the accuracy, timeliness, performance, completeness or suitability of the information
-        and materials found or offered on this website for any particular purpose. You acknowledge that such information and materials may contain inaccuracies or errors
-        and we expressly exclude liability for any such inaccuracies or errors to the fullest extent permitted by law.
-          <br><br>
-        The content of the pages of this website is for your general information and use only. It is subject to change without notice.
       </q-card-section>
+
+      <q-card-section class="text-h8 text-center text-weight-light q-py-sm">
+        Neither we nor any third parties provide any warranty or guarantee as
+        to the accuracy, timeliness, performance, completeness or suitability
+        of the information and materials found or offered on this website for
+        any particular purpose. You acknowledge that such information and
+        materials may contain inaccuracies or errors and we expressly exclude
+        liability for any such inaccuracies or errors to the fullest extent
+        permitted by law.
+      </q-card-section>
+
+      <q-card-section class="text-h8 text-center text-weight-light q-py-sm">
+        The content of the pages of this website is for your general information
+        and use only. It is subject to change without notice.
+      </q-card-section>
+
     </q-card>
   </q-dialog>
 </div>
