@@ -194,7 +194,7 @@
       </q-card-section>
 
       <q-card-section class="q-pt-none">
-        <div class="q-pa-md">
+        <div class="q-pa-md q-pt-md" style="background-image: url(https://i.pinimg.com/originals/0b/a8/df/0ba8dfceaa16c47b713cbed42c1e6b34.jpg); background-size: contain; height:1500px;">
           <div class="row q-col-gutter-x-xs q-col-gutter-y-lg">
             <div class="col-4" v-for="p in this.playlists" :key="p.id">
               <div class="bg-grey-8 my-content" style="height:300px">
@@ -204,26 +204,26 @@
                     <q-img src="" :ratio="1"></q-img>
                   </div>
                   <div class="col q-pa-sm">
-                    <div class="row text-h3 q-py-md q-gutter-sm">[% p.name %]</div>
+                    <div class="row text-h3 text-white q-py-md q-gutter-sm">[% p.name %]</div>
 
                     <div class="row">
-                      <div class="col">Description:</div>
-                      <div class="col q-px-sm">[% p.description %]</div>
+                      <div class="col text-white">Description:</div>
+                      <div class="col q-px-sm text-white">[% p.description %]</div>
                     </div>
                     <div class="row">
-                      <div class="col">Genre:</div>
-                      <div class="col q-px-sm">[% p.genre %]</div>
+                      <div class="col text-white">Genre:</div>
+                      <div class="col q-px-sm text-white">[% p.genre %]</div>
                     </div>
                     <div class="row">
-                      <div class="col">Number of Tracks:</div>
-                      <div class="col q-px-sm">[% p.songs.length %]</div>
+                      <div class="col text-white">Number of Tracks:</div>
+                      <div class="col q-px-sm text-white">[% p.songs.length %]</div>
                     </div>
                     <div class="row">
-                      <div class="col">Rating:</div>
-                      <div class="col q-px-sm">[% p.rating %]★</div>
+                      <div class="col text-white">Rating:</div>
+                      <div class="col q-px-sm text-white">[% p.rating %]★</div>
                     </div>
                     <div class="row">‏‏‎ ‎</div>
-                    <div class="row"><q-btn text-color="light-blue-12" color="light-blue-9" class="full-width" label="View Playlist" @click="selectPlaylist(p.id)"></q-btn></div>
+                    <div class="row"><q-btn text-color="white" color="light-blue-9" class="full-width" label="View Playlist" @click="selectPlaylist(p.id)"></q-btn></div>
                   </div>
                 </div>
               </div>
@@ -278,7 +278,7 @@
                   <q-input color="white" bg-color="grey-6" v-model.number="number_of_tracks" type="number" min="1" max="50" placeholder="number_of_tracks" filled style="max-width: 200px" id="number_of_tracks" onchange="TrackNumberChange();"></q-input>
                 </div>
                 <div class="col q-pa-sm">
-                  <q-checkbox v-model="public" label="Public" />
+                  <q-checkbox v-model="public" label="Public"></q-checkbox>
                 </div>
                 <div class="col q-pa-sm">
                   <q-btn label="Delete Playlist" @click="deletePlaylist" color="light-blue-9" padding="md xl"></q-btn>
@@ -383,7 +383,7 @@
           </q-card-section>
 
           <q-card-section>
-          <div class="q-pa-md q-pt-md" style="background-image: url(https://images.pexels.com/photos/761543/pexels-photo-761543.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260); background-size: contain; height:850px;">
+          <div class="q-pa-md q-pt-md" style="background-image: url(https://unlocktheguitar.net/wp-content/uploads/2017/04/guitarstock.jpg); background-size: contain; height:850px;">
 
           </div>
           </q-card-section>
@@ -414,7 +414,7 @@
           </q-card-section>
 
           <q-card-section>      <!-- NOTE WHEN A NAME IS GIVEN TO AN ACCOUNT, THE TEXT ALLIGNS AS IT SHOULD IN THE CENTER. THERE IS AN ISSUE WHEN AN ACCOUNT HAS NO NAME -->
-            <div class="q-pa-md q-pt-md" style="background-image: url(https://clubbable.blob.core.windows.net/medias/The-Jane-?timestamp=636753881080763908); background-size: contain; height:850px;"> <!-- WILL CHANGE THIS IMAGE -->
+            <div class="q-pa-md q-pt-md" style="background-image: url(https://images.pexels.com/photos/761543/pexels-photo-761543.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260); background-size: contain; height:850px;">
               <q-list v-show="searchMade" bordered class="text-center" separator style="max-width: 100%; min-height=100%;">
                 <div class="row">
                 <div class="col">
