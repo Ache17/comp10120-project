@@ -714,9 +714,9 @@
 {% block about_us %}
 <div>
   <q-dialog v-model="about_us_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
-    <q-card class="bg-blue-grey-2 text-black">
+    <q-card class="bg-grey-9 text-white">
 
-      <q-bar class="bg-light-blue-9">
+      <q-bar class="bg-light-blue-12">
         <q-space></q-space>
         <q-btn dense flat icon="close" v-close-popup>
           <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
@@ -724,20 +724,29 @@
       </q-bar>
 
       <q-card-section>
-        <div class="text-h6 text-center">Our Introduction</div>
+        <div class="text-h6 text-center text-weight-medium">About Us</div>
       </q-card-section>
 
-      <q-card-section class="q-pt-none">
-        We are students at the University of Manchester in the UK and we created SongSpace
+      <q-card-section class="text-h8 text-center text-weight-light q-py-sm">
+        We are First-Year Undergraduate Students of Computer Science at the University of Manchester (UK).
         <br><br>
-        This is a website that helps you manage and display your music list
-        <br><br>
-        You can use SongSpace to fully manage and enjoy music.
-        <br><br>
-        SongSpace provides an alternative means of creating, viewing, and sorting your actual playlists. You can post your custom to make playlists to a public space, which can then be reviewed by other users on the site.
-        <br><br>
-        You are welcome to contact us at any time.
+        We are pleased to present our web application SongSpace which has been
+        under development from Feb - April 2021. SongSpace intends to provide a
+        subscription-independent means of creating and sharing playlists with others.
       </q-card-section>
+
+      <q-card-section class="text-h8 text-center text-weight-light q-py-sm">
+        <q-img src="static/images/RecordsHeadphones.jpg" alt="Background" label="Background">
+      </q-card-section>
+
+      <q-card-section class="text-h8 text-center text-weight-light q-py-sm">
+        SongSpace allows you to create, view, and share your playlists with other users
+        without having to worry about whether you're using the same streaming platform.
+        <br><br>
+        Please feel free to contact us with any queries or suggestions.
+        <br>
+      </q-card-section>
+
     </q-card>
   </q-dialog>
 </div>
@@ -747,9 +756,9 @@
 {% block contact_us %}
 <div>
   <q-dialog v-model="contact_us_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
-    <q-card class="bg-blue-grey-2 text-black">
+    <q-card class="bg-grey-9 text-white">
 
-      <q-bar class="bg-light-blue-9">
+      <q-bar class="bg-light-blue-12">
         <q-space></q-space>
         <q-btn dense flat icon="close" v-close-popup>
           <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
@@ -757,21 +766,23 @@
       </q-bar>
 
       <q-card-section>
-        <div class="text-h4 text-center">Our Address</div>
+        <div class="text-h6 text-center text-weight-medium">Contact Us</div>
       </q-card-section>
 
-      <q-card-section class="text-h20 text-center">
-        The University of Manchester
-        <br>
-        Oxford Rd
-        <br>
-        Manchester
-        <br>
-        M13 9PL
-        <br>
-        UK
-
+      <q-card-section class="text-h8 text-center text-weight-light q-py-sm">
+        If you would like to contact our team regarding this website, please
+        direct your queries towards the Department of Computer Science. Contact
+        details may be found
+        <a style="color: white;" target="_blank" href = "https://www.cs.manchester.ac.uk/connect/contact/">here</a>.
       </q-card-section>
+
+      <q-card-section class="text-h8 text-center text-weight-light q-py-sm">
+        <q-img src="static/images/Talking.jpg" alt="Background" label="Background">
+      </q-card-section>
+
+      <q-card-section class="text-h8 text-center text-weight-light q-py-sm">
+      </q-card-section>
+
     </q-card>
   </q-dialog>
 </div>
@@ -781,9 +792,9 @@
 {% block ethics %}
 <div>
   <q-dialog v-model="ethics_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
-    <q-card class="bg-blue-grey-2 text-black">
+    <q-card class="bg-grey-9 text-white">
 
-      <q-bar class="bg-light-blue-9">
+      <q-bar class="bg-light-blue-12">
         <q-space></q-space>
         <q-btn dense flat icon="close" v-close-popup>
           <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
@@ -791,15 +802,23 @@
       </q-bar>
 
       <q-card-section>
-        <div class="text-h6 text-center">SongSpace Ethics</div>
+        <div class="text-h6 text-center text-weight-medium">Ethics</div>
       </q-card-section>
 
-      <q-card-section class="q-pt-none">
-          This application was made following the ACM Code of Ethics and Professional Conduct, which can be found at the following link:
-          <a style="color: black;" href = "https://www.acm.org/code-of-ethics">https://www.acm.org/code-of-ethics.</a><br>
-          A happy and hardworking team spirit was of upmost importance throughout the development of this application.
-
+      <q-card-section class="text-h8 text-center text-weight-light q-py-sm">
+        This web application was developed in accordance with the ACM Code of
+        Ethics and Professional Conduct, which instructed our development
+        practices and considerations. This can be found
+        <a style="color: white;" target="_blank" href = "https://www.acm.org/code-of-ethics">here</a>.
       </q-card-section>
+
+      <q-card-section class="text-h8 text-center text-weight-light q-py-sm">
+        <q-img src="static/images/Teamwork.jpg" alt="Background" label="Background">
+      </q-card-section>
+
+      <q-card-section class="text-h8 text-center text-weight-light q-py-sm">
+      </q-card-section>
+
     </q-card>
   </q-dialog>
 </div>
@@ -809,9 +828,9 @@
 {% block external %}
 <div>
   <q-dialog v-model="external_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
-    <q-card class="bg-blue-grey-2 text-black">
+    <q-card class="bg-grey-9 text-white">
 
-      <q-bar class="bg-light-blue-9">
+      <q-bar class="bg-light-blue-12">
         <q-space></q-space>
         <q-btn dense flat icon="close" v-close-popup>
           <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
@@ -819,17 +838,31 @@
       </q-bar>
 
       <q-card-section>
-        <div class="text-h6 text-center">External Links From Our Site</div>
+        <div class="text-h6 text-center text-weight-medium">Disclaimer on External Links</div>
       </q-card-section>
 
-      <q-card-section class="q-pt-none">
-        Please note this website may also include links to other websites. These links are provided for your convenience to provide further information.
-        They do not signify that we endorse the website(s). We have no responsibility for the content of the linked website(s).
-          <br><br>
-        Although we make every effort to ensure these external links are accurate, up to date and relevant, SongSpace cannot take responsibility for pages maintained by external providers.
-          <br><br>
-        If you come across any outdated or broken links, please <a style= "color: black;" href="mailto:luke.deaves-jarvis@student.manchester.ac.uk">contact our team</a> immediately.
+      <q-card-section class="text-h8 text-center text-weight-light q-py-sm">
+        Please note this website may also include links to other websites.
+        These links are provided for your convenience to provide further
+        information. They do not signify that we endorse the website(s).
+        We have no responsibility for the content of the linked website(s).
       </q-card-section>
+
+      <q-card-section class="text-h8 text-center text-weight-light q-py-sm">
+        <q-img src="static/images/Links.jpg" alt="Background" label="Background">
+      </q-card-section>
+
+      <q-card-section class="text-h8 text-center text-weight-light q-py-sm">
+        Although we make every effort to ensure these external links are
+        accurate, up to date and relevant, SongSpace cannot take responsibility
+        for pages maintained by external providers.
+        <br><br>
+        If you come across any outdated or broken links, please
+        <a style= "color: white;"
+        href="mailto:luke.deaves-jarvis@student.manchester.ac.uk">
+        contact our team</a> immediately.
+      </q-card-section>
+
     </q-card>
   </q-dialog>
 </div>
@@ -838,9 +871,9 @@
 {% block ownership %}
 <div>
   <q-dialog v-model="ownership_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
-    <q-card class="bg-blue-grey-2 text-black">
+    <q-card class="bg-grey-9 text-white">
 
-      <q-bar class="bg-light-blue-9">
+      <q-bar class="bg-light-blue-12">
         <q-space></q-space>
         <q-btn dense flat icon="close" v-close-popup>
           <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
@@ -848,19 +881,32 @@
       </q-bar>
 
       <q-card-section>
-        <div class="text-h6 text-center">Ownership Of The Site</div>
+        <div class="text-h6 text-center text-weight-medium">Site Ownership</div>
       </q-card-section>
 
-      <q-card-section class="q-pt-none">
-        This website contains material which is owned by or licensed to us. This material includes, but is not limited to, the design, layout, look, appearance and graphics.<br>
+      <q-card-section class="text-h8 text-center text-weight-light q-py-sm">
+        This website contains material which is owned by or licensed to us.
+        This material includes, but is not limited to, the design, layout,
+        ook, appearance and graphics.
+        <br>
         Copyright © 2021 SongSpace, All Rights Reserved.
-          <br><br>
-        Neither we nor any third parties provide any warranty or guarantee as to the accuracy, timeliness, performance, completeness or suitability of the information
-        and materials found or offered on this website for any particular purpose. You acknowledge that such information and materials may contain inaccuracies or errors
-        and we expressly exclude liability for any such inaccuracies or errors to the fullest extent permitted by law.
-          <br><br>
-        The content of the pages of this website is for your general information and use only. It is subject to change without notice.
       </q-card-section>
+
+      <q-card-section class="text-h8 text-center text-weight-light q-py-sm">
+        Neither we nor any third parties provide any warranty or guarantee as
+        to the accuracy, timeliness, performance, completeness or suitability
+        of the information and materials found or offered on this website for
+        any particular purpose. You acknowledge that such information and
+        materials may contain inaccuracies or errors and we expressly exclude
+        liability for any such inaccuracies or errors to the fullest extent
+        permitted by law.
+      </q-card-section>
+
+      <q-card-section class="text-h8 text-center text-weight-light q-py-sm">
+        The content of the pages of this website is for your general information
+        and use only. It is subject to change without notice.
+      </q-card-section>
+
     </q-card>
   </q-dialog>
 </div>

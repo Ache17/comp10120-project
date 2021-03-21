@@ -2,6 +2,7 @@ let test;
 
 var app = new Vue({
     el: '#app',
+
     data: {
         message : "Hello world!",
         left : false,
@@ -20,11 +21,13 @@ var app = new Vue({
         login_dialog : false,
         register_dialog: false,
         new_password_dialog: false,
+        // Login / Signup Details
         username : "",
         password : "",
         mail : "",
         isPwd : true,
         token : "",
+        // Playlist creation details, some reused for playlist editing.
         playlist_title : "",
         playlist_genre : "",
         playlist_description : "",
@@ -32,10 +35,12 @@ var app = new Vue({
         public: false,
         private: false,
         dense: true,
+        // Search tab details.
         playlist_search_text: "",
         song_search_text: "",
         user_search_text: "",
         tab: true,
+        // Account Details (when you view / edit your own profile)
         loc: "",
         first_name: "",
         last_name: "",
@@ -72,20 +77,21 @@ var app = new Vue({
           searchMade: false,
           profile_dialog: false,
           current_profile: 0,
+          // Viewing Playlist Collection Stuff
           playlists: [],
-
           // image_name: "",
           playlist_image: null,
           view_own_playlist_dialog: false,
           current_playlist: {},
           sort_filter: "",
+          // Sorting Through Album Collection
           sort_options: ["Playlist Title [Alphabetical]", "Users' Ratings", "Genre [Alphabetical]"],
           sort_selection: "Playlist Title [Alphabetical]",
           order_options: ["Ascending", "Descending"],
           order_selection: "Ascending",
-          populated: false,
-          tracks_shown: false
+          populated: false
     },
+
     delimiters: ['[%', '%]'],
 
     methods:
@@ -98,6 +104,8 @@ var app = new Vue({
         // {
         //     return document.location.origin + "/api/upload";
         // },
+        // Generic response messages which can be called and the message is
+        // passed through as the msg parameter.
         sucessNotification(msg)
         {
             app.$q.notify({type : "positive", message : msg});
@@ -106,6 +114,7 @@ var app = new Vue({
         {
             app.$q.notify({type : "negative", message : msg});
         },
+        // Success message, closes tab.
         playlistSubmissionSuccess(req)
         {
           app.$q.notify({ type : "positive", message : "Playlist successfully created!"});
@@ -115,6 +124,7 @@ var app = new Vue({
         {
           app.$q.notify({type : "negative", message : "playlist not submitted"});
         },
+        // Arbitrary authenticated request method.
         make_authenticated_request(data, method, path, success_callback, failure_callback)
         {
           if (this.token === "")
@@ -141,6 +151,13 @@ var app = new Vue({
           authRequest.send(JSON.stringify(data));
 
         },
+     //    ___                              __         __                _                             __        ___                _        __
+     //   / _ | ____ ____ ___  __ __  ___  / /_       / /  ___   ___ _  (_)  ___       ___ _  ___  ___/ /       / _ \ ___   ___ _  (_)  ___ / /_ ___   ____
+     //  / __ |/ __// __// _ \/ // / / _ \/ __/      / /__/ _ \ / _ `/ / /  / _ \     / _ `/ / _ \/ _  /       / , _// -_) / _ `/ / /  (_-</ __// -_) / __/
+     // /_/ |_|\__/ \__/ \___/\_,_/ /_//_/\__/      /____/\___/ \_, / /_/  /_//_/     \_,_/ /_//_/\_,_/       /_/|_| \__/  \_, / /_/  /___/\__/ \__/ /_/
+     //                                                        /___/                                                      /___/
+        // Submit a login given a username and password, and handles the
+        // response from backend.
         submitLogin(evt)
         {
             // console.log("@submit login", evt);
@@ -175,9 +192,9 @@ var app = new Vue({
             loginRequest.send(JSON.stringify({"username" : this.username, "password" : this.password}));
 
         },
+        // Registers a new user.
         submitRegister(evt)
         {
-            //console.log("register submitted", evt);
             let addr = document.location.origin;
             var registerRequest = new XMLHttpRequest();
             registerRequest.open("POST", addr + "/api/register", true);
@@ -186,6 +203,7 @@ var app = new Vue({
                 if (registerRequest.status < 300 && registerRequest.status >= 200)
                 {
                     this.sucessNotification("Registration sucessful!");
+                    // Once registered, also logs them in.
                     this.submitLogin(evt);
                 }
                 else
@@ -212,6 +230,8 @@ var app = new Vue({
         // This is performed upon the user clicking the Submit Playlist button.
         submitPlaylist()
         {
+          // Cycles through each jQuery generated element and retrieves the track's
+          // data. This is stored as an array of objects for passing through to the backend.
           var NumberOfTracks = this.number_of_tracks;
           var Tracks = [];
           var Track = {};
@@ -235,6 +255,7 @@ var app = new Vue({
           };
           this.make_authenticated_request(data, "POST", "/api/userPlaylists", this.playlistSubmissionSuccess, this.playlistSubmissionFailure);
         },
+        // These are placeholders waiting for integration.
         imgUploaded(info){
           image_name = info.xhr.response;
         },
@@ -242,6 +263,10 @@ var app = new Vue({
           image_name = "";
         },
         // Makes sure you're logged in before showing you the account page.
+       //  _   __   _                      ___                              __
+       // | | / /  (_) ___  _    __       / _ | ____ ____ ___  __ __  ___  / /_
+       // | |/ /  / / / -_)| |/|/ /      / __ |/ __// __// _ \/ // / / _ \/ __/
+       // |___/  /_/  \__/ |__,__/      /_/ |_|\__/ \__/ \___/\_,_/ /_//_/\__/
         retrieveAccount(){
           if (this.token != ""){
             var data = {};
@@ -252,6 +277,9 @@ var app = new Vue({
             this.failureNotification("You aren't logged in!");
           }
         },
+        // Plugs the retrieved account data into input fields.
+        // These are readonly, so doubles as viewing and editing (upon selecting
+        // the edit toggle)
         retrieveAccountSuccess(req){
           data = JSON.parse(req.response);
           this.loc = data.location;
@@ -265,6 +293,7 @@ var app = new Vue({
         retrieveAccountFailure(req){
           this.failureNotification("Account Details Not Found");
         },
+        // Handles the format in which the data is returned.
         dateClean(date){
           var year = date.substring(0,4);
           var month = date.substring(5,7);
@@ -293,7 +322,7 @@ var app = new Vue({
         submitAccountFailure(){
           this.failureNotification("Account Details Not Updated");
         },
-        // Requests an account password change.
+        // Requests an account password change. NEEDS BACKEND SUPPORT I THINK.
         submitPasswordChange(){
           data =
           {
@@ -303,6 +332,10 @@ var app = new Vue({
           };
           this.make_authenticated_request(data, "PUT", "/api/userInfo", this.submitAccountSuccess, this.submitAccountFailure);
         },
+     //    ____                         __         ___                  __  __
+     //   / __/ ___  ___ _  ____ ____  / /        / _/ ___   ____      / / / /  ___ ___   ____  ___
+     //  _\ \  / -_)/ _ `/ / __// __/ / _ \      / _/ / _ \ / __/     / /_/ /  (_-</ -_) / __/ (_-<
+     // /___/  \__/ \_,_/ /_/   \__/ /_//_/     /_/   \___//_/        \____/  /___/\__/ /_/   /___/
         // retrieves ten user accounts' details upon the user entering their search
         userSearch(){
           var data = this.user_search_text;
@@ -338,21 +371,22 @@ var app = new Vue({
             this.failureNotification("You aren't logged in!");
           }
         },
+        // Resorts the playlists array according to the sorting parameters.
         sortCollection(){
           this.make_authenticated_request(data, "GET", "/api/userPlaylists", this.retrievePlaylistColectionSuccess, this.retrievePlaylistColectionFailure);
-          if (this.sort_filter != ""){
+          if (this.sort_filter != ""){ // Filters for a specific substring.
             this.playlists = this.playlists.filter(el => el.name.includes(this.sort_filter));
           }
-          if (this.sort_selection == this.sort_options[0]){
+          if (this.sort_selection == this.sort_options[0]){ // Alphabetically ordered names
             this.playlists = this.playlists.sort(this.sorting("name"));
           }
-          else if (this.sort_selection == this.sort_options[1]){
+          else if (this.sort_selection == this.sort_options[1]){ // Ordered ratings. Currently they're all 0.
             this.playlists = this.playlists.sort(this.sorting("rating"));
           }
-          else if (this.sort_selection == this.sort_options[2]){
+          else if (this.sort_selection == this.sort_options[2]){ // Alphabetical ordering of genre. Helps categorise.
             this.playlists = this.playlists.sort(this.sorting("genre"));
           }
-          if (this.order_selection == "Descending"){
+          if (this.order_selection == "Descending"){ // Reverses order of the collection. So you can effectively sort by "Reverse Alphabetical, of Genre"
             this.playlists = this.playlists.reverse();
           }
         },
@@ -366,12 +400,12 @@ var app = new Vue({
         // Opens the page for viewing / editing one of your selected playlists.
         selectPlaylist(id){
           if (this.token != ""){
+            // Filters the playlists for a specific id. There is only one
+            // playlist of this id, so the data will just be in the first element of the collected array.
             this.current_playlist = this.playlists.filter(el => el.id == id)[0];
             this.number_of_tracks = this.current_playlist.songs.length;
             this.view_own_playlist_dialog = true;
-            console.log(this.current_playlist);
-            this.tracks_shown = false;
-            this.populated = false;
+            this.populated = false; // This indicates the track listing isn't populated yet.
           }
           else{
             this.failureNotification("You aren't logged in!");
@@ -389,6 +423,8 @@ var app = new Vue({
             this.playlists[i] = data[i];
           }
         },
+        // PUT method didn't work as I had thought (my fault), so repurposed it so
+        // it just deletes the entire playlist and creates a new one.
         updatePlaylist(){
           this.make_authenticated_request(this.current_playlist, "DELETE", "/api/userPlaylists", this.noMsg, this.deletePlaylistFailure);
           var NumberOfTracks = this.number_of_tracks;
@@ -415,7 +451,6 @@ var app = new Vue({
           this.make_authenticated_request(data, "POST", "/api/userPlaylists", this.playlistUpdateSuccess, this.playlistUpdateFailure);
         },
         noMsg(req){
-
         },
         retrievePlaylistColectionFailure(req){
           this.failureNotification("Failed to retrieve collection.");
@@ -427,8 +462,8 @@ var app = new Vue({
         deletePlaylistSuccess(req){
           this.sucessNotification("Playlist deleted.");
           var index = null;
-          // runs through the playlists and find the one which has the id of
-          // the one deleted, and removes it from the array.
+          // Runs through the playlists and find the one which has the id of
+          // the one deleted, and removes it from the array (by index).
           for (var i = 0; i < this.playlists.length; i++){
             if (this.playlists[i].id == this.current_playlist.id){
               index = i;
