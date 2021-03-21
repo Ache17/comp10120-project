@@ -6,7 +6,7 @@
     <q-bar class="bg-light-blue-9">
       <q-space></q-space>
       <q-btn dense flat icon="close" v-close-popup>
-        <q-tooltip content-class="bg-light-blue-9 text-white">Close</q-tooltip>
+        <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
       </q-btn>
     </q-bar>
     <q-card-section>
@@ -41,7 +41,7 @@
       <q-space></q-space>
 
       <q-btn dense flat icon="close" v-close-popup>
-        <q-tooltip content-class="bg-light-blue-9 text-white">Close</q-tooltip>
+        <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
       </q-btn>
     </q-bar>
 
@@ -89,8 +89,8 @@
 
       <q-bar class="bg-light-blue-9">
         <q-space></q-space>
-        <q-btn dense flat icon="close" v-close-popup>
-          <q-tooltip content-class="bg-light-blue-9 text-white">Close</q-tooltip>
+        <q-btn dense color="white" flat icon="close" v-close-popup>
+          <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
         </q-btn>
       </q-bar>
 
@@ -165,7 +165,7 @@
 
       <q-bar class="bg-light-blue-9">
         <q-space></q-space>
-        <q-btn dense flat icon="close" v-close-popup>
+        <q-btn dense color="white" flat icon="close" v-close-popup>
           <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
         </q-btn>
       </q-bar>
@@ -244,7 +244,7 @@
       <q-bar class="bg-light-blue-9">
         <q-space></q-space>
         <q-btn dense flat icon="close" v-close-popup>
-          <q-tooltip content-class="bg-light-blue-9 text-white">Close</q-tooltip>
+          <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
         </q-btn>
       </q-bar>
 
@@ -525,8 +525,8 @@
 
       <q-bar class="bg-light-blue-9">
         <q-space></q-space>
-        <q-btn dense flat icon="close" v-close-popup>
-          <q-tooltip content-class="bg-light-blue-10 text-white">Close</q-tooltip>
+        <q-btn color="white" dense flat icon="close" v-close-popup>
+          <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
         </q-btn>
       </q-bar>
 
@@ -540,23 +540,23 @@
             <div class="col q-pa-sm">
               <div class="row">
                 <div class="col q-px-sm">
-                  <q-input bg-color="blue-grey-2" color="blue-9" filled v-model="username_f" label="Username" lazy-rules :rules="[ val => val && val.length > 0 || 'Please enter a valid username.']" :readonly="!profile_edit"></q-input>
+                  <q-input bg-color="grey-4" color="blue-9" filled v-model="username_f" label="Username" lazy-rules :rules="[ val => val && val.length > 0 || 'Please enter a valid username.']" :readonly="!profile_edit"></q-input>
                 </div>
                 <div class="col q-px-sm">
-                  <q-input bg-color="blue-grey-2" color="blue-9" filled v-model="mail_f" label="Email" :readonly="!profile_edit"></q-input>
+                  <q-input bg-color="grey-4" color="blue-9" filled v-model="mail_f" label="Email" :readonly="!profile_edit"></q-input>
                 </div>
                 <div class="col q-px-sm">
-                  <q-input bg-color="blue-grey-2" color="blue-9" filled v-model="loc" label="Location (Country)" :readonly="!profile_edit"></q-input>
+                  <q-input bg-color="grey-4" color="blue-9" filled v-model="loc" label="Location (Country)" :readonly="!profile_edit"></q-input>
                 </div>
               </div>
 
 
               <div class="row">
                 <div class="col q-px-sm">
-                  <q-input bg-color="blue-grey-2" color="blue-9" filled v-model="first_name" label="First Name" :readonly="!profile_edit"></q-input>
+                  <q-input bg-color="grey-4" color="blue-9" filled v-model="first_name" label="First Name" :readonly="!profile_edit"></q-input>
                 </div>
                 <div class="col q-px-sm">
-                  <q-input bg-color="blue-grey-2" color="blue-9" filled v-model="last_name" label="Last Name" :readonly="!profile_edit"></q-input>
+                  <q-input bg-color="grey-4" color="blue-9" filled v-model="last_name" label="Last Name" :readonly="!profile_edit"></q-input>
                 </div>
                 <div class="col q-pa-sm text-white">
                   <q-toggle v-model="profile_edit" text-white color="light-blue-6" label="Toggle Edit"></q-toggle>
