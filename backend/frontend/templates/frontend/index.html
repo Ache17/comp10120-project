@@ -338,21 +338,23 @@
         <q-tab-panel name="Playlists">
           <div class="text-h3">Search For Created Playlists</div>
           <q-card-section class="q-pt-none">
-            <q-input standout bottom-slots v-model="playlist_search_text" label="Search For Playlist Name" bg-color="grey-7" color="cyan-11">
-              <template v-slot:before>
-                <div>
-                  <q-spinner-gears color="light-blue-12" size="2em"></q-spinner-gears>
-                </div>
-              </template>
-              <template v-if="playlist_search_text" v-slot:append>
-                <q-icon name="cancel" @click.stop="playlist_search_text = null" class="cursor-pointer"></q-icon>
-              </template>
-              <template v-slot:hint>
-                <div class="text-white">
-                To Search For Songs Or Users, Change Tab!
-                <div>
-              </template>
-            </q-input>
+            <q-form @submit="playlistSearch">
+              <q-input standout bottom-slots v-model="playlist_search_text" label="Search For Playlist Name" bg-color="grey-7" color="cyan-11">
+                <template v-slot:before>
+                  <div>
+                    <q-spinner-gears color="light-blue-12" size="2em"></q-spinner-gears>
+                  </div>
+                </template>
+                <template v-if="playlist_search_text" v-slot:append>
+                  <q-icon name="cancel" @click.stop="playlist_search_text = null" class="cursor-pointer"></q-icon>
+                </template>
+                <template v-slot:hint>
+                  <div class="text-white">
+                  To Search For Songs Or Users, Change Tab!
+                  <div>
+                </template>
+              </q-input>
+            </q-form>
           </q-card-section>
 
           <q-card-section>
@@ -365,21 +367,23 @@
         <q-tab-panel name="Songs">
           <div class="text-h3">Search For Your Favourite Songs</div>
           <q-card-section class="q-pt-none">
-            <q-input standout bottom-slots v-model="song_search_text" label="Search For Song Name" bg-color="grey-7" color="cyan-11">
-              <template v-slot:before>
-                <div>
-                  <q-spinner-audio color="light-blue-12" size="2em"></q-spinner-audio>
-                </div>
-              </template>
-              <template v-if="song_search_text" v-slot:append>
-                <q-icon name="cancel" @click.stop="song_search_text = null" class="cursor-pointer"></q-icon>
-              </template>
-              <template v-slot:hint>
-                <div class="text-white">
-                To Search For Playlists Or Users, Change Tab!
-                </div>
-              </template>
-            </q-input>
+            <q-form @submit="songSearch">
+              <q-input standout bottom-slots v-model="song_search_text" label="Search For Song Name" bg-color="grey-7" color="cyan-11">
+                <template v-slot:before>
+                  <div>
+                    <q-spinner-audio color="light-blue-12" size="2em"></q-spinner-audio>
+                  </div>
+                </template>
+                <template v-if="song_search_text" v-slot:append>
+                  <q-icon name="cancel" @click.stop="song_search_text = null" class="cursor-pointer"></q-icon>
+                </template>
+                <template v-slot:hint>
+                  <div class="text-white">
+                  To Search For Playlists Or Users, Change Tab!
+                  </div>
+                </template>
+              </q-input>
+            </q-form>
           </q-card-section>
 
           <q-card-section>
