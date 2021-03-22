@@ -157,7 +157,6 @@ var app = new Vue({
               }
           });
           authRequest.send(JSON.stringify(data));
-
         },
      //    ___                              __         __                _                             __        ___                _        __
      //   / _ | ____ ____ ___  __ __  ___  / /_       / /  ___   ___ _  (_)  ___       ___ _  ___  ___/ /       / _ \ ___   ___ _  (_)  ___ / /_ ___   ____
@@ -247,10 +246,40 @@ var app = new Vue({
         },
         playlistCreationDone()
         {
-            let data = {"name" : this.playlist_title,  "genre" : this.playlist_genre, "description" : this.playlist_description, 
-                        "isPublic" : this.isPublic, "Tracks" : this.tracks};
-            this.make_authenticated_request(data, "POST", "/api/userPlaylists", this.playlistSubmissionSuccess, this.playlistSubmissionFailure);
-                      
+            //let data = {"name" : this.playlist_title,  "genre" : this.playlist_genre, "description" : this.playlist_description, 
+            //            "isPublic" : this.isPublic, "Tracks" : this.tracks, "image" : this.playlist_image};
+            // this.make_authenticated_request(data, "POST", "/api/userPlaylists", this.playlistSubmissionSuccess, this.playlistSubmissionFailure);
+                    
+             // store token in cookies
+            let token = $cookies.get("token");
+
+            let addr = document.location.origin;
+            var authRequest = new XMLHttpRequest();
+            authRequest.open("POST", addr + "/api/userPlaylists", true);
+            authRequest.setRequestHeader("Authorization", "Token " + token);
+            authRequest.addEventListener("load", () =>
+            {
+                var response = authRequest.response;
+                var returned_json = JSON.parse(response);
+                if (authRequest.status < 300 && authRequest.status >= 200)
+                {
+                    this.playlistSubmissionSuccess(authRequest);
+                }
+                else
+                {
+                    this.playlistSubmissionFailure(authRequest);
+                }});
+            
+            var formData = new FormData();
+            formData.append("file", this.playlist_image);
+            formData.append("name", this.playlist_title);
+            formData.append("genre", this.playlist_genre);
+            formData.append("description", this.playlist_description);
+            formData.append("isPublic", this.public);
+            formData.append("rating", this.rating);
+            formData.append("Tracks",JSON.stringify(this.tracks));
+
+            authRequest.send(formData);
         },
         playlistCreationTransition()
         {

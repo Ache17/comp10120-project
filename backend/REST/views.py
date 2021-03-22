@@ -16,6 +16,7 @@ from rest_framework.renderers import JSONRenderer
 from string import ascii_letters, digits
 from random import choice
 import os
+import json
 
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
@@ -244,20 +245,39 @@ class playlistsView(APIView):
     def post(self, request):
         # manually setting up the user id's
         # firstly serialize the playlist
-        request.data["creator"] = UserProfile.objects.get(user=request.user).id
-        serializer = playlistSerializer(data=request.data)
+
+        data = request.data.copy()
+        data["creator"] = UserProfile.objects.get(user=request.user).id
+        serializer = playlistSerializer(data=data)
 
         if serializer.is_valid():
-            # if data provided is all good
-            # save the object
 
             playlistObj = serializer.save()
+            # get the image
+            try:
+                img = data["file"]
+
+                hash = getRand()
+                extension = img.name.split(".")[-1]
+                link = f"{hash}.{extension}"
+                dat = img.read()
+                f = open(f"frontend/static/media/{link}", "wb")
+                f.write(dat)
+                f.close()
+                playlistObj.link = link
+                playlistObj.save()
+
+            except Exception as e:
+                print(e)
+
+            # if data provided is all good
+            # save the object
             playlistId = playlistObj.id
 
             # now save all the items ( songs ) that belong to
             # that playlist
             try:
-                Items = request.data["Tracks"]
+                Items = json.loads(request.data["Tracks"])
                 for item in Items:
                     item["whichPlaylist"] = playlistId
 
@@ -414,7 +434,7 @@ class playlistView(APIView):
         songs = Item.objects.filter(whichPlaylist=Object)
         songs_data = ItemDisplaySerializer(songs, many=True).data
         print(songs_data)
-        return Response({"name": Object.name, "creator" : Object.creator.user.username, "genre" : Object.genre, 
+        return Response({"name": Object.name, "creator" : Object.creator.user.username, "genre" : Object.genre, "link" : Object.link,
                          "rating" : Object.rating, "description" : Object.description, "songs" : songs_data}, status=status.HTTP_200_OK)
 
 class imageUpload(APIView):
@@ -477,7 +497,7 @@ class inspectUserInfo(APIView):
         following = User.objects.filter(id__in=up.follows.all().values_list("user", flat=True)).values("username", "first_name", "last_name")
         followers = User.objects.filter(id__in=up.followed_by.all().values_list("user", flat=True)).values("username", "first_name", "last_name")
         playlists = displayPlaylistSerializer(Playlist.objects.filter(creator=up, isPublic=True), many=True)
-
+        print(playlists.data)
 
         return Response({"username" : theUser.username, "first_name" : first_name,
                         "last_name" : theUser.last_name, "location" : location,

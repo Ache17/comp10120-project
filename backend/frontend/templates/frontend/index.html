@@ -110,7 +110,7 @@
       <div class="text-h6">playlists : [% Len(inspected_user_data["playlists"]) %]</div>
       <q-list bordered>
         <q-item v-for="playlist in inspected_user_data.playlists" class="q-my-sm" clickable v-ripple
-          @click="test1('asd')">
+          @click="viewPlaylist(playlist.id)">
           <q-item-section>
             <q-item-label>[% playlist.name %]</q-item-label>
             <q-item-label caption lines="1"> [% playlist.genre %]</q-item-label>

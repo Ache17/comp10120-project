@@ -18,12 +18,12 @@ class UserSerializer(serializers.ModelSerializer):
 class playlistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Playlist
-        fields = ("creator", "name", "genre", "description", "isPublic")
+        fields = ("creator", "name", "genre", "description", "isPublic", "rating")
 
 class displayPlaylistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Playlist
-        fields = ("name", "genre", "description", "rating")
+        fields = ("id", "name", "genre", "description", "rating")
 
 class ItemSerializer(serializers.ModelSerializer):
     class Meta:
