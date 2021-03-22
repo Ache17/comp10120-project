@@ -28,12 +28,15 @@ var app = new Vue({
         isPwd : true,
         token : "",
         // Playlist creation details, some reused for playlist editing.
-        playlist_title : "",
-        playlist_genre : "",
-        playlist_description : "",
+        create_playlist_step : 1,
+        playlist_title : "a",
+        playlist_genre : "a",
+        playlist_description : "a",
         number_of_tracks : 1,
-        public: false,
-        private: false,
+        tracks : [],
+        isPublic: false,
+        public : false,
+        rating : 0,
         dense: true,
         // Search tab details.
         playlist_search_text: "",
@@ -93,7 +96,8 @@ var app = new Vue({
           playlist_search_pagination_idx : 1,
           inspect_playlist : false,
           inspected_playlist_data : {},
-          playlist_search_pages : 0
+          playlist_search_pages : 0,
+
     },
 
     delimiters: ['[%', '%]'],
@@ -224,14 +228,50 @@ var app = new Vue({
         // |  _/| |/ _` || || || || |(_-<|  _| | (__ | '_|/ -_)/ _` ||  _|| |/ _ \| ' \
         // |_|  |_|\__,_| \_, ||_||_|/__/ \__|  \___||_|  \___|\__,_| \__||_|\___/|_||_|
         //               |__/
+        addNewSong()
+        {
+          this.tracks.push({"name" : "click me to edit!", "author" : "click me to edit!", "sp_id" : "", "link" : ""});
+        },
+        removeSong(id)
+        {
+          this.tracks.splice(id, 1);
+        },
         createPlaylist(){
-          if (this.token != ""){
+          if ($cookies.get("token") != ""){
             this.number_of_tracks = 1;
             this.create_playlist_dialog = true;
           }
           else{
             this.failureNotification("You aren't logged in!");
           }
+        },
+        playlistCreationDone()
+        {
+            let data = {"name" : this.playlist_title,  "genre" : this.playlist_genre, "description" : this.playlist_description, 
+                        "isPublic" : this.isPublic, "Tracks" : this.tracks};
+            this.make_authenticated_request(data, "POST", "/api/userPlaylists", this.playlistSubmissionSuccess, this.playlistSubmissionFailure);
+                      
+        },
+        playlistCreationTransition()
+        {
+
+          if (this.playlist_title === "")
+          {
+            this.create_playlist_step = 1;
+            this.$refs.title_ref.validate();
+          }
+          else if (this.playlist_genre === "")
+          {
+            this.create_playlist_step = 1;
+            this.$refs.genre_ref.validate();
+          }
+          else if (this.playlist_description === "")
+          {
+            this.create_playlist_step = 1;
+            this.$refs.description_ref.validate();
+          }
+          else
+            this.create_playlist_step != 3 ? this.$refs.playlist_stepper.next() : this.playlistCreationDone();
         },
         // This is performed upon the user clicking the Submit Playlist button.
         submitPlaylist()
@@ -274,7 +314,7 @@ var app = new Vue({
        // | |/ /  / / / -_)| |/|/ /      / __ |/ __// __// _ \/ // / / _ \/ __/
        // |___/  /_/  \__/ |__,__/      /_/ |_|\__/ \__/ \___/\_,_/ /_//_/\__/
         retrieveAccount(){
-          if (this.token != ""){
+          if ($cookies.get("token") != ""){
             var data = {};
             this.make_authenticated_request(data, "GET", "/api/userInfo", this.retrieveAccountSuccess, this.retrieveAccountFailure);
             this.account_dialog = true;
@@ -470,7 +510,7 @@ var app = new Vue({
          // |_|   |_| \__,_|  \_, | |_| |_| /__/  \__|    \___| \___/ |_| |_| \___| \__|  \__| |_| \___/ |_||_|   |___/  \__|  \_,_| |_|   |_|
          //                   |__/
         retrievePlaylistCollection(){
-          if (this.token != ""){
+          if ($cookies.get("token") != ""){
             var data = {};
             this.make_authenticated_request(data, "GET", "/api/userPlaylists", this.retrievePlaylistColectionSuccess, this.retrievePlaylistColectionFailure);
             this.my_playlists_dialog = true;

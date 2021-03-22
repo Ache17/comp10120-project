@@ -28,6 +28,11 @@ body
   height: 80%;
 }
 
+.submit_label
+{
+  font-size: 24px;
+}
+
 /* This is the old styling from the HTML/CSS Luke did in case we need it. */
 /* header {
 background-color: #152238;
