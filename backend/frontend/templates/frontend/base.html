@@ -12,19 +12,19 @@
 
     <div id="app">
       <q-layout view="hHh lpR fFf" class="bg-grey-9 text-white">
-        <q-header elevated bordered class="bg-light-blue-9 text-white">
-          <q-toolbar class="bg-light-blue-9 text-white shadow-2 rounded-borders">
+        <q-header elevated bordered class="bg-indigo-10 text-white">
+          <q-toolbar class="bg-indigo-10 text-white shadow-2 rounded-borders q-pa-md">
             <q-btn flat round dense icon="menu" class="q-mr-sm" @click="left = !left"></q-btn>
 
             <q-toolbar-title>
-              <q-avatar>
+
+              <div class="text-h4 text-weight-bolder"><q-avatar>
                 <img src="{% static 'images/SongSpaceLogo.png' %}" alt="Logo" label="Discover" onclick="location.href = '/'" width="100px" height="100px">
-              </q-avatar>
-              SongSpace
+              </q-avatar> SongSpace</div>
             </q-toolbar-title>
 
             <div>
-              [% username_f %]
+              [% username_f %]⠀ <!-- BLANK UNICODE DON'T GET RID OF SPACE -->
             </div>
 
             <q-separator dark vertical ></q-separator>
@@ -62,12 +62,12 @@
         </q-toolbar>
 
 
-        <q-drawer show-if-above v-model="left" side="left" bordered content-class="bg-grey-10">
+        <q-drawer show-if-above v-model="left" side="left" content-class="bg-blue-grey-10">
           <!-- drawer content -->
           <q-separator></q-separator>
           <div class="q-pa-md q-gutter-sm">
             <div>
-              <q-btn color="light-blue-12" label="Discover" class="full-width" onclick="location.href = '/'">
+              <q-btn color="light-blue-13" label="Discover" class="full-width" onclick="location.href = '/'">
                 <q-tooltip transition-show="rotate" transition-hide="rotate">
                    Discover Trending Playlists
                  </q-tooltip>
@@ -83,7 +83,7 @@
           {% block add_from_spotify %}
           {% endblock %}
           <q-separator></q-separator>
-          
+
           {% block my_playlists_dialog %}
           {% endblock %}
           <q-separator></q-separator>
@@ -91,34 +91,30 @@
           {% block search_block %}
           {% endblock %}
           <q-separator></q-separator>
-          
-          {% block profile %}
-          {% endblock %}
-          <q-separator></q-separator>
-
-          {% block login_block %}
-          {% endblock %}
-          <q-separator></q-separator>
-
-          {% block inspect_user %}
-          {% endblock %}
-          <q-separator></q-separator>
-
-          {% block inspect_playlist %}
-          {% endblock %}
-          <q-separator></q-separator>
-
 
           {% block settings %}
           {% endblock %}
           <q-separator></q-separator>
+
+          {% block profile %}
+          {% endblock %}
+
+          {% block login_block %}
+          {% endblock %}
+
+          {% block inspect_user %}
+          {% endblock %}
+
+          {% block inspect_playlist %}
+          {% endblock %}
+
           {% block view_own_playlist_dialog %}
           {% endblock %}
 
         </q-drawer>
 
         <q-footer reveal>
-          <q-toolbar class="bg-light-blue-9 text-white shadow-2 rounded-borders">
+          <q-toolbar class="bg-indigo-10 text-white">
            <q-separator vertical inset></q-separator>
            <q-btn stretch flat label="About Us" @click="about_us_dialog = true"></q-btn>
            {% block about_us %}
@@ -149,8 +145,11 @@
           </q-toolbar>
         </q-footer>
 
+
+
         <q-page-container>
-          <h2 style="text-align:center"><strong>Discover New Playlists</strong></h2>          <!--Could we add Username here as a greeting? -->
+          <h2 style="text-align:center"><strong>Welcome [% username_f %]</strong></h2>
+          <h2 style="text-align:center"><strong>Discover New Playlists</strong></h2>
           <router-view>
             <q-page padding>
               {% block landing_dialog %}
@@ -160,8 +159,8 @@
             </q-page>
           </router-view>
 
-          <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[18, 18]">
-          <q-btn fab icon="keyboard_arrow_up" color="light-blue-6" />
+          <q-page-scroller position="bottom" :scroll-offset="150" :offset="[18, 18]">
+          <q-btn fab icon="keyboard_arrow_up" color="indigo-8" />
           </q-page-scroller>
         </q-page>
 
@@ -176,6 +175,8 @@
     <script src="https://unpkg.com/vue-cookies@1.5.12/vue-cookies.js"></script>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     </script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap" rel="stylesheet">
 
     {% block extra_dependencies %}
     {% endblock %}

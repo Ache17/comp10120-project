@@ -2,6 +2,7 @@ body
 {
     font-size: 18px;
     font-weight: bold;
+    font-family: 'Open Sans', sans-serif;
 }
 
 #center
@@ -12,7 +13,7 @@ body
 
 .userResults
 {
-  
+
 }
 
 .my-card

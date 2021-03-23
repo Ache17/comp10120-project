@@ -147,7 +147,7 @@ class searchUsersView(APIView):
             entries = User.objects.filter()
 
         paginator = Paginator(entries, PER_PAGE)
-    
+
 
         try:
             users = paginator.page(page)
@@ -155,11 +155,11 @@ class searchUsersView(APIView):
             return Response({"message": "bad page !"}, status=status.HTTP_400_BAD_REQUEST)
 
         profiles = UserProfile.objects.filter(user__in=users)
-        
+
         ret = []
-        for idx, user in enumerate(users):            
+        for idx, user in enumerate(users):
             up = profiles[idx]
-            ret.append({"username": user.username, "first_name": user.first_name, "last_name": user.last_name, "location" : up.location})
+            ret.append({"username": user.username, "first_name": user.first_name, "last_name": user.last_name, "location" : up.location, "date_joined" : user.date_joined, "last_login" : user.last_login})
 
 
         return Response({ "page_nums" : paginator.num_pages, "data" : ret}, status=status.HTTP_200_OK)
@@ -469,7 +469,7 @@ class spotifyQuery(APIView):
                 for art in track["artists"]:
                     artist += art["name"] + ", "
                 artist = artist[:-2]
-                res.append({ "name" : track["name"], "artists" : artist, 
+                res.append({ "name" : track["name"], "artists" : artist,
                              "spotify_id" : track["id"], "image" : track["album"]["images"][0]["url"]})
             return Response({"data" : res}, status=status.HTTP_200_OK)
         else:
@@ -480,7 +480,7 @@ class inspectUserInfo(APIView):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request):
-    
+
         if "username" in request.data:
             Username = request.data["username"]
         else:
@@ -509,4 +509,3 @@ class inspectUserInfo(APIView):
                         "last_name" : theUser.last_name, "location" : location,
                         "date_joined" : date_joined, "last_login" : last_login,
                         "following" : following, "followers" : followers, "playlists" : playlists.data}, status=status.HTTP_200_OK)
-

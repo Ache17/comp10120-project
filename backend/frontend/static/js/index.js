@@ -56,7 +56,7 @@ var app = new Vue({
         last_name: "",
         last_login: "",
         date_joined: "",
-        landing_dialog: false,               // REMEMBER TO CHANGE THIS BACK
+        landing_dialog: true,               // REMEMBER TO CHANGE THIS BACK
         fab1: false,
         hideLabels: false,
         num_of_playlists: 0,
@@ -553,16 +553,25 @@ var app = new Vue({
           this.user_search_pages = data["page_nums"];
 
           data["data"].forEach(el => {
-            if (el["first_name"] === "")
-              el["first_name"] = "not specified";
-            if (el["last_name"] === "")
-              el["last_name"] = "not specified";
-
+            if (el["first_name"] === "" && el["last_name"] === "")
+              el["first_name"] = "Unknown";
+            else if (el["first_name"] === "")
+              el["first_name"] = "Unknown";
+            else if (el["last_name"] === "")
+              el["last_name"] = "Unknown";
             if (el["location"] == "")
-              el["location"] = el["location"];
+            el["location"] = "Unknown";
+          if (el["date_joined"] != null)
+            el["date_joined"] = this.dateClean(el["date_joined"]);
+          else
+            el["date_joined"] = "Unknown";
+          if (el["last_login"] != null)
+            el["last_login"] = this.dateClean(el["last_login"]);
+          else
+            el["last_login"] = "Unknown";
 
-              app.search_users.push({"id" : el["id"], "username" : el["username"], "first_name" : el["first_name"],
-              "last_name" : el["last_name"], "location" : el["location"]});
+            app.search_users.push({"id" : el["id"], "username" : el["username"], "first_name" : el["first_name"],
+            "last_name" : el["last_name"], "location" : el["location"], "date_joined" : el["date_joined"], "last_login" : el["last_login"]});
           });
         },
         searchUsersFailure(req){
@@ -710,66 +719,3 @@ var app = new Vue({
         }
     }
   });
-
- //  ______ ______ ______ ______ ______ ______ ______ ______ ______ ______ ______ ______ ______ ______ ______
- // |______|______|______|______|______|______|______|______|______|______|______|______|______|______|______|
- // |  __ \| |           | (_)   | |   |__   __|           | |    | |  | |               | | (_)
- // | |__) | | __ _ _   _| |_ ___| |_     | |_ __ __ _  ___| | __ | |__| | __ _ _ __   __| | |_ _ __   __ _
- // |  ___/| |/ _` | | | | | / __| __|    | | '__/ _` |/ __| |/ / |  __  |/ _` | '_ \ / _` | | | '_ \ / _` |
- // | |    | | (_| | |_| | | \__ \ |_     | | | | (_| | (__|   <  | |  | | (_| | | | | (_| | | | | | | (_| |
- // |_|    |_|\__,_|\__, |_|_|___/\__|    |_|_|  \__,_|\___|_|\_\ |_|  |_|\__,_|_| |_|\__,_|_|_|_| |_|\__, |
- //                  __/ |                                                                             __/ |
- //  ______ ______ _|___/ ______ ______ ______ ______ ______ ______ ______ ______ ______ ______ ______|___/__
- // |______|______|______|______|______|______|______|______|______|______|______|______|______|______|______|
-
-// Function is called whenever the user changes the counter for the number of tracks to be in the playlist, and essentially generates the suitable number of inputs that is required.
-function TrackNumberChange()
-{
-  var number_of_tracks = app.number_of_tracks;
-  // Cycles through the number of tracks determined by the user. If they have increased the number of tracks, then there will be track inputs that need to be created, and so performs this when necessary.
-  for (var i = 1; i <= number_of_tracks; i++)
-  {
-    var element = document.getElementById("TitleInput" + i);
-    if(!element)
-    {
-      CreateTrackInput(i);
-    }
-  }
-  // If the user decreases the counter, then the no longer required track inputs can be removed from the document, using jQuery.
-  for (var i = number_of_tracks + 1; i <= 50; i++)
-  {
-    $("#TitleInput" + i).remove();
-    $("#ArtistInput" + i).remove();
-    $("#YearInput" + i).remove();
-    $("#RatingInput" + i).remove();
-    $("#Break" + i).remove();
-  }
-  if (app.populated == false && app.view_own_playlist_dialog == true){
-    console.log(app.current_playlist);
-    PopulateExistingTracks(app.current_playlist.songs.length, app.current_playlist.songs);
-    app.populated = true;
-  }
-}
-
-// Takes a track number, and uses jQuery to dynamically append HTML elements to the document which can be identified by their track number.
-function CreateTrackInput(i)
-{
-  // Elements + attributes etc. for the appending of track inputs.
-  TitleInput = $("<input>").attr("id", "TitleInput" + i).attr("placeholder", "Track Title").css("width", "40%").css("margin-left", "5%");
-  ArtistInput = $("<input>").attr("id", "ArtistInput" + i).attr("placeholder", "Artist Name").css("width", "30%"); // The value of the artist name can be automatically populated as the user has already entered this during the album's creation, although can be altered if desired.
-  YearInput = $("<input>").attr("id", "YearInput" + i).attr("type", "number").attr("min", "1860").attr("max", "2030").attr("placeholder", "Year").css("width", "10%");
-  RatingInput = $("<input>").attr("id", "RatingInput" + i).attr("type", "number").attr("min", "1").attr("max", "5").attr("placeholder", "Rating").css("width", "10%");;
-  BreakLine = $("<br><br>").attr("id", "Break" + i);
-  // Appends all of these elements to the HTML document.
-  $("#TrackInputs").append(TitleInput, ArtistInput, YearInput, RatingInput, BreakLine);
-}
-
-function PopulateExistingTracks(number, data){
-  for (var i = 1; i <= number; i++){
-    document.getElementById("TitleInput" + i).value = data[i-1].name;
-    document.getElementById("ArtistInput" + i).value = data[i-1].author;
-    // document.getElementById("YearInput" + i).value = data[0].year;
-    // document.getElementById("TitleInput" + i).value = data[0].name;
-  }
-
-}
