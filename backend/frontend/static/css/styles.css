@@ -28,6 +28,12 @@ body
   height: 80%;
 }
 
+.createplaylist
+{
+  min-width: 75%;
+  min-height: 100%;
+}
+
 .submit_label
 {
   font-size: 24px;

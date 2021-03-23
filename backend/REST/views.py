@@ -20,7 +20,8 @@ import json
 
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
-# sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id="5ef4bb85e1a9499593ac6a9477993c08",  client_secret="{Here goes the id}"))
+
+# sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id="5ef4bb85e1a9499593ac6a9477993c08",  client_secret="e7fb20a797e54b88bfa34220d82b7d3d"))
 
 sigma = "".join([ascii_letters, digits])
 PER_PAGE = 10
@@ -456,7 +457,7 @@ class imageUpload(APIView):
 
 class spotifyQuery(APIView):
     permission_classes = (IsAuthenticated,)
-    def get(self, request):
+    def post(self, request):
         if "q" in request.data:
             try:
                 results = sp.search(q=request.data["q"], type="track", limit=10)
@@ -464,8 +465,13 @@ class spotifyQuery(APIView):
                 return Response({"message" : "spotify service offline"}, status=status.HTTP_400_BAD_REQUEST)
             res = []
             for idx, track in enumerate(results['tracks']['items']):
-                res.append({"id" : idx, "name" : track["name"], "artists" : track["artists"], "spotify_id" : track["id"]})
-            return Response(res, status=status.HTTP_200_OK)
+                artist = ""
+                for art in track["artists"]:
+                    artist += art["name"] + ", "
+                artist = artist[:-2]
+                res.append({ "name" : track["name"], "artists" : artist, 
+                             "spotify_id" : track["id"], "image" : track["album"]["images"][0]["url"]})
+            return Response({"data" : res}, status=status.HTTP_200_OK)
         else:
             return Response({"message" : "no query provided !"} , status=status.HTTP_400_BAD_REQUEST)
 

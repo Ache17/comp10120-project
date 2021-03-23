@@ -376,8 +376,34 @@
 
                         <q-item-section top side>
                           <div class="text-grey-8 q-gutter-xs">
-                            <q-btn class="gt-xs" size="12px" flat dense round icon="delete" @click="removeSong(index)"></q-btn>
-                            <q-btn size="12px" flat dense round icon="more_vert"></q-btn>
+                            <q-btn class="gt-xs" size="16px" flat dense round icon="delete" @click="removeSong(index)"></q-btn>
+                            <q-btn-dropdown v-model="track.dropdown_open" size="16px" flat dense round icon="more_vert">
+                              <q-list>
+                                <q-item clickable v-close-popup @click="addSongFromSpotify(index)">
+                                  <q-item-section avatar>
+                                    <q-avatar >
+                                      <img src="/static/images/Spotify.png"> </q-avatar>
+                                    </q-avatar>
+                                  </q-item-section>
+                                  <q-item-section>
+                                    <q-item-label>Add from Spotify</q-item-label>
+                                  </q-item-section>
+                                </q-item>
+                        
+                                <q-item clickable v-close-popup @click="addSongFromSpotify(index)">
+                                  <q-item-section avatar>
+                                    <q-avatar icon="assignment" color="secondary" text-color="white" ></q-avatar>
+                                  </q-item-section>
+                                  <q-item-section>
+                                    <q-item-label>Add from Apple Music</q-item-label>
+                                  </q-item-section>
+                                  <q-item-section side>
+                                    <q-icon name="info" color="amber"></q-icon>
+                                  </q-item-section>
+                                </q-item>
+                              </q-list>
+
+                            </q-btn-dropdown>
                           </div>
                         </q-item-section>
                       </q-item>
@@ -492,6 +518,54 @@
 </div>
 {% endblock %}
 
+{% block add_from_spotify %}
+<q-dialog v-model="spotify_window">
+  <q-card style="min-width: 350px">
+    <q-card-section>
+      <div class="text-h6">Spotify query ( type and approve with enter)</div>
+    </q-card-section>
+
+    <q-card-section class="q-pt-none">
+      <q-input dense v-model="query" autofocus @keyup.enter="spotifySearch()" ></q-input>
+    </q-card-section>
+
+    <q-card-section>
+        <div class="column">
+          <q-list bordered>
+            <q-item>
+              <q-item-section avatar>
+                <img src="/static/images/Spotify.png" width="64px" height="64px"></img>
+              </q-item-section>
+              <q-item-section line="1">Name </q-item-section>
+              <q-item-section caption line="1">Author </q-item-section>
+
+            </q-item>
+            <q-separator></q-separator>
+
+            <div v-for="(spotify_song, index) in query_data">
+            <q-item clickable v-ripple @click="saveSpotify(index)">
+              <q-item-section avatar>
+                <img :src="spotify_song.image" width="64px" height="64px"></img>
+              </q-item-section>
+      
+              <q-item-section line="1">[% spotify_song.name %]</q-item-section>
+              <q-item-section caption line="1">[% spotify_song.artists %]</q-item-section>
+
+            </q-item>
+            <q-separator></q-separator>
+          </div>
+          </q-list>
+          
+        </div>
+    </q-card-section>
+
+    <q-card-actions align="right" class="text-primary">
+      <q-btn flat label="Cancel" v-close-popup ></q-btn>
+    </q-card-actions>
+  </q-card>
+</q-dialog>
+
+{% endblock %}
 
 {% block my_playlists_dialog %}
 <div class="q-pa-md q-gutter-sm">

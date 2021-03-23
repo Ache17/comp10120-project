@@ -27,6 +27,7 @@ var app = new Vue({
         mail : "",
         isPwd : true,
         token : "",
+
         // Playlist creation details, some reused for playlist editing.
         create_playlist_step : 1,
         playlist_title : "a",
@@ -38,6 +39,15 @@ var app = new Vue({
         public : false,
         rating : 0,
         dense: true,
+        playlist_menu_dropdown : false,
+
+        // adding from external service details, 
+        spotify_window : false,
+        editing_idx : -1,
+        query : "",
+        query_data : [],
+
+
         // Search tab details.
         playlist_search_text: "",
         song_search_text: "",
@@ -229,7 +239,7 @@ var app = new Vue({
         //               |__/
         addNewSong()
         {
-          this.tracks.push({"name" : "click me to edit!", "author" : "click me to edit!", "sp_id" : "", "link" : ""});
+          this.tracks.push({"name" : "click me to edit!", "author" : "click me to edit!", "sp_id" : "", "link" : "", "dropdown_open" : false});
         },
         removeSong(id)
         {
@@ -251,12 +261,13 @@ var app = new Vue({
             // this.make_authenticated_request(data, "POST", "/api/userPlaylists", this.playlistSubmissionSuccess, this.playlistSubmissionFailure);
                     
              // store token in cookies
-            let token = $cookies.get("token");
+            this.token = $cookies.get("token");
+            console.log("asdasd");
 
             let addr = document.location.origin;
             var authRequest = new XMLHttpRequest();
             authRequest.open("POST", addr + "/api/userPlaylists", true);
-            authRequest.setRequestHeader("Authorization", "Token " + token);
+            authRequest.setRequestHeader("Authorization", "Token " + this.token);
             authRequest.addEventListener("load", () =>
             {
                 var response = authRequest.response;
@@ -302,7 +313,36 @@ var app = new Vue({
           else
             this.create_playlist_step != 3 ? this.$refs.playlist_stepper.next() : this.playlistCreationDone();
         },
-        // This is performed upon the user clicking the Submit Playlist button.
+        addSongFromSpotify(idx)
+        {
+          this.editing_idx = idx;
+          this.spotify_window = true;
+          console.log(idx);
+        },
+        spotifySearchSuccess(req)
+        {
+            let dat = JSON.parse(req.response);
+            this.query_data = dat.data;
+
+        },
+        spotifySearchFailure(req)
+        {
+            this.failureNotification("Spotify service offline!");
+        },
+        spotifySearch()
+        {
+          this.make_authenticated_request({"q" : this.query}, "POST", "/api/spotifyIDs", this.spotifySearchSuccess, this.spotifySearchFailure);
+        },
+        saveSpotify(idx)
+        {
+          console.log(this.query_data[idx]);
+          console.log(this.tracks[this.editing_idx]);
+          this.tracks[this.editing_idx].author = this.query_data[idx].artists;
+          this.tracks[this.editing_idx].name = this.query_data[idx].name;
+          this.tracks[this.editing_idx].sp_id = this.query_data[idx].spotify_id;
+          this.spotify_window = false;
+
+        },
         submitPlaylist()
         {
           // Cycles through each jQuery generated element and retrieves the track's
@@ -337,6 +377,7 @@ var app = new Vue({
         imgNotUploaded(info){
           image_name = "";
         },
+
         // Makes sure you're logged in before showing you the account page.
        //  _   __   _                      ___                              __
        // | | / /  (_) ___  _    __       / _ | ____ ____ ___  __ __  ___  / /_
@@ -407,6 +448,7 @@ var app = new Vue({
           };
           this.make_authenticated_request(data, "PUT", "/api/userInfo", this.submitAccountSuccess, this.submitAccountFailure);
         },
+
 
 
    //  ___   ___     _     ___    ___   _  _       ___    ___    ___       ___   _        _    __   __  _      ___   ___   _____   ___
