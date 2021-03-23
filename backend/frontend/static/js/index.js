@@ -41,7 +41,7 @@ var app = new Vue({
         dense: true,
         playlist_menu_dropdown : false,
 
-        // adding from external service details, 
+        // adding from external service details,
         spotify_window : false,
         editing_idx : -1,
         query : "",
@@ -59,7 +59,7 @@ var app = new Vue({
         last_name: "",
         last_login: "",
         date_joined: "",
-        landing_dialog: false,               // REMEMBER TO CHANGE THIS BACK
+        landing_dialog: true,               // REMEMBER TO CHANGE THIS BACK
         fab1: false,
         hideLabels: false,
         num_of_playlists: 0,
@@ -189,9 +189,9 @@ var app = new Vue({
                 if (loginRequest.status < 300 && loginRequest.status >= 200)
                 {
                     this.token = returned_json["token"];
-                    
+
                     $cookies.set("token", this.token);
-                    
+
                     this.sucessNotification("Login Successful");
                     this.username_f = this.username;
                     this.password_f = this.password;
@@ -256,10 +256,10 @@ var app = new Vue({
         },
         playlistCreationDone()
         {
-            //let data = {"name" : this.playlist_title,  "genre" : this.playlist_genre, "description" : this.playlist_description, 
+            //let data = {"name" : this.playlist_title,  "genre" : this.playlist_genre, "description" : this.playlist_description,
             //            "isPublic" : this.isPublic, "Tracks" : this.tracks, "image" : this.playlist_image};
             // this.make_authenticated_request(data, "POST", "/api/userPlaylists", this.playlistSubmissionSuccess, this.playlistSubmissionFailure);
-                    
+
              // store token in cookies
             this.token = $cookies.get("token");
             console.log("asdasd");
@@ -280,7 +280,7 @@ var app = new Vue({
                 {
                     this.playlistSubmissionFailure(authRequest);
                 }});
-            
+
             var formData = new FormData();
             formData.append("file", this.playlist_image);
             formData.append("name", this.playlist_title);
@@ -469,7 +469,7 @@ var app = new Vue({
             if (el.description == "")
               el.description = "No description";
 
-            app.search_playlists.push({ "id" : el["id"], "creator" : el.creator_username, "name" : el.name, "genre" : el.genre, 
+            app.search_playlists.push({ "id" : el["id"], "creator" : el.creator_username, "name" : el.name, "genre" : el.genre,
                                        "description" : el.description, "rating" : el.rating});
           });
         },
@@ -494,8 +494,8 @@ var app = new Vue({
               this.inspected_playlist_data["genre"] = "not specified";
             if (this.inspected_playlist_data["description"] == "")
               this.inspected_playlist_data["genre"] = "not specified";
-            
-            this.inspect_playlist = true; 
+
+            this.inspect_playlist = true;
         },
         inspectPlaylistFailure(req)
         {
@@ -511,7 +511,7 @@ var app = new Vue({
     //   |___/___/_/ \_\_|_\\___|_||_|   |_| \___/|_|_\   |___/\___/|_|\_|\___|___/
 
         songSearch(){
-  
+
 
         },
 
@@ -532,8 +532,8 @@ var app = new Vue({
         {
           let json = {"filter" : this.user_search_text, "page" : this.user_search_pagination_idx};
           this.make_authenticated_request(json, "POST", "/api/searchUsers", this.searchUsersSuccess, this.searchUsersFailure);
-        }, 
-        
+        },
+
 
         inspectUserSuccess(req)
         {
@@ -547,9 +547,9 @@ var app = new Vue({
 
         viewUserProfile(username)
         {
-          this.make_authenticated_request({"username" : username}, "POST", "/api/inspectUser", this.inspectUserSuccess, this.inspectUserFailure); 
+          this.make_authenticated_request({"username" : username}, "POST", "/api/inspectUser", this.inspectUserSuccess, this.inspectUserFailure);
         },
-      
+
         // Adds all the retrieved data in the users array
         searchUsersSuccess(req){
           data = JSON.parse(req.response);
@@ -561,11 +561,11 @@ var app = new Vue({
               el["first_name"] = "not specified";
             if (el["last_name"] === "")
               el["last_name"] = "not specified";
-            
+
             if (el["location"] == "")
               el["location"] = el["location"];
 
-              app.search_users.push({"id" : el["id"], "username" : el["username"], "first_name" : el["first_name"], 
+              app.search_users.push({"id" : el["id"], "username" : el["username"], "first_name" : el["first_name"],
               "last_name" : el["last_name"], "location" : el["location"]});
           });
         },
@@ -710,7 +710,7 @@ var app = new Vue({
         },
         Len(val)
         {
-          return val == null ? "" : val.length; 
+          return val == null ? "" : val.length;
         }
     }
   });
@@ -775,5 +775,5 @@ function PopulateExistingTracks(number, data){
     // document.getElementById("YearInput" + i).value = data[0].year;
     // document.getElementById("TitleInput" + i).value = data[0].name;
   }
-  
+
 }
