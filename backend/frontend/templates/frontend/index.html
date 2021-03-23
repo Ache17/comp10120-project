@@ -913,20 +913,21 @@
 <!-- class="bg-light-blue-9 text-white shadow-2 rounded-borders" -->
 
               <div v-for="usr in search_users">
-                <q-card class="my-card bg-light-blue-9 text-white">
+                <q-card class="my-card bg-blue-grey-7 text-white">
 
                   <q-card-section>
-                    <div class="col q-pa-sm">
+                    <div class="col q-px-sm">
                       <div class="row">
                         <div class="text-h4 text-weight-bold float-left">[% usr.username %]</div>
                       </div>
                       <div class="row">
-                        <div class="text-subtitle2">Name: [% usr.first_name %] [% usr.last_name %]</div>
+                        <div class="text-subtitle2 float-left"><strong>Name:</strong> [% usr.first_name %] [% usr.last_name %]</div>
                       </div>
                       <div class="row">
-                        <div class="text-subtitle2">Location: [% usr.location %] Member Since: [% usr.date_joined %] Last Login: [% usr.last_login%]</div>
+                        <div class="text-subtitle2 float-left"><strong>Location:</strong> [% usr.location %]</div>
                       </div>
-                      <div class="col q-pa-sm">
+                      <div class="row">
+                        <div class="text-subtitle2 float-left"><strong>Member Since:</strong> [% usr.date_joined %] || <strong>Last Login:</strong> [% usr.last_login%]</div>
                       </div>
                     </div>
 

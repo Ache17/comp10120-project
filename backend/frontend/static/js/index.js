@@ -558,9 +558,11 @@ var app = new Vue({
           console.log(data);
 
           data["data"].forEach(el => {
-            if (el["first_name"] === "")
+            if (el["first_name"] === "" && el["last_name"] === "")
               el["first_name"] = "Unknown";
-            if (el["last_name"] === "")
+            else if (el["first_name"] === "")
+              el["first_name"] = "Unknown";
+            else if (el["last_name"] === "")
               el["last_name"] = "Unknown";
             if (el["location"] == "")
               el["location"] = "Unknown";
