@@ -274,23 +274,23 @@
           </div>
         <q-form @submit="submitPlaylist" class="q-gutter-md">
 
-          <q-stepper v-model="create_playlist_step" ref="playlist_stepper" color="primary" animated>
-            <q-step :name="1" done-color="green" title="add playlist info" icon="settings"
+          <q-stepper v-model="create_playlist_step" ref="playlist_stepper" active-color="cyan-14" animated>
+            <q-step :name="1" done-color="blue-10" title="add playlist info" icon="settings"
               :done="create_playlist_step > 1">
 
               <div class="column">
                 <div class="col">
                   <div class="submit_label">Upload Image</div>
-                  <q-file clearable filled color="white" v-model="playlist_image" label="Upload an Image (Optional)">
+                  <q-file clearable filled color="black" v-model="playlist_image" label="Upload an Image (Optional)">
                     <template v-slot:prepend>
-                      <q-icon name="attach_file" color="white"></q-icon>
+                      <q-icon name="attach_file" color="black"></q-icon>
                     </template>
                   </q-file>
                 <q-separator size="3px"></q-separator>
                 </div>
                 <div class="col">
                   <div class="submit_label">Title</div>
-                  <q-input color="white" clearable filled ref="title_ref" v-model="playlist_title"
+                  <q-input color="black" clearable filled ref="title_ref" v-model="playlist_title"
                     label="Playlist Title" lazy-rules
                     :rules="[ val => val && val.length > 0 || 'Please enter playlist title.']"></q-input>
                   <q-separator size="3px"></q-separator>
@@ -298,7 +298,7 @@
 
                 <div class="col">
                   <div class="submit_label">Genre</div>
-                  <q-input color="white" clearable filled ref="genre_ref" v-model="playlist_genre"
+                  <q-input color="black" clearable filled ref="genre_ref" v-model="playlist_genre"
                     label="Playlist Genre" lazy-rules :rules="[ val => val && val.length > 0 || 'Please enter genre.']">
                   </q-input>
                   <q-separator size="3px"></q-separator>
@@ -307,7 +307,7 @@
 
                 <div class="col">
                   <div class="submit_label">Description</div>
-                  <q-input color="white" clearable filled ref="description_ref" v-model="playlist_description"
+                  <q-input color="black" clearable filled ref="description_ref" v-model="playlist_description"
                     label="Playlist Description" lazy-rules
                     :rules="[ val => val && val.length > 0 || 'Please enter description.']"></q-input>
                   <q-separator size="3px"></q-separator>
@@ -315,7 +315,7 @@
 
                 <div class="col">
                   <div class="submit_label">Share Playlist With Followers?</div>
-                  <q-checkbox left-label v-model="isPublic" size="48px"
+                  <q-checkbox left-label color="light-blue-6" v-model="isPublic" size="48px"
                     :label="isPublic ? 'Yes' : 'No'"></q-checkbox>
                   <q-separator size="3px"></q-separator>
                 </div>
@@ -330,25 +330,24 @@
               </div>
             </q-step>
 
-            <q-step :name="2" done-color="green" title="add songs" icon="music_note" :done="create_playlist_step > 2">
-              Click on text to change it
+            <q-step :name="2" done-color="blue-10" title="add songs" icon="music_note" :done="create_playlist_step > 2" style="max-height:60vh">
 
-              <div class="column">
+              <div class="column" style="max-height:60vh">
                 <div class="col">
-                  <q-list bordered class="rounded-borders" style="max-width: 80%; margin-left: 10%;">
+                  <q-list bordered class="rounded-borders" style="max-width: 80%; margin-left: 10%; max-height=60vh;">
                     <q-item-label header>Songs</q-item-label>
 
                     <div v-for="(track, index) in tracks">
                       <q-item>
                         <q-item-section avatar top>
-                          <q-avatar color="primary" text-color="white" size="34px">[% index %]</q-avatar>
+                          <q-avatar color="light-blue-6" text-color="white" size="34px">[% index %]</q-avatar>
                         </q-item-section>
                         <q-item-section top>
 
                           <q-item-label lines="1">
                             <span class="text-weight-medium">Name : [% track.name %]</span>
-                            <q-popup-edit v-model="track.name" title="edit name ( type and approve with enter )">
-                              <q-input v-model="track.name" dense autofocus label="name" ></q-input>
+                            <q-popup-edit v-model="track.name" title="Enter Song Name">
+                              <q-input v-model="track.name" dense autofocus label="Playlist Name"></q-input>
                               <template v-slot:append>
                                 <q-icon name="edit"></q-icon>
                               </template>
@@ -357,17 +356,17 @@
                           <q-separator spaced></q-separator>
 
                           <q-item-label lines="1">
-                            <span class="text-weight-medium">Author : [% track.author %]</span>
-                            <q-popup-edit v-model="track.author" title="edit author ( type and approve with enter )">
-                              <q-input v-model="track.author" dense autofocus label="author"></q-input>
+                            <span class="text-weight-medium">Artist : [% track.author %]</span>
+                            <q-popup-edit v-model="track.author" title="Enter Artist's Name">
+                              <q-input v-model="track.author" dense autofocus label="Artist"></q-input>
                             </q-popup-edit>
                           </q-item-label>
                           <q-separator spaced></q-separator>
 
                           <q-item-label caption lines="1">
                             <span class="text-weight-medium"> link [% track.link %] </span>
-                            <q-popup-edit v-model="track.link" title="add link ( type and approve with enter )">
-                             <q-input v-model="track.link" dense autofocus label="link"></q-input>
+                            <q-popup-edit v-model="track.link" title="Enter Link To Song">
+                             <q-input v-model="track.link" dense autofocus label="Link"></q-input>
                             </q-popup-edit>
                           </q-item-label>
 
@@ -380,7 +379,7 @@
                               <q-list>
                                 <q-item clickable v-close-popup @click="addSongFromSpotify(index)">
                                   <q-item-section avatar>
-                                    <q-avatar >
+                                    <q-avatar>
                                       <img src="/static/images/Spotify.png">
                                     </q-avatar>
                                   </q-item-section>
@@ -391,7 +390,9 @@
 
                                 <q-item clickable v-close-popup @click="addSongFromSpotify(index)">
                                   <q-item-section avatar>
-                                    <q-avatar icon="assignment" color="secondary" text-color="white" ></q-avatar>
+                                    <q-avatar>
+                                      <img src="/static/images/AppleMusic.png">
+                                    </q-avatar>
                                   </q-item-section>
                                   <q-item-section>
                                     <q-item-label>Add from Apple Music</q-item-label>
@@ -411,9 +412,9 @@
 
                     <q-item >
                       <q-item-section>
-                        <q-btn color="green" @click="addNewSong()">
+                        <q-btn color="light-blue-6" @click="addNewSong()">
                           <q-icon left size="3em" name="playlist_add" ></q-icon>
-                          <div>click me to add new song !</div>
+                          <div>Add New Song</div>
                         </q-btn>
                       </q-item-section>
                     </q-item>
@@ -423,12 +424,12 @@
 
             </q-step>
 
-            <q-step :name="3" done-color="green" title="submit!" icon="done" :done="create_playlist_step > 3">
+            <q-step :name="3" done-color="blue-10" title="submit!" icon="done" :done="create_playlist_step > 3">
 
-              <div class="column">
+              <div class="column" style="max-height:60vh">
                 <div class="col">
                   <q-list bordered class="rounded-borders" style="max-width: 80%; margin-left: 10%;">
-                    <q-item-label header>Playlist info</q-item-label>
+                    <q-item-label header>Playlist Details</q-item-label>
 
                     <q-item class="q-my-sm">
                       <q-item-section>
@@ -453,7 +454,7 @@
 
                     <q-item class="q-my-sm">
                       <q-item-section>
-                        <q-item-label> is Public : [% isPublic ? "Yes" : "No" %]  </q-item-label>
+                        <q-item-label> Public : [% isPublic ? "Yes" : "No" %]  </q-item-label>
                       </q-item-section>
                     </q-item>
                     <q-separator ></q-separator>
@@ -469,7 +470,7 @@
                   </q-list>
                 </div>
 
-                <div class="col">
+                <div class="col" style="max-height:60vh">
 
                   <q-list bordered class="rounded-borders" style="max-width: 80%; margin-left: 10%;">
                     <q-item-label header>Songs</q-item-label>
@@ -512,11 +513,11 @@
 <q-dialog v-model="spotify_window">
   <q-card style="min-width: 350px">
     <q-card-section>
-      <div class="text-h6">Spotify query ( type and approve with enter)</div>
+      <div class="text-h6">Song from Spotify</div>
     </q-card-section>
 
     <q-card-section class="q-pt-none">
-      <q-input dense v-model="query" autofocus @keyup.enter="spotifySearch()" ></q-input>
+      <q-input dense v-model="query" autofocus @keyup.enter="spotifySearch()"></q-input>
     </q-card-section>
 
     <q-card-section>
@@ -527,7 +528,7 @@
                 <img src="/static/images/Spotify.png" width="64px" height="64px"></img>
               </q-item-section>
               <q-item-section line="1">Name </q-item-section>
-              <q-item-section caption line="1">Author </q-item-section>
+              <q-item-section caption line="1">Artist </q-item-section>
 
             </q-item>
             <q-separator></q-separator>
