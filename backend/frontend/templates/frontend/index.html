@@ -924,7 +924,7 @@
                         <div class="text-subtitle2">Name: [% usr.first_name %] [% usr.last_name %]</div>
                       </div>
                       <div class="row">
-                        <div class="text-subtitle2">Location: [% usr.location %]</div>
+                        <div class="text-subtitle2">Location: [% usr.location %] Member Since: [% usr.date_joined %] Last Login: [% usr.last_login%]</div>
                       </div>
                       <div class="col q-pa-sm">
                       </div>
@@ -1004,6 +1004,12 @@
   </q-dialog>
 </div>
 {% endblock %}
+
+<!--   _____      ___  _     _   ___ ___ ___  _   _ _  _ _____
+     / _ \ \    / / \| |   /_\ / __/ __/ _ \| | | | \| |_   _|
+    | (_) \ \/\/ /| .` |  / _ \ (_| (_| (_) | |_| | .` | | |
+    \___/ \_/\_/ |_|\_| /_/ \_\___\___\___/ \___/|_|\_| |_|   -->
+
 
 {% block settings %}
 <div class="q-pa-md q-gutter-sm">
@@ -1423,8 +1429,34 @@
 {% block dashboard %}
 <div class="q-pa-md">
   <div class="row q-col-gutter-x-xs q-col-gutter-y-lg">
-    <div class="col-4" v-for="n in 18">
-      <div class="bg-grey-8 my-content" style="height:400px">&nbsp; Playlist Information Will Go Here</div>
+    <div class="col-4" v-for="n in 12">
+      <div class="bg-grey-8 my-content" style="height:300px">
+        <div class="row">
+          <div class="col q-pa-sm">
+            <q-img src="/static/media/testing.png" :ratio="1"></q-img>
+          </div>
+          <div class="col q-pa-sm">
+            <div class="row text-h3 text-white q-py-md q-gutter-sm">Name</div>
+
+            <div class="row">
+              <div class="col text-white">Description:</div>
+            </div>
+            <div class="row">
+              <div class="col text-white">Genre:</div>
+            </div>
+            <div class="row">
+              <div class="col text-white">Number of Tracks:</div>
+            </div>
+            <div class="row">
+              <div class="col text-white">Rating:</div>
+            </div>
+            <div class="row">‏‏‎ ‎</div>
+            <div class="row">
+              <q-btn text-color="white" color="light-blue-9" class="full-width" label="View Playlist"></q-btn>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
