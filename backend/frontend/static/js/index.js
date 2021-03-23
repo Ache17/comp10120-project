@@ -29,9 +29,9 @@ var app = new Vue({
         token : "",
         // Playlist creation details, some reused for playlist editing.
         create_playlist_step : 1,
-        playlist_title : "a",
-        playlist_genre : "a",
-        playlist_description : "a",
+        playlist_title : "",
+        playlist_genre : "",
+        playlist_description : "",
         number_of_tracks : 1,
         tracks : [],
         isPublic: false,
@@ -236,7 +236,7 @@ var app = new Vue({
         //               |__/
         addNewSong()
         {
-          this.tracks.push({"name" : "click me to edit!", "author" : "click me to edit!", "sp_id" : "", "link" : "", "dropdown_open" : false});
+          this.tracks.push({"name" : "Edit!", "author" : "Edit!", "sp_id" : "", "link" : "", "dropdown_open" : false});
         },
         removeSong(id)
         {
