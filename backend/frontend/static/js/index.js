@@ -56,7 +56,7 @@ var app = new Vue({
         last_name: "",
         last_login: "",
         date_joined: "",
-        landing_dialog: true,               // REMEMBER TO CHANGE THIS BACK
+        landing_dialog: true,
         fab1: false,
         hideLabels: false,
         num_of_playlists: 0,
@@ -186,13 +186,17 @@ var app = new Vue({
                 if (loginRequest.status < 300 && loginRequest.status >= 200)
                 {
                     this.token = returned_json["token"];
-
                     $cookies.set("token", this.token);
-
                     this.sucessNotification("Login Successful");
                     this.username_f = this.username;
                     this.password_f = this.password;
                     this.mail_f = this.mail;
+                    var last_login = new Date();
+                    data =
+                    {
+                      "last_login": last_login
+                    };
+                    this.make_authenticated_request(data, "PUT", "/api/userInfo", this.noMsg, this.noMsg);
                     this.login_dialog = false;
                     this.landing_dialog = false;
                     var data = {};
@@ -204,9 +208,7 @@ var app = new Vue({
                 }
 
             });
-            console.log({"username" : this.username, "password" : this.password});
             loginRequest.send(JSON.stringify({"username" : this.username, "password" : this.password}));
-
         },
         // Registers a new user.
         submitRegister(evt)
@@ -243,7 +245,7 @@ var app = new Vue({
           this.tracks.splice(id, 1);
         },
         createPlaylist(){
-          if ($cookies.get("token") != ""){
+          if ($cookies.get("token") != null){
             this.number_of_tracks = 1;
             this.create_playlist_dialog = true;
           }
@@ -338,7 +340,6 @@ var app = new Vue({
           this.tracks[this.editing_idx].name = this.query_data[idx].name;
           this.tracks[this.editing_idx].sp_id = this.query_data[idx].spotify_id;
           this.spotify_window = false;
-
         },
 
         submitPlaylist()
@@ -381,7 +382,7 @@ var app = new Vue({
        // | |/ /  / / / -_)| |/|/ /      / __ |/ __// __// _ \/ // / / _ \/ __/
        // |___/  /_/  \__/ |__,__/      /_/ |_|\__/ \__/ \___/\_,_/ /_//_/\__/
         retrieveAccount(){
-          if ($cookies.get("token") != ""){
+          if ($cookies.get("token") != null){
             var data = {};
             this.make_authenticated_request(data, "GET", "/api/userInfo", this.retrieveAccountSuccess, this.retrieveAccountFailure);
             this.account_dialog = true;
@@ -400,7 +401,7 @@ var app = new Vue({
           this.first_name = data.first_name;
           this.last_name = data.last_name;
           this.date_joined = this.dateClean(data.date_joined);
-          this.last_login = data.last_login;
+          this.last_login = this.dateClean(data.last_login);
           this.profile_edit = false;
         },
         retrieveAccountFailure(req){
@@ -486,6 +487,7 @@ var app = new Vue({
         inspectPlaylistSuccess(req)
         {
             this.inspected_playlist_data = JSON.parse(req.response);
+            console.log(this.inspected_playlist_data);
             if (this.inspected_playlist_data["genre"] == "")
               this.inspected_playlist_data["genre"] = "not specified";
             if (this.inspected_playlist_data["description"] == "")
@@ -533,19 +535,33 @@ var app = new Vue({
 
         inspectUserSuccess(req)
         {
-          this.inspected_user_data = JSON.parse(req.response);
+          var data = JSON.parse(req.response);
+          console.log(data);
+          if (data.first_name === "" && data.last_name === "")
+            data.first_name = "Unknown";
+          if (data.location == "")
+            data.location = "Unknown";
+          if (data.date_joined == null)
+            data.date_joined = "Unknown";
+          else
+            data.date_joined = this.dateClean(data.date_joined);
+          if (data.last_login == null)
+            data.last_login = "Unknown";
+          else
+            data.last_login = this.dateClean(data.last_login);
+          this.inspected_user_data = data;
           this.inspect_user = true;
         },
         inspectUserFailure(req)
         {
-            this.failureNotification("Display user failed");
+            this.failureNotification("This User Couldn't be Retrieved");
         },
 
+        // for when you select one of the returned users when searching
         viewUserProfile(username)
         {
           this.make_authenticated_request({"username" : username}, "POST", "/api/inspectUser", this.inspectUserSuccess, this.inspectUserFailure);
         },
-
         // Adds all the retrieved data in the users array
         searchUsersSuccess(req){
           data = JSON.parse(req.response);
@@ -586,7 +602,7 @@ var app = new Vue({
          // |_|   |_| \__,_|  \_, | |_| |_| /__/  \__|    \___| \___/ |_| |_| \___| \__|  \__| |_| \___/ |_||_|   |___/  \__|  \_,_| |_|   |_|
          //                   |__/
         retrievePlaylistCollection(){
-          if ($cookies.get("token") != ""){
+          if ($cookies.get("token") != null){
             var data = {};
             this.make_authenticated_request(data, "GET", "/api/userPlaylists", this.retrievePlaylistColectionSuccess, this.retrievePlaylistColectionFailure);
             this.my_playlists_dialog = true;
@@ -625,7 +641,7 @@ var app = new Vue({
         },
         // Opens the page for viewing / editing one of your selected playlists.
         selectPlaylist(id){
-          if (this.token != ""){
+          if ($cookies.get("token") != null){
             // Filters the playlists for a specific id. There is only one
             // playlist of this id, so the data will just be in the first element of the collected array.
             this.current_playlist = this.playlists.filter(el => el.id == id)[0];

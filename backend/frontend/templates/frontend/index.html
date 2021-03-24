@@ -38,7 +38,7 @@
 
 {% block inspect_user %}
 <q-dialog v-model="inspect_user" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
-  <q-card class="inspect">
+  <q-card class="inspect text-blue-grey-10" style="background: radial-gradient(ellipse at top, #93aeba 30%, #6b9eb5 70%)">
     <q-bar class="bg-indigo-8">
       <q-space></q-space>
       <q-btn dense flat icon="close" v-close-popup>
@@ -46,32 +46,50 @@
       </q-btn>
     </q-bar>
     <q-card-section>
-      <div class="text-h5">Username : [% inspected_user_data["username"] %]</div>
+      <div class="text-h3 text-bold text-center">[% inspected_user_data["username"] %]</div>
     </q-card-section>
 
     <!-- DISPLAY the user data -->
     <q-card-section class="q-pt-none">
       <q-list bordered>
         <q-item class="q-my-sm">
-          name : [% inspected_user_data["first_name"] %] [% inspected_user_data["last_name"] %]
+          Name: [% inspected_user_data["first_name"] %] [% inspected_user_data["last_name"] %]
         </q-item>
         <q-item>
-          last logged in : [% inspected_user_data["last_login"] %]
+          Last Login: [% inspected_user_data["last_login"] %]
         </q-item>
         <q-item>
-          user since : [% inspected_user_data["date_joined"] %]
+          Member Since: [% inspected_user_data["date_joined"] %]
         </q-item>
         <q-item>
-          location : [% inspected_user_data["location"] %]
+          Location: [% inspected_user_data["location"] %]
         </q-item>
 
       </q-list>
     </q-card-section>
 
-
-    <!-- DISPLAY the following users -->
+    <!-- Followers -->
     <q-card-section class="q-pt-none">
-      <div class="text-h6">follows : [% Len(inspected_user_data["following"]) %]</div>
+      <div class="text-h6 text-bold">Followers:[% Len(inspected_user_data["followers"]) %]</div>
+      <q-list bordered>
+        <q-item v-for="follower in inspected_user_data.followers" class="q-my-sm" clickable v-ripple
+          @click="viewUserProfile(follower.username); app.inspect_user = false;">
+          <q-item-section avatar>
+            <q-avatar color="primary" text-color="white">
+              [% follower.username[0] %]
+            </q-avatar>
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>[% follower.username %]</q-item-label>
+            <q-item-label caption lines="1"> [% follower.first_name %] [% follower.second_name %]</q-item-label>
+          </q-item-section>
+        </q-item>
+      </q-list>
+    </q-card-section>
+
+    <!-- Following -->
+    <q-card-section class="q-pt-none">
+      <div class="text-h6 text-bold">Following: [% Len(inspected_user_data["following"]) %]</div>
       <q-list bordered>
         <q-item v-for="following in inspected_user_data.following" class="q-my-sm" clickable v-ripple
           @click="viewUserProfile(following.username)">
@@ -86,31 +104,11 @@
           </q-item-section>
         </q-item>
       </q-list>
-
-
-
-      <!-- DISPLAY the followers users -->
-      <div class="text-h6">following : [% Len(inspected_user_data["followers"]) %]</div>
-      <q-list bordered>
-        <q-item v-for="follower in inspected_user_data.followers" class="q-my-sm" clickable v-ripple
-          @click="viewUserProfile(follower.username)">
-          <q-item-section avatar>
-            <q-avatar color="primary" text-color="white">
-              [% follower.username[0] %]
-            </q-avatar>
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>[% follower.username %]</q-item-label>
-            <q-item-label caption lines="1"> [% follower.first_name %] [% follower.second_name %]</q-item-label>
-          </q-item-section>
-        </q-item>
-      </q-list>
-
     </q-card-section>
 
     <!-- DISPLAY the playlists info -->
     <q-card-section class="q-pt-none">
-      <div class="text-h6">playlists : [% Len(inspected_user_data["playlists"]) %]</div>
+      <div class="text-h6 text-bold">Number of Playlists: [% Len(inspected_user_data["playlists"]) %]</div>
       <q-list bordered>
         <q-item v-for="playlist in inspected_user_data.playlists" class="q-my-sm" clickable v-ripple
           @click="viewPlaylist(playlist.id)">
@@ -137,7 +135,7 @@
 
 {% block inspect_playlist %}
 <q-dialog v-model="inspect_playlist" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
-  <q-card class="inspect">
+  <q-card class="inspect text-blue-grey-10" style="background: radial-gradient(ellipse at top, #93aeba 30%, #6b9eb5 70%)">
     <q-bar class="bg-indigo-8">
       <q-space></q-space>
       <q-btn dense flat icon="close" v-close-popup>
@@ -146,45 +144,22 @@
     </q-bar>
 
     <q-card-section>
-      <div class="text-h5">Playlist : [% inspected_playlist_data["name"] %]</div>
+      <div class="text-h3 text-bold q-pb-sm">[% inspected_playlist_data["name"] %]</div>
+      <div class="row text-h7 text-italics">by⠀<a style="color: #263238;" href="javascript:void(0);" onclick='app.viewUserProfile(app.inspected_playlist_data["creator"]); app.inspect_playlist = false;'>[% inspected_playlist_data["creator"] %]</a><q-space></q-space>Average User Rating: [% inspected_playlist_data["rating"] %]</div>
     </q-card-section>
 
     <!-- DISPLAY the playlist data -->
     <q-card-section class="q-pt-none">
-      <q-list>
-        <q-item class="q-my-sm" clickable v-ripple @click="viewUserProfile(inspected_playlist_data.creator)">
-          <q-item-section>
-            <q-item-label>creator : [% inspected_playlist_data["creator"] %]</q-item-label>
-          </q-item-section>
-        </q-item>
-
-        <q-item class="q-my-sm">
-          <q-item-section>
-            <q-item-label>genre : [% inspected_playlist_data["genre"] %]</q-item-label>
-          </q-item-section>
-        </q-item>
-
-        <q-item class="q-my-sm">
-          <q-item-section>
-            <q-item-label>rating : [% inspected_playlist_data["rating"] %]</q-item-label>
-          </q-item-section>
-        </q-item>
-
-        <q-item class="q-my-sm">
-          <q-item-section>
-            <q-item-label>description : [% inspected_playlist_data["description"] %]</q-item-label>
-          </q-item-section>
-        </q-item>
-
-      </q-list>
-
+      Genre: "[% inspected_playlist_data["genre"] %]"<br>
+      [% inspected_playlist_data["creator"] %]'s Description: "[% inspected_playlist_data["description"] %]"
     </q-card-section>
 
     <!-- DISPLAY the playlists info -->
     <q-card-section class="q-pt-none">
-      <div class="text-h6">songs : [% Len(inspected_playlist_data["songs"]) %]</div>
-      <q-list bordered>
-        <q-item v-for="song in inspected_playlist_data.songs" class="q-my-sm" clickable v-ripple
+      <div class="text-h4 qa-pa-sm">Track Listing ([% Len(inspected_playlist_data["songs"]) %] Songs)</div>
+      <br>
+      <q-list dense bordered padding class="rounded borders">
+        <q-item v-for="song in inspected_playlist_data.songs" class="q-my-none" clickable v-ripple
           @click="displaySong('asd')">
           <q-item-section>
             <q-item-label>[% song.name %]</q-item-label>
@@ -192,7 +167,7 @@
 
           <q-item-section top side>
             <div class="text-grey-8 q-gutter-xs">
-              Rating : [% song.author %]
+              by [% song.author %]
             </div>
           </q-item-section>
         </q-item>
@@ -733,7 +708,7 @@
 {% block search_block %}
 <div class="q-pa-md q-gutter-sm">
   <div>
-    <q-btn label="Search" color="light-blue-13" class="full-width" @click="search_dialog = true">
+    <q-btn label="Search" color="light-blue-13" class="full-width" @click="if ($cookies.get('token') != null){search_dialog = true;}">
       <q-tooltip transition-show="rotate" transition-hide="rotate">
         Find Playlists, Songs Or Users
       </q-tooltip>
@@ -796,7 +771,7 @@
               <div class="col">
 
                 <div v-for="playlist in search_playlists">
-                  <q-card class="my-card text-white" style="background: radial-gradient(circle, #0288D1 0%, #303F9F 100%)" bordered>
+                  <q-card class="my-card text-white" style="background: radial-gradient(ellipse at top, #0288D1 0%, #303F9F 100%)" bordered>
                     <q-card-section>
                       <div class="row items-center no-wrap">
                         <div class="col">
@@ -909,7 +884,7 @@
             <div class="col">
 
               <div v-for="usr in search_users">
-                <q-card class="my-card text-white" style="background: radial-gradient(circle, #0288D1 0%, #303F9F 100%)" bordered>
+                <q-card class="my-card text-white" style="background: radial-gradient(ellipse at top, #0288D1 0%, #303F9F 100%)" bordered>
                   <q-card-section>
                     <div class="col q-px-sm">
                       <div class="row">
@@ -917,9 +892,6 @@
                       </div>
                       <div class="row">
                         <div class="text-subtitle2 float-left"><strong>Name:</strong> [% usr.first_name %] [% usr.last_name %]</div>
-                      </div>
-                      <div class="row">
-                        <div class="text-subtitle2 float-left"><strong>Location:</strong> [% usr.location %]</div>
                       </div>
                       <div class="row">
                         <div class="text-subtitle2 float-left"><strong>Member Since:</strong> [% usr.date_joined %] || <strong>Last Login:</strong> [% usr.last_login%]</div>
