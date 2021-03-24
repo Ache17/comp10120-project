@@ -749,7 +749,7 @@
         </q-btn>
       </q-bar>
 
-      <q-tabs v-model="tab" class="bg-light-blue-9 text-white" align="justify" narrow-indicator>
+      <q-tabs v-model="tab" class="bg-light-blue-8 text-white" align="justify" narrow-indicator>
         <q-tab name="Playlists" label="Playlists"></q-tab>
         <q-tab name="Songs" label="Songs"></q-tab>
         <q-tab name="Users" label="Users"></q-tab>
@@ -759,11 +759,11 @@
 
       <q-tab-panels v-model="tab" animated class="bg-blue-grey-9 text-white text-center">
         <q-tab-panel name="Playlists">
-          <div class="text-h3">Search For Created Playlists</div>
+          <div class="text-h3 q-py-sm">Search For Created Playlists</div>
           <q-card-section class="q-pt-none">
             <q-form @submit="playlistSearch">
               <q-input standout bottom-slots v-model="playlist_search_text" label="Search For Playlist Name"
-                bg-color="grey-7" color="cyan-11">
+                color="light-blue-13" label-color="white" bg-color="blue-grey-7">
                 <template v-slot:before>
                   <div>
                     <q-spinner-gears color="light-blue-13" size="2em"></q-spinner-gears>
@@ -788,7 +788,7 @@
                 <q-card-section>
                   <div class="q-pa-lg flex flex-center">
                     <q-pagination v-model="playlist_search_pagination_idx" :max="playlist_search_pages"
-                      color="deep-orange" boundary-numbers boundary-links @input="playlistSearchPage"></q-pagination>
+                      color="light-blue-13" boundary-numbers boundary-links @input="playlistSearchPage"></q-pagination>
                   </div>
                 </q-card-section>
               </div>
@@ -796,31 +796,34 @@
               <div class="col">
 
                 <div v-for="playlist in search_playlists">
-                  <q-card flat bordered class="my-card bg-primary">
+                  <q-card class="my-card text-white" style="background: radial-gradient(circle, #0288D1 0%, #303F9F 100%)" bordered>
                     <q-card-section>
                       <div class="row items-center no-wrap">
                         <div class="col">
-                          <div class="text-h5">[% playlist.name %]</div>
-                          <div class="text-subtitle2">Creator : [% playlist.creator %]</div>
-                          <div class="text-subtitle2">genre : [% playlist.genre %]</div>
+                          <div class="row">
+                            <div class="text-h4 text-weight-bold float-left">[% playlist.name %]</div>
+                          </div>
+                          <div class="row">
+                            <div class="text-subtitle1 float-left"><strong>Creator:</strong> [% playlist.creator %]</div>
+                          </div>
+                          <div class="row">
+                            <div class="text-subtitle1 float-left"><strong>Genre:</strong> [% playlist.genre %]</div>
+                          </div>
+                          <div class="row">
+                            <div class="text-subtitle1 float-left"><strong>Description:</strong> [% playlist.description %]</div>
+                          </div>
                         </div>
 
                         <div class="col-auto">
-                          <q-btn color="red" stack glossy icon="search" label="View" @click="viewPlaylist(playlist.id)">
+                          <q-btn color="text-h4 light-blue-13" flat icon="search" label="View Playlist" @click="viewPlaylist(playlist.id)">
                           </q-btn>
                         </div>
                       </div>
                     </q-card-section>
-
-                    <q-card-section>
-                      description : [% playlist.description %]
-                    </q-card-section>
-
                     <q-separator></q-separator>
-
                   </q-card>
-
                   <br>
+
                 </div>
               </div>
 
@@ -828,7 +831,7 @@
                 <q-card-section>
                   <div class="q-pa-lg flex flex-center">
                     <q-pagination v-model="playlist_search_pagination_idx" :max="playlist_search_pages"
-                      color="deep-orange" boundary-numbers boundary-links @input="playlistSearchPage"></q-pagination>
+                      color="light-blue-13" boundary-numbers boundary-links @input="playlistSearchPage"></q-pagination>
                   </div>
                 </q-card-section>
               </div>
@@ -838,11 +841,10 @@
         </q-tab-panel>
 
         <q-tab-panel name="Songs">
-          <div class="text-h3">Search For Your Favourite Songs</div>
+          <div class="text-h3 q-py-sm">Search For Your Favourite Songs</div>
           <q-card-section class="q-pt-none">
             <q-form @submit="songSearch">
-              <q-input standout bottom-slots v-model="song_search_text" label="Search For Song Name" bg-color="grey-7"
-                color="cyan-11">
+              <q-input standout bottom-slots v-model="song_search_text" label="Search For Song Name" color="light-blue-13" label-color="white" bg-color="blue-grey-7">
                 <template v-slot:before>
                   <div>
                     <q-spinner-audio color="light-blue-13" size="2em"></q-spinner-audio>
@@ -871,11 +873,11 @@
 
         <q-tab-panel name="Users">
 
-          <div class="text-h3">Find Your Friends By Searching For Users</div>
+          <div class="text-h3 q-py-sm">Find Your Friends By Searching For Users</div>
           <q-card-section class="q-pt-none">
             <q-form @submit="userSearch">
               <q-input standout bottom-slots v-model="user_search_text" label="Search For SongSpace User"
-                bg-color="grey-7" color="cyan-11">
+                color="light-blue-13" label-color="white" bg-color="blue-grey-7">
                 <template v-slot:before>
                   <div>
                     <q-spinner-comment color="light-blue-13" size="2em"></q-spinner-comment>
@@ -907,7 +909,7 @@
             <div class="col">
 
               <div v-for="usr in search_users">
-                <q-card class="my-card bg-blue-grey-7 text-white">
+                <q-card class="my-card text-white" style="background: radial-gradient(circle, #0288D1 0%, #303F9F 100%)" bordered>
                   <q-card-section>
                     <div class="col q-px-sm">
                       <div class="row">
@@ -922,25 +924,27 @@
                       <div class="row">
                         <div class="text-subtitle2 float-left"><strong>Member Since:</strong> [% usr.date_joined %] || <strong>Last Login:</strong> [% usr.last_login%]</div>
                       </div>
+                      <div class="row">
+                        <div class="text-subtitle2 float-left"><strong>Location:</strong> [% usr.location %]</div>
+                      </div>
                     </div>
-                    <div class="text-subtitle2">location : [% usr.location %]</div>
                   </q-card-section>
 
                   <q-card-actions>
-                    <q-btn color="light-blue-13" push @click="viewUserProfile(usr.username)">
+                    <q-btn color="light-blue-13" flat @click="viewUserProfile(usr.username)">
                       <div class="row items-center no-wrap">
                         <q-icon left name="account_circle">
                         </q-icon>
-                        <div class="text-center">
+                        <div class="text-center text-h5 text-bold">
                           View Profile
                         </div>
                       </div>
                     </q-btn>
-                    <q-btn v-if="$cookies.get('token')" color="light-blue-13" push @click="follow(usr.username)">
+                    <q-btn v-if="$cookies.get('token')" color="light-blue-13" flat @click="follow(usr.username)">
                       <div class="row items-center no-wrap">
                         <q-icon left name="add_circle">
                         </q-icon>
-                        <div class="text-center">
+                        <div class="text-center text-h5 text-bold">
                           Follow
                         </div>
                       </div>

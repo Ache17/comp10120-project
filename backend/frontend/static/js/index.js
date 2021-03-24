@@ -49,7 +49,7 @@ var app = new Vue({
         playlist_search_text: "",
         song_search_text: "",
         user_search_text: "",
-        tab: true,
+        tab: "Playlists",
         // Account Details (when you view / edit your own profile)
         loc: "",
         first_name: "",
