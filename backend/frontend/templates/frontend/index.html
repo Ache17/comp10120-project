@@ -2,7 +2,7 @@
 
 {% block login_dialog %}
 <q-dialog v-model="login_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
-  <q-card  class="bg-grey-9 text-white">
+  <q-card  class="bg-blue-grey-9 text-white">
     <q-bar class="bg-indigo-8">
       <q-space></q-space>
       <q-btn dense flat icon="close" v-close-popup>
@@ -14,9 +14,9 @@
     </q-card-section>
     <q-card-section class="q-pt-none">
       <q-form @submit="submitLogin" class="q-gutter-md">
-        <q-input filled v-model="username" label-color="white" label="Username" lazy-rules
+        <q-input filled v-model="username" color="light-blue-13" label-color="blue-grey-9" bg-color="white" label="Username" lazy-rules
           :rules="[ val => val && val.length > 0]"></q-input>
-        <q-input v-model="password" filled :type="isPwd ? 'password' : 'text'" label-color="white" label="Password"
+        <q-input v-model="password" color="light-blue-13" label-color="blue-grey-9" bg-color="white" filled :type="isPwd ? 'password' : 'text'" label-color="white" label="Password"
           lazy-rules :rules="[ val => val && val.length > 0]">
           <template v-slot:append>
             <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="isPwd = !isPwd">
@@ -24,9 +24,12 @@
           </template>
         </q-input>
         <div>
-          <q-btn label="Submit Login" type="submit" color="light-blue-13"></q-btn>
+          <q-btn label="Submit Login" class="full-width" type="submit" color="light-blue-13"></q-btn>
         </div>
       </q-form>
+    </q-card-section>
+    <q-card-section>
+      <div class="text-h6"></div>
     </q-card-section>
   </q-card>
 </q-dialog>
@@ -216,18 +219,18 @@
     </q-bar>
 
     <q-card-section>
-      <div class="text-h6">Register new user </div>
+      <div class="text-h6">Register a New Account</div>
     </q-card-section>
 
     <q-card-section class="q-pt-none">
 
       <q-form @submit="submitRegister" class="q-gutter-md">
-        <q-input filled v-model="username" label="Username" label-color="white" lazy-rules
-          :rules="[ val => val && val.length > 0]"></q-input>
 
-          <q-input filled v-model="mail" type="email" label="Email" label-color="white"></q-input>
+        <q-input filled v-model="username" label="Username" color="light-blue-13" label-color="blue-grey-9" bg-color="white" lazy-rules:rules="[ val => val && val.length > 0]"></q-input>
 
-          <q-input v-model="password" filled :type="isPwd ? 'password' : 'text'" label="Password" label-color="white"
+          <q-input filled v-model="mail" type="email" label="Email" color="light-blue-13" label-color="blue-grey-9" bg-color="white"></q-input>
+
+          <q-input v-model="password" filled :type="isPwd ? 'password' : 'text'" label="Password" color="light-blue-13" label-color="blue-grey-9" bg-color="white"
             lazy-rules :rules="[ val => val && val.length > 0]">
 
           <template v-slot:append>
@@ -236,10 +239,13 @@
           </template>
         </q-input>
         <div>
-          <q-btn label="Register New Account" type="submit" color="light-blue-13"></q-btn>
+          <q-btn label="Register New Account" class="full-width" type="submit" color="light-blue-13"></q-btn>
         </div>
       </q-form>
 
+    </q-card-section>
+    <q-card-section>
+      <div class="text-h6"></div>
     </q-card-section>
   </q-card>
 </q-dialog>
@@ -570,7 +576,7 @@
     </q-btn>
   </div>
   <q-dialog v-model="my_playlists_dialog" :maximized="true" transition-show="slide-up" transition-hide="slide-down">
-    <q-card class="bg-grey-9 text-black">
+    <q-card class="bg-blue-grey-9 text-black">
 
       <q-bar class="bg-indigo-8">
         <q-space></q-space>
@@ -655,7 +661,7 @@
 <div class="q-pa-md q-gutter-sm">
   <q-dialog v-model="view_own_playlist_dialog" :maximized="true" transition-show="slide-up"
     transition-hide="slide-down">
-    <q-card class="bg-grey-9 text-black">
+    <q-card class="bg-blue-grey-9 text-black">
 
       <q-bar class="bg-light-blue-9">
         <q-space></q-space>
@@ -734,7 +740,7 @@
     </q-btn>
   </div>
   <q-dialog v-model="search_dialog" :maximized="true" transition-show="slide-up" transition-hide="slide-down">
-    <q-card class="bg-grey-9 text-white">
+    <q-card class="bg-blue-grey-9 text-white">
 
       <q-bar class="bg-indigo-8">
         <q-space></q-space>
@@ -751,7 +757,7 @@
 
       <q-separator></q-separator>
 
-      <q-tab-panels v-model="tab" animated class="bg-grey-9 text-white text-center">
+      <q-tab-panels v-model="tab" animated class="bg-blue-grey-9 text-white text-center">
         <q-tab-panel name="Playlists">
           <div class="text-h3">Search For Created Playlists</div>
           <q-card-section class="q-pt-none">
@@ -1002,7 +1008,7 @@
     </q-btn>
   </div>
   <q-dialog v-model="account_dialog" :maximized="true" transition-show="slide-up" transition-hide="slide-down">
-    <q-card class="bg-grey-9 text-black">
+    <q-card class="bg-blue-grey-9 text-black">
 
       <q-bar class="bg-indigo-8">
         <q-space></q-space>
@@ -1015,7 +1021,7 @@
         <div>Your Account</div>
       </q-card-section>
 
-      <q-card-section class="q-pt-none bg-grey-9">
+      <q-card-section class="q-pt-none bg-blue-grey-9">
         <q-form @submit="submitAccountChanges" class="q-gutter-md">
           <div class="row">
             <div class="col q-pa-sm">
@@ -1190,7 +1196,7 @@
                 icon="play_circle_outline" label="Explore"></q-fab-action>
               <q-fab-action :hide-label="hideLabels" color="blue-grey-8" @click="register_dialog=true"
                 icon="person_add" label="Register"></q-fab-action>
-              <q-fab-action :hide-label="hideLabels" color="blue-grey-9" @click="login_dialog=true" icon="person"
+              <q-fab-action :hide-label="hideLabels" color="blue-blue-grey-9" @click="login_dialog=true" icon="person"
                 label="Login"></q-fab-action>
               <q-fab-action :hide-label="hideLabels" color="blue-grey-10" @click="about_us_dialog=true"
                 icon="help_outline" label="Information"></q-fab-action>
@@ -1209,7 +1215,7 @@
 {% block about_us %}
 <div>
   <q-dialog v-model="about_us_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
-    <q-card class="bg-grey-9 text-white">
+    <q-card class="bg-blue-grey-9 text-white">
 
       <q-bar class="bg-bg-indigo-8">
         <q-space></q-space>
@@ -1251,7 +1257,7 @@
 {% block contact_us %}
 <div>
   <q-dialog v-model="contact_us_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
-    <q-card class="bg-grey-9 text-white">
+    <q-card class="bg-blue-grey-9 text-white">
 
       <q-bar class="bg-bg-indigo-8">
         <q-space></q-space>
@@ -1287,7 +1293,7 @@
 {% block ethics %}
 <div>
   <q-dialog v-model="ethics_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
-    <q-card class="bg-grey-9 text-white">
+    <q-card class="bg-blue-grey-9 text-white">
 
       <q-bar class="bg-bg-indigo-8">
         <q-space></q-space>
@@ -1323,7 +1329,7 @@
 {% block external %}
 <div>
   <q-dialog v-model="external_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
-    <q-card class="bg-grey-9 text-white">
+    <q-card class="bg-blue-grey-9 text-white">
 
       <q-bar class="bg-bg-indigo-8">
         <q-space></q-space>
@@ -1365,7 +1371,7 @@
 {% block ownership %}
 <div>
   <q-dialog v-model="ownership_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
-    <q-card class="bg-grey-9 text-white">
+    <q-card class="bg-blue-grey-9 text-white">
 
       <q-bar class="bg-bg-indigo-8">
         <q-space></q-space>
