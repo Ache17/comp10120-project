@@ -76,6 +76,10 @@ class userInfoView(APIView):
         changed = False
         data = request.data
 
+        if "last_login" in data:
+            user.last_login = data["last_login"]
+            changed = True
+
         if "first_name" in data:
             user.first_name = data["first_name"]
             changed = True
