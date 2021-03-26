@@ -638,9 +638,9 @@
     transition-hide="slide-down">
     <q-card class="bg-blue-grey-9 text-black">
 
-      <q-bar class="bg-light-blue-9">
+      <q-bar class="bg-indigo-8">
         <q-space></q-space>
-        <q-btn dense flat icon="close" v-close-popup>
+        <q-btn dense color="white" flat icon="close" v-close-popup>
           <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
         </q-btn>
       </q-bar>
@@ -1166,15 +1166,15 @@
             <div class="text-h4 text-grey-1 text-center">Explore the Playlists You Love</div>
           </div>
           <div class="q-mt-md row fixed-top-left on-right">
-            <q-fab padding="50px" v-model="fab1" label="Menu" label-position="bottom" color="blue-grey-6"
+            <q-fab padding="50px" outline="true" v-model="fab1" label="Menu" label-position="bottom" label-class="text-h6" color="blue-grey-5"
               icon="keyboard_arrow_down" direction="down" :hide-label="hideLabels">
-              <q-fab-action :hide-label="hideLabels" color="blue-grey-7" @click="landing_dialog=false"
+              <q-fab-action :hide-label="hideLabels" color="blue-grey-6" @click="landing_dialog=false"
                 icon="play_circle_outline" label="Explore"></q-fab-action>
-              <q-fab-action :hide-label="hideLabels" color="blue-grey-8" @click="register_dialog=true"
+              <q-fab-action :hide-label="hideLabels" color="blue-grey-7" @click="register_dialog=true"
                 icon="person_add" label="Register"></q-fab-action>
-              <q-fab-action :hide-label="hideLabels" color="blue-blue-grey-9" @click="login_dialog=true" icon="person"
+              <q-fab-action :hide-label="hideLabels" color="blue-grey-8" @click="login_dialog=true" icon="person"
                 label="Login"></q-fab-action>
-              <q-fab-action :hide-label="hideLabels" color="blue-grey-10" @click="about_us_dialog=true"
+              <q-fab-action :hide-label="hideLabels" color="blue-grey-9" @click="about_us_dialog=true"
                 icon="help_outline" label="Information"></q-fab-action>
             </q-fab>
           </div>
@@ -1363,7 +1363,7 @@
       <q-card-section class="text-h8 text-center text-weight-light q-py-sm">
         This website contains material which is owned by or licensed to us.
         This material includes, but is not limited to, the design, layout,
-        ook, appearance and graphics.
+        look, appearance and graphics.
         <br>
         Copyright © 2021 SongSpace, All Rights Reserved.
       </q-card-section>
