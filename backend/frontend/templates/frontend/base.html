@@ -138,7 +138,12 @@
            <q-space></q-space>
            <q-btn stretch flat>
              <q-avatar>
-               <img src="{% static 'images/Spotify.png' %}" alt=" Spotify Logo" label="Spotify" onclick="location.href = 'https://www.spotify.com/us/'">
+               <img src="{% static 'images/AppleMusic.png' %}" alt="Apple Music Logo" label="Apple Music" onclick="location.href = 'https://music.apple.com/us/browse'">
+             </q-avatar>
+           </q-btn>
+           <q-btn stretch flat>
+             <q-avatar>
+               <img src="{% static 'images/Spotify.png' %}" alt="Spotify Logo" label="Spotify" onclick="location.href = 'https://www.spotify.com/us/'">
              </q-avatar>
            </q-btn>
            <q-separator vertical inset></q-separator>
@@ -151,7 +156,7 @@
           <h2 style="text-align:center"><strong>Welcome [% username_f %]</strong></h2>
           <h2 style="text-align:center"><strong>Discover New Playlists</strong></h2>
           <router-view>
-            <q-page padding>
+            <q-page padding style="height: 50vh;">
               {% block landing_dialog %}
               {% endblock %}
               {% block dashboard %}
