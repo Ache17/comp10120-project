@@ -133,6 +133,7 @@
 </q-dialog>
 {% endblock %}
 
+
 {% block inspect_playlist %}
 <q-dialog v-model="inspect_playlist" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
   <q-card class="inspect text-blue-grey-10" style="background: radial-gradient(ellipse at top, #93aeba 30%, #6b9eb5 70%)">
@@ -757,62 +758,41 @@
           </q-card-section>
 
           <q-card-section>
-            <div class="column userResults" style="height: 100%;">
-
+            <div class="column userResults" style="background-image: url(https://data.whicdn.com/images/145282643/original.jpg); background-size: contain; height:72vh;">
               <div class="col">
-                <q-card-section>
-                  <div class="q-pa-lg flex flex-center">
-                    <q-pagination v-model="playlist_search_pagination_idx" :max="playlist_search_pages"
-                      color="light-blue-13" boundary-numbers boundary-links @input="playlistSearchPage"></q-pagination>
-                  </div>
-                </q-card-section>
-              </div>
-
-              <div class="col">
-
-                <div v-for="playlist in search_playlists">
-                  <q-card class="my-card text-white" style="background: radial-gradient(ellipse at top, #0288D1 0%, #303F9F 100%)" bordered>
-                    <q-card-section>
-                      <div class="row items-center no-wrap">
-                        <div class="col">
-                          <div class="row">
-                            <div class="text-h4 text-weight-bold float-left">[% playlist.name %]</div>
+                <q-scroll-area class="q-pt-xl" style="height:65vh">
+                  <div v-for="playlist in search_playlists">
+                    <q-card class="my-card text-white" style="background: radial-gradient(ellipse at top, #0288D1 0%, #303F9F 100%)" bordered>
+                      <q-card-section>
+                        <div class="row items-center no-wrap">
+                          <div class="col">
+                            <div class="row">
+                              <div class="text-h4 text-weight-bold float-left">[% playlist.name %]</div>
+                            </div>
+                            <div class="row">
+                              <div class="text-subtitle1 float-left"><strong>Creator:</strong> [% playlist.creator %]</div>
+                            </div>
+                            <div class="row">
+                              <div class="text-subtitle1 float-left"><strong>Genre:</strong> [% playlist.genre %]</div>
+                            </div>
+                            <div class="row">
+                              <div class="text-subtitle1 float-left"><strong>Description:</strong> [% playlist.description %]</div>
+                            </div>
                           </div>
-                          <div class="row">
-                            <div class="text-subtitle1 float-left"><strong>Creator:</strong> [% playlist.creator %]</div>
-                          </div>
-                          <div class="row">
-                            <div class="text-subtitle1 float-left"><strong>Genre:</strong> [% playlist.genre %]</div>
-                          </div>
-                          <div class="row">
-                            <div class="text-subtitle1 float-left"><strong>Description:</strong> [% playlist.description %]</div>
+                          <div class="col-auto">
+                            <q-btn color="text-h4 light-blue-13" flat icon="search" label="View Playlist" @click="viewPlaylist(playlist.id)"></q-btn>
                           </div>
                         </div>
-
-                        <div class="col-auto">
-                          <q-btn color="text-h4 light-blue-13" flat icon="search" label="View Playlist" @click="viewPlaylist(playlist.id)">
-                          </q-btn>
-                        </div>
-                      </div>
-                    </q-card-section>
-                    <q-separator></q-separator>
-                  </q-card>
-                  <br>
-
-                </div>
-              </div>
-
-              <div class="col">
-                <q-card-section>
-                  <div class="q-pa-lg flex flex-center">
-                    <q-pagination v-model="playlist_search_pagination_idx" :max="playlist_search_pages"
-                      color="light-blue-13" boundary-numbers boundary-links @input="playlistSearchPage"></q-pagination>
+                      </q-card-section>
+                      <q-separator></q-separator>
+                    </q-card>
+                    <br>
                   </div>
-                </q-card-section>
+                </q-scroll-area>
               </div>
-
             </div>
           </q-card-section>
+
         </q-tab-panel>
 
         <q-tab-panel name="Songs">
@@ -870,19 +850,10 @@
             </q-form>
           </q-card-section>
 
-          <div class="column userResults" style="height: 100%;">
+          <div class="column userResults" style="background-image: url(https://images.pexels.com/photos/761543/pexels-photo-761543.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260); background-size: contain; height:72vh;">
 
             <div class="col">
-              <q-card-section>
-                <div class="q-pa-lg flex flex-center">
-                  <q-pagination v-model="user_search_pagination_idx" :max="user_search_pages" color="light-blue-13"
-                    boundary-numbers boundary-links @input="userSearchPage"></q-pagination>
-                </div>
-              </q-card-section>
-            </div>
-
-            <div class="col">
-
+              <q-scroll-area class="q-pt-xl" style="height:65vh">
               <div v-for="usr in search_users">
                 <q-card class="my-card text-white" style="background: radial-gradient(ellipse at top, #0288D1 0%, #303F9F 100%)" bordered>
                   <q-card-section>
@@ -926,15 +897,7 @@
                 </q-card>
                 <br>
               </div>
-            </div>
-
-            <div class="col">
-              <q-card-section>
-                <div class="q-pa-lg flex flex-center">
-                  <q-pagination v-model="user_search_pagination_idx" :max="user_search_pages" color="light-blue-13"
-                    boundary-numbers boundary-links @input="userSearchPage"></q-pagination>
-                </div>
-              </q-card-section>
+              </q-scroll-area>
             </div>
 
           </div>
