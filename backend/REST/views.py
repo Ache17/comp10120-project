@@ -26,16 +26,20 @@ from spotipy.oauth2 import SpotifyClientCredentials
 sigma = "".join([ascii_letters, digits])
 PER_PAGE = 10
 
+
 def getRand(n=16):
     return "".join([choice(sigma) for _ in range(n)])
 
 # Create your views here.
+
+
 class testView(APIView):
     def get(self, request):
         return Response("just a test")
 
     def post(self, request):
         return Response("post request")
+
 
 class authenticatedTest(APIView):
     permission_classes = (IsAuthenticated,)
@@ -45,6 +49,7 @@ class authenticatedTest(APIView):
 
     def post(self, request):
         return Response("post success !")
+
 
 class userInfoView(APIView):
     permission_classes = (IsAuthenticated,)
@@ -57,28 +62,25 @@ class userInfoView(APIView):
         following_ser = []
         for f in following:
             _user = f.user
-            following_ser.append({"id" : f.id, "username" : _user.username})
+            following_ser.append({"id": f.id, "username": _user.username})
 
         followers = profile.followed_by.all()
         followers_ser = []
         for f in followers:
             _user = f.user
-            followers_ser.append({"id" : f.id, "username" : _user.username})
+            followers_ser.append({"id": f.id, "username": _user.username})
 
         return Response({"username": user.username, "first_name": user.first_name,
                          "last_name": user.last_name, "email": user.email,
                          "last_login": user.last_login, "date_joined": user.date_joined,
-                         "location": profile.location, "followers" : followers_ser, "following" : following_ser})
+                         "location": profile.location, "followers": followers_ser, "following": following_ser})
 
     def put(self, request):
+        print("asd")
         user = request.user
         profile = UserProfile.objects.get(user=user)
         changed = False
         data = request.data
-
-        if "last_login" in data:
-            user.last_login = data["last_login"]
-            changed = True
 
         if "first_name" in data:
             user.first_name = data["first_name"]
@@ -110,6 +112,7 @@ class userInfoView(APIView):
             return Response({"message": "Update sucessfull "}, status=status.HTTP_200_OK)
         return Response({"message": "Update not sucessfull"}, status=status.HTTP_400_BAD_REQUEST)
 
+
 class searchPlaylistView(APIView):
     permission_classes = (IsAuthenticated,)
 
@@ -120,7 +123,8 @@ class searchPlaylistView(APIView):
             page = int(request.data["page"])
 
         if "filter" in request.data:
-            entries = Playlist.objects.filter(name__icontains=request.data["filter"], isPublic=True)
+            entries = Playlist.objects.filter(
+                name__icontains=request.data["filter"], isPublic=True)
         else:
             entries = Playlist.objects.filter(isPublic=True)
         paginator = Paginator(entries, PER_PAGE)
@@ -133,9 +137,10 @@ class searchPlaylistView(APIView):
         for playlist in playlists:
             creator = playlist.creator
             user = creator.user
-            ret.append({"id" : playlist.id, "creator_username": user.username, "name": playlist.name, "genre": playlist.genre,
-                        "description": playlist.description, "rating" : playlist.rating})
-        return Response({"pages" : paginator.num_pages, "data" : ret}, status=status.HTTP_200_OK)
+            ret.append({"id": playlist.id, "creator_username": user.username, "name": playlist.name, "genre": playlist.genre,
+                        "description": playlist.description, "rating": playlist.rating})
+        return Response({"pages": paginator.num_pages, "data": ret}, status=status.HTTP_200_OK)
+
 
 class searchUsersView(APIView):
     permission_classes = (IsAuthenticated,)
@@ -146,12 +151,12 @@ class searchUsersView(APIView):
             page = int(request.data["page"])
 
         if "filter" in request.data:
-            entries = User.objects.filter(username__icontains=request.data["filter"])
+            entries = User.objects.filter(
+                username__icontains=request.data["filter"])
         else:
             entries = User.objects.filter()
 
         paginator = Paginator(entries, PER_PAGE)
-
 
         try:
             users = paginator.page(page)
@@ -163,10 +168,11 @@ class searchUsersView(APIView):
         ret = []
         for idx, user in enumerate(users):
             up = profiles[idx]
-            ret.append({"username": user.username, "first_name": user.first_name, "last_name": user.last_name, "location" : up.location, "date_joined" : user.date_joined, "last_login" : user.last_login})
+            ret.append({"username": user.username, "first_name": user.first_name,
+                       "last_name": user.last_name, "location": up.location})
 
+        return Response({"page_nums": paginator.num_pages, "data": ret}, status=status.HTTP_200_OK)
 
-        return Response({ "page_nums" : paginator.num_pages, "data" : ret}, status=status.HTTP_200_OK)
 
 class playlistsView(APIView):
     permission_classes = (IsAuthenticated,)
@@ -181,16 +187,17 @@ class playlistsView(APIView):
             songs = Item.objects.filter(whichPlaylist=p)
 
             for song in songs:
-                songs_serialized.append({"id" : song.id, "name": song.name, "author": song.author})
-            response.append({"id" : p.id, "name": p.name, "genre": p.genre, "description": p.description,
-                             "rating": p.rating, "songs": songs_serialized})
+                songs_serialized.append(
+                    {"id": song.id, "name": song.name, "author": song.author})
+            response.append({"id": p.id, "name": p.name, "genre": p.genre, "description": p.description,
+                             "rating": p.rating, "songs": songs_serialized, "isPublic": p.isPublic, "link": p.link})
         return Response(response)
 
     def delete(self, request):
         try:
             playlist_id = request.data['id']
         except KeyError:
-            return Response({"message" : "playlist id not specified"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "playlist id not specified"}, status=status.HTTP_400_BAD_REQUEST)
 
         user = request.user
         profile = UserProfile.objects.get(user=user)
@@ -198,32 +205,34 @@ class playlistsView(APIView):
         try:
             playlist = Playlist.objects.get(id=playlist_id)
         except Playlist.DoesNotExist:
-            return Response({"message" : "not valid playlist id"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "not valid playlist id"}, status=status.HTTP_400_BAD_REQUEST)
 
         if playlist.creator == profile:
             playlist.delete()
-            return Response({"message" : "playlist have been deleted"}, status=status.HTTP_200_OK)
+            return Response({"message": "playlist have been deleted"}, status=status.HTTP_200_OK)
 
-        return Response({"message" : f"it's not yours playlist"}, status=status.HTTP_200_OK)
+        return Response({"message": f"it's not yours playlist"}, status=status.HTTP_200_OK)
 
     def put(self, request):
+        print(request.data)
         try:
-            playlist_id = request.data['playlist_id']
+            playlist_id = request.data['id']
         except KeyError:
-            return Response({"message" : "playlist id not specified"}, status=status.HTTP_400_BAD_REQUEST)
-
+            return Response({"message": "playlist id not specified"}, status=status.HTTP_400_BAD_REQUEST)
+        print("2")
+        
         user = request.user
         profile = UserProfile.objects.get(user=user)
         try:
             playlist = Playlist.objects.get(id=playlist_id)
         except Playlist.DoesNotExist:
-            return Response({"message" : "not valid playlist id"}, status=status.HTTP_400_BAD_REQUEST)
-
+            return Response({"message": "not valid playlist id"}, status=status.HTTP_400_BAD_REQUEST)
+        print("3")
 
         if playlist.creator == profile:
 
-            if "name" in request.data:
-                playlist.name = request.data['name']
+            if "title" in request.data:
+                playlist.name = request.data['title']
 
             if "genre" in request.data:
                 playlist.genre = request.data["genre"]
@@ -237,15 +246,64 @@ class playlistsView(APIView):
             if "isPublic" in request.data:
                 playlist.isPublic = request.data["isPublic"]
 
-            # adding new song
-            if "new_song_author" in request.data and "new_song_name" in request.data:
-                new_song = Item(whichPlaylist= playlist, name=request.data["new_song_name"],author=request.data["new_song_author"])
-                new_song.save()
+            # This is ugly and not efficient
+            if "tracks" in request.data:
+                left_tracks = []
+                new_tracks = []
+                tracks = request.data["tracks"]
+
+                for track in tracks:
+                    if "id" not in track:
+                        track["whichPlaylist"] = playlist.id
+                        new_tracks.append(track)
+                    else:
+                        # update existing item
+                        try:
+                            el = Item.objects.get(id=track["id"])
+
+                            if "name" in track:
+                                el.name = track["name"]
+
+                            if "author" in track:
+                                el.author = track["author"]
+
+                            if "manual_link" in track:
+                                el.manual_link = track["manual_link"]
+
+                            if "spotify_id" in track:
+                                el.spotify_id = track["spotify_id"]
+
+                            if "apple_music_id" in track:
+                                el.apple_music_id = track["apple_music_id"]
+
+                            el.save()
+
+                        except Item.DoesNotExist:
+                            print("not cool")
+                            pass
+
+                        left_tracks.append(track["id"])
+
+                # delete all removed
+                prev_songs = Item.objects.filter(whichPlaylist=playlist)
+                to_delete = prev_songs.exclude(id__in=left_tracks)
+                print(to_delete)
+                to_delete.delete()
+                print("4")
+
+
+                # add the new songs
+                items_serializer = ItemSerializer(data=new_tracks, many=True)
+                if items_serializer.is_valid():
+                    items_serializer.save()
+                else:
+                    return Response({"message": "adding new tracks failed !"}, status=status.HTTP_400_BAD_REQUEST)
+
             playlist.save()
-
-            return Response({"message" : "playlist have been updated"}, status=status.HTTP_200_OK)
-
-        return Response({"message" : "playlist does not exists or is not yours"}, status=status.HTTP_200_OK)
+            print("5")
+            return Response({"message": "playlist have been updated"}, status=status.HTTP_200_OK)
+        print("6")
+        return Response({"message": "playlist does not exists or is not yours"}, status=status.HTTP_400_BAD_REQUEST)
 
     def post(self, request):
         # manually setting up the user id's
@@ -307,6 +365,7 @@ class playlistsView(APIView):
         #        print(serializer.errors)
         return Response({"message": "playlist submission not sucessfull"}, status=status.HTTP_400_BAD_REQUEST)
 
+
 class othersPlaylists(APIView):
     permission_classes = (IsAuthenticated, )
 
@@ -317,16 +376,19 @@ class othersPlaylists(APIView):
                 user = User.objects.get(username=request.data['username'])
                 userProfile = UserProfile.objects.get(user=user)
 
-                playlists = Playlist.objects.filter(creator=userProfile, isPublic=True)
+                playlists = Playlist.objects.filter(
+                    creator=userProfile, isPublic=True)
                 ret = []
                 for playlist in playlists:
-                    ret.append({"name" : playlist.name, "genre" : playlist.genre, "description" : playlist.description, "rating" : playlist.rating})
+                    ret.append({"name": playlist.name, "genre": playlist.genre,
+                               "description": playlist.description, "rating": playlist.rating})
                 return Response(ret, status=status.HTTP_200_OK)
 
             except User.DoesNotExist:
-                return Response({"message" : "user does not exists"}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"message": "user does not exists"}, status=status.HTTP_400_BAD_REQUEST)
         else:
-            return Response({"message" : "username not supplied"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "username not supplied"}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class songView(APIView):
     permission_classes = (IsAuthenticated,)
@@ -336,34 +398,34 @@ class songView(APIView):
         try:
             song_id = request.data['song_id']
         except KeyError:
-            return Response({"message" : "song_id not provided"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "song_id not provided"}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             song = Item.objects.get(id=song_id)
         except Item.DoesNotExist:
-            return Response({"message" : "song does not exists or is not public"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "song does not exists or is not public"}, status=status.HTTP_400_BAD_REQUEST)
 
         playlist = song.whichPlaylist
         if playlist.isPublic:
-            return Response({"name" : song.name , "author" : song.author}, status=status.HTTP_200_OK)
+            return Response({"name": song.name, "author": song.author}, status=status.HTTP_200_OK)
 
         user = request.user
         profile = UserProfile.objects.get(user=user)
         if playlist.creator == profile:
-            return Response({"name" : song.name , "author" : song.author}, status=status.HTTP_200_OK)
+            return Response({"name": song.name, "author": song.author}, status=status.HTTP_200_OK)
 
-        return Response({"message" : "song does not exists or is not public"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"message": "song does not exists or is not public"}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request):
         try:
             song_id = request.data['song_id']
         except KeyError:
-            return Response({"message" : "song_id not provided"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "song_id not provided"}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             song = Item.objects.get(id=song_id)
         except Item.DoesNotExist:
-            return Response({"message" : "song does not exists or is not yours"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "song does not exists or is not yours"}, status=status.HTTP_400_BAD_REQUEST)
 
         playlist = song.whichPlaylist
         user = request.user
@@ -371,19 +433,19 @@ class songView(APIView):
 
         if playlist.creator == profile:
             song.delete()
-            return Response({"message" : "song deleted"}, status=status.HTTP_200_OK)
-        return Response({"message": "song does not exists or is not yours"} ,status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "song deleted"}, status=status.HTTP_200_OK)
+        return Response({"message": "song does not exists or is not yours"}, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request):
         try:
             song_id = request.data['song_id']
         except KeyError:
-            return Response({"message" : "song_id not provided"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "song_id not provided"}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             song = Item.objects.get(id=song_id)
         except Item.DoesNotExist:
-            return Response({"message" : "song does not exists or is not yours"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "song does not exists or is not yours"}, status=status.HTTP_400_BAD_REQUEST)
 
         playlist = song.whichPlaylist
         user = request.user
@@ -399,8 +461,9 @@ class songView(APIView):
 
             song.save()
 
-            return Response({"message" : "song updated"}, status=status.HTTP_200_OK)
-        return Response({"message": "song does not exists or is not yours"} ,status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "song updated"}, status=status.HTTP_200_OK)
+        return Response({"message": "song does not exists or is not yours"}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class registerView(APIView):
     permission_classes = [AllowAny]
@@ -417,6 +480,7 @@ class registerView(APIView):
             return Response({"message": "registation sucessfull"}, status=status.HTTP_201_CREATED)
         return Response({"message": "registration not sucessfull"}, status=status.HTTP_400_BAD_REQUEST)
 
+
 class playlistView(APIView):
     permission_classes = (IsAuthenticated,)
 
@@ -424,12 +488,12 @@ class playlistView(APIView):
         try:
             playlistID = request.data["playlist_id"]
         except KeyError:
-            return Response({"message" : "playlist_id not supplied"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "playlist_id not supplied"}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             Object = Playlist.objects.get(id=playlistID)
         except Playlist.DoesNotExist:
-            return Response({"message" : "playlist does not exists or is private"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "playlist does not exists or is private"}, status=status.HTTP_400_BAD_REQUEST)
 
         name = Object.name
 
@@ -439,8 +503,9 @@ class playlistView(APIView):
         songs = Item.objects.filter(whichPlaylist=Object)
         songs_data = ItemDisplaySerializer(songs, many=True).data
         print(songs_data)
-        return Response({"name": Object.name, "creator" : Object.creator.user.username, "genre" : Object.genre, "link" : Object.link,
-                         "rating" : Object.rating, "description" : Object.description, "songs" : songs_data}, status=status.HTTP_200_OK)
+        return Response({"name": Object.name, "creator": Object.creator.user.username, "genre": Object.genre, "link": Object.link,
+                         "rating": Object.rating, "description": Object.description, "songs": songs_data}, status=status.HTTP_200_OK)
+
 
 class imageUpload(APIView):
     permission_classes = (IsAuthenticated,)
@@ -456,28 +521,31 @@ class imageUpload(APIView):
 
         # need associating hash with the playlist
 
-
         return Response(hash, status=status.HTTP_200_OK)
+
 
 class spotifyQuery(APIView):
     permission_classes = (IsAuthenticated,)
+
     def post(self, request):
         if "q" in request.data:
             try:
-                results = sp.search(q=request.data["q"], type="track", limit=10)
+                results = sp.search(
+                    q=request.data["q"], type="track", limit=10)
             except Exception:
-                return Response({"message" : "spotify service offline"}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"message": "spotify service offline"}, status=status.HTTP_400_BAD_REQUEST)
             res = []
             for idx, track in enumerate(results['tracks']['items']):
                 artist = ""
                 for art in track["artists"]:
                     artist += art["name"] + ", "
                 artist = artist[:-2]
-                res.append({ "name" : track["name"], "artists" : artist,
-                             "spotify_id" : track["id"], "image" : track["album"]["images"][0]["url"]})
-            return Response({"data" : res}, status=status.HTTP_200_OK)
+                res.append({"name": track["name"], "artists": artist,
+                            "spotify_id": track["id"], "image": track["album"]["images"][0]["url"]})
+            return Response({"data": res}, status=status.HTTP_200_OK)
         else:
-            return Response({"message" : "no query provided !"} , status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "no query provided !"}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class inspectUserInfo(APIView):
 
@@ -488,7 +556,7 @@ class inspectUserInfo(APIView):
         if "username" in request.data:
             Username = request.data["username"]
         else:
-            return Response({"message" : "username not specified"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "username not specified"}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             theUser = User.objects.get(username=Username)
@@ -504,12 +572,15 @@ class inspectUserInfo(APIView):
         last_login = theUser.last_login
         date_joined = theUser.date_joined
 
-        following = User.objects.filter(id__in=up.follows.all().values_list("user", flat=True)).values("username", "first_name", "last_name")
-        followers = User.objects.filter(id__in=up.followed_by.all().values_list("user", flat=True)).values("username", "first_name", "last_name")
-        playlists = displayPlaylistSerializer(Playlist.objects.filter(creator=up, isPublic=True), many=True)
+        following = User.objects.filter(id__in=up.follows.all().values_list(
+            "user", flat=True)).values("username", "first_name", "last_name")
+        followers = User.objects.filter(id__in=up.followed_by.all().values_list(
+            "user", flat=True)).values("username", "first_name", "last_name")
+        playlists = displayPlaylistSerializer(
+            Playlist.objects.filter(creator=up, isPublic=True), many=True)
         print(playlists.data)
 
-        return Response({"username" : theUser.username, "first_name" : first_name,
-                        "last_name" : theUser.last_name, "location" : location,
-                        "date_joined" : date_joined, "last_login" : last_login,
-                        "following" : following, "followers" : followers, "playlists" : playlists.data}, status=status.HTTP_200_OK)
+        return Response({"username": theUser.username, "first_name": first_name,
+                        "last_name": theUser.last_name, "location": location,
+                         "date_joined": date_joined, "last_login": last_login,
+                         "following": following, "followers": followers, "playlists": playlists.data}, status=status.HTTP_200_OK)

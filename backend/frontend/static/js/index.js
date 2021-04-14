@@ -612,6 +612,52 @@ var app = new Vue({
           }
         },
 
+        
+        update_playlist_success(req)
+        {
+            this.sucessNotification("playlist update successfull!");
+
+            let current_playlist = this.playlists.filter(el => el.id == this.own_playlist_view_id)[0];
+            current_playlist.name         = this.playlist_title;
+            current_playlist.genre        = this.playlist_genre;
+            current_playlist.description  = this.playlist_description;
+            current_playlist.isPublic     = this.isPublic;
+            current_playlist.rating       = this.rating;
+            current_playlist.songs        = this.tracks;           
+        },
+        update_playlist_failure(re)
+        {
+          this.failureNotification("Update failed !");
+        },
+
+        own_playlist_update()
+        {
+          // this is sloppy : should do a partial update, not recreate a playlist
+          this.make_authenticated_request({"id" : this.own_playlist_view_id, "title" : this.playlist_title, 
+                                           "genre" : this.playlist_genre, "description" : this.playlist_description, 
+                                          "isPublic" : this.isPublic, "rating" : this.rating, "tracks" : this.tracks}, 
+                                          "PUT", "/api/userPlaylists", this.update_playlist_success, this.update_playlist_failure);
+        },
+
+        own_playlist_delete()
+        {
+            console.log("delete");
+        },
+
+        spotify_export()
+        {
+            console.log("spotify export");
+        },
+
+
+        own_playlist_close()
+        {
+        },
+
+        openViewingPlaylist(evt)
+        {
+            this.sortCollection();
+        },
 
         // Resorts the playlists array according to the sorting parameters.
         sortCollection(){
@@ -641,10 +687,20 @@ var app = new Vue({
         },
         // Opens the page for viewing / editing one of your selected playlists.
         selectPlaylist(id){
-          if ($cookies.get("token") != null){
+          if ($cookies.get("token") != ""){
             // Filters the playlists for a specific id. There is only one
             // playlist of this id, so the data will just be in the first element of the collected array.
+            
             this.current_playlist = this.playlists.filter(el => el.id == id)[0];
+            this.own_playlist_view_id = id;
+
+            this.playlist_title       = this.current_playlist.name;
+            this.playlist_genre       = this.current_playlist.genre;
+            this.playlist_description = this.current_playlist.description;
+            this.isPublic             = this.current_playlist.isPublic;
+            this.rating               = this.current_playlist.rating;
+            this.tracks               = this.current_playlist.songs;           
+
             this.number_of_tracks = this.current_playlist.songs.length;
             this.view_own_playlist_dialog = true;
             this.populated = false; // This indicates the track listing isn't populated yet.
@@ -732,6 +788,165 @@ var app = new Vue({
         Len(val)
         {
           return val == null ? "" : val.length;
+        },
+
+        generateRandomString(length)
+        {
+          var text = '';
+        var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+        for (var i = 0; i < length; i++) {
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
         }
+        return text;
+        },
+
+        encode(d) {
+          let v = [];
+          for (let k in d)
+              v.push(encodeURIComponent(k) + "=" + encodeURIComponent(d[k]));
+  
+          let ret = v[0];
+  
+          for (let i = 1; i < v.length; ++i) {
+              ret = ret + "&" + v[i];
+          }
+          return ret;
+      },
+
+      get_spotify_auth() {
+        let redirect = window.location.origin + "/";
+        let q = {
+            "response_type": "code", "client_id": "5ef4bb85e1a9499593ac6a9477993c08",
+            "scope": "user-read-private user-read-email playlist-modify-private", "redirect_uri": redirect, state: generateRandomString(16)
+        };
+        let p = encode(q);
+        window.location.replace("https://accounts.spotify.com/authorize?" + p);
+    },
+
+    getTokenSuccess(req) {
+      let data = JSON.parse(req.response);
+      access_token = data['access_token'];
+      token_type = data['token_type'];
+      expires_in = data['expires_in'];
+      refresh_token = data['refresh_token'];
+      scope = data['scope'];
+
+      let d = document.getElementById("button1");
+      d.innerHTML = "get user id";
+      d.onclick = getSpotifyID;
+    },
+
+     getTokenFailure(req) {
+
+    },
+
+     getToken() {
+        let req = new XMLHttpRequest();
+        let param = { "grant_type": "authorization_code", "code": code, "redirect_uri": window.location.origin + "/" };
+        let p = encode(param);
+        req.open("POST", "https://accounts.spotify.com/api/token", true);
+        //console.log(p);
+
+        req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        req.setRequestHeader("Authorization", "Basic NWVmNGJiODVlMWE5NDk5NTkzYWM2YTk0Nzc5OTNjMDg6ZTdmYjIwYTc5N2U1NGI4OGJmYTM0MjIwZDgyYjdkM2Q=");
+
+        req.addEventListener("load", () => {
+            if (req.status < 300 && req.status >= 200)
+                getTokenSuccess(req);
+            else
+                getTokenFailure(req);
+        });
+
+        req.send(p);
+    },
+
+    processSpotifySongs(songs) {
+      let newSongs = [];
+      for (let i in songs)
+          newSongs.push("spotify:track:" + songs[i]);
+      return newSongs;
+    },
+
+    addToThePlaylistSuccess(req) {
+
+    },
+
+    addToThePlaylistFailure(req) {
+
+    },
+
+    addToThePlaylist(new_playlist_spotify_id, spotify_songs_ids) {
+        let reqS = new XMLHttpRequest();
+        reqS.open("POST", "https://api.spotify.com/v1/playlists/" + new_playlist_spotify_id + "/tracks", true);
+        reqS.setRequestHeader("Accept", "application/json");
+        reqS.setRequestHeader("Content-Type", "application/json");
+        reqS.setRequestHeader("Authorization", "Bearer " + access_token);
+        reqS.addEventListener("load", () => {
+            if (reqS.status < 300 && reqS.status >= 200)
+                addToThePlaylistSuccess(reqS);
+            else
+                addToThePlaylistFailure(reqS);
+        });
+        let newSongs = processSpotifySongs(spotify_songs_ids);
+        console.log(newSongs);
+        reqS.send(JSON.stringify({ "uris": newSongs }));
+    },
+
+    createSpotifyPlaylist() {
+      let reqS = new XMLHttpRequest();
+      reqS.open("POST", "	https://api.spotify.com/v1/users/" + user_id + "/playlists");
+      reqS.setRequestHeader("Accept", "application/json");
+      reqS.setRequestHeader("Content-Type", "application/json");
+      reqS.setRequestHeader("Authorization", "Bearer " + access_token);
+      reqS.addEventListener("load", () => {
+          if (reqS.status < 300 && reqS.status >= 200)
+              createSpotifyPlaylistSuccess(reqS);
+          else
+              createSpotifyPlaylistFailure(reqS);
+      });
+
+      reqS.send(JSON.stringify({ "name": "spotify_api_project_test", "description": "spotify api project test", "public": false }));
+    },
+
+    getSpotifyIDSuccess(req) {
+      data = JSON.parse(req.response);
+      user_id = data['id'];
+      document.getElementById("panel").style.display = 'block';
+      document.getElementById("username").innerHTML = data['display_name'];
+      document.getElementById("country").innerHTML = data['country'];
+      document.getElementById("email").innerHTML = data['email'];
+      document.getElementById("user_id").innerHTML = user_id;
+
+      document.getElementById("button1").innerHTML = "create sample playlist";
+      document.getElementById("button1").onclick = createSpotifyPlaylist;
+    },
+
+    getSpotifyIDFailure(req) {
+      //console.log("NOT CEWL");
+      //console.log(req.response);
+    },
+
+    getSpotifyID() {
+      let reqS = new XMLHttpRequest();
+      reqS.open("GET", "https://api.spotify.com/v1/me", true);
+      reqS.setRequestHeader("Accept", "application/json");
+      reqS.setRequestHeader("Content-Type", "application/json");
+      reqS.setRequestHeader("Authorization", "Bearer " + access_token);
+
+      reqS.addEventListener("load", () => {
+          if (reqS.status < 300 && reqS.status >= 200)
+              getSpotifyIDSuccess(reqS);
+          else
+              getSpotifyIDFailure(reqS);
+      });
+
+      reqS.send();
     }
+
+        // spotify user management
+
+
+    }
+
   });

@@ -20,3 +20,6 @@ class Item(models.Model):
     whichPlaylist = models.ForeignKey(Playlist, on_delete=models.CASCADE)
     name = models.CharField(max_length=64)
     author = models.CharField(max_length=128)
+    manual_link = models.CharField( default="", max_length=64)
+    spotify_id = models.CharField(default="", max_length=64)
+    apple_music_id = models.CharField(default="", max_length=64)

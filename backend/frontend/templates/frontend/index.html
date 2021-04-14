@@ -2,7 +2,7 @@
 
 {% block login_dialog %}
 <q-dialog v-model="login_dialog" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
-  <q-card  class="bg-blue-grey-9 text-white">
+  <q-card class="bg-blue-grey-9 text-white">
     <q-bar class="bg-indigo-8">
       <q-space></q-space>
       <q-btn dense flat icon="close" v-close-popup>
@@ -14,10 +14,11 @@
     </q-card-section>
     <q-card-section class="q-pt-none">
       <q-form @submit="submitLogin" class="q-gutter-md">
-        <q-input filled v-model="username" color="light-blue-13" label-color="blue-grey-9" bg-color="white" label="Username" lazy-rules
-          :rules="[ val => val && val.length > 0]"></q-input>
-        <q-input v-model="password" color="light-blue-13" label-color="blue-grey-9" bg-color="white" filled :type="isPwd ? 'password' : 'text'" label-color="white" label="Password"
-          lazy-rules :rules="[ val => val && val.length > 0]">
+        <q-input filled v-model="username" color="light-blue-13" label-color="blue-grey-9" bg-color="white"
+          label="Username" lazy-rules :rules="[ val => val && val.length > 0]"></q-input>
+        <q-input v-model="password" color="light-blue-13" label-color="blue-grey-9" bg-color="white" filled
+          :type="isPwd ? 'password' : 'text'" label-color="white" label="Password" lazy-rules
+          :rules="[ val => val && val.length > 0]">
           <template v-slot:append>
             <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="isPwd = !isPwd">
             </q-icon>
@@ -38,7 +39,8 @@
 
 {% block inspect_user %}
 <q-dialog v-model="inspect_user" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
-  <q-card class="inspect text-blue-grey-10" style="background: radial-gradient(ellipse at top, #93aeba 30%, #6b9eb5 70%)">
+  <q-card class="inspect text-blue-grey-10"
+    style="background: radial-gradient(ellipse at top, #93aeba 30%, #6b9eb5 70%)">
     <q-bar class="bg-indigo-8">
       <q-space></q-space>
       <q-btn dense flat icon="close" v-close-popup>
@@ -136,7 +138,8 @@
 
 {% block inspect_playlist %}
 <q-dialog v-model="inspect_playlist" :maximized="false" transition-show="slide-up" transition-hide="slide-down">
-  <q-card class="inspect text-blue-grey-10" style="background: radial-gradient(ellipse at top, #93aeba 30%, #6b9eb5 70%)">
+  <q-card class="inspect text-blue-grey-10"
+    style="background: radial-gradient(ellipse at top, #93aeba 30%, #6b9eb5 70%)">
     <q-bar class="bg-indigo-8">
       <q-space></q-space>
       <q-btn dense flat icon="close" v-close-popup>
@@ -146,7 +149,11 @@
 
     <q-card-section>
       <div class="text-h3 text-bold q-pb-sm">[% inspected_playlist_data["name"] %]</div>
-      <div class="row text-h7 text-italics">by⠀<a style="color: #263238;" href="javascript:void(0);" onclick='app.viewUserProfile(app.inspected_playlist_data["creator"]); app.inspect_playlist = false;'>[% inspected_playlist_data["creator"] %]</a><q-space></q-space>Average User Rating: [% inspected_playlist_data["rating"] %]</div>
+      <div class="row text-h7 text-italics">by⠀<a style="color: #263238;" href="javascript:void(0);"
+          onclick='app.viewUserProfile(app.inspected_playlist_data["creator"]); app.inspect_playlist = false;'>[%
+          inspected_playlist_data["creator"] %]</a>
+        <q-space></q-space>Average User Rating: [% inspected_playlist_data["rating"] %]
+      </div>
     </q-card-section>
 
     <!-- DISPLAY the playlist data -->
@@ -202,12 +209,14 @@
 
       <q-form @submit="submitRegister" class="q-gutter-md">
 
-        <q-input filled v-model="username" label="Username" color="light-blue-13" label-color="blue-grey-9" bg-color="white" lazy-rules:rules="[ val => val && val.length > 0]"></q-input>
+        <q-input filled v-model="username" label="Username" color="light-blue-13" label-color="blue-grey-9"
+          bg-color="white" lazy-rules:rules="[ val => val && val.length > 0]"></q-input>
 
-          <q-input filled v-model="mail" type="email" label="Email" color="light-blue-13" label-color="blue-grey-9" bg-color="white"></q-input>
+        <q-input filled v-model="mail" type="email" label="Email" color="light-blue-13" label-color="blue-grey-9"
+          bg-color="white"></q-input>
 
-          <q-input v-model="password" filled :type="isPwd ? 'password' : 'text'" label="Password" color="light-blue-13" label-color="blue-grey-9" bg-color="white"
-            lazy-rules :rules="[ val => val && val.length > 0]">
+        <q-input v-model="password" filled :type="isPwd ? 'password' : 'text'" label="Password" color="light-blue-13"
+          label-color="blue-grey-9" bg-color="white" lazy-rules :rules="[ val => val && val.length > 0]">
 
           <template v-slot:append>
             <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="isPwd = !isPwd">
@@ -248,7 +257,7 @@
       </q-bar>
 
       <q-card-section>
-          <div dense class="text-h3 text-white text-center text-bold">Create a New Playlist<br></div>
+        <div dense class="text-h3 text-white text-center text-bold">Create a New Playlist<br></div>
       </q-card-section>
 
       <q-card-section class="q-pt-none">
@@ -256,236 +265,241 @@
           <div class="absolute-top">
             <img slot="media" src="static/images/createBackground.jpg" width="" height="100%"></img>
           </div>
-        <q-form @submit="submitPlaylist" class="q-gutter-md">
+          <q-form @submit="submitPlaylist" class="q-gutter-md">
 
-          <q-stepper v-model="create_playlist_step" ref="playlist_stepper" active-color="cyan-14" animated>
-            <q-step :name="1" done-color="blue-10" title="add playlist info" icon="settings"
-              :done="create_playlist_step > 1">
+            <q-stepper v-model="create_playlist_step" ref="playlist_stepper" active-color="cyan-14" animated>
+              <q-step :name="1" done-color="blue-10" title="add playlist info" icon="settings"
+                :done="create_playlist_step > 1">
 
-              <div class="column">
-                <div class="col">
-                  <div class="submit_label">Upload Image</div>
-                  <q-file clearable filled color="black" v-model="playlist_image" label="Upload an Image (Optional)">
-                    <template v-slot:prepend>
-                      <q-icon name="attach_file" color="black"></q-icon>
-                    </template>
-                  </q-file>
-                <q-separator size="3px"></q-separator>
+                <div class="column">
+                  <div class="col">
+                    <div class="submit_label">Upload Image</div>
+                    <q-file clearable filled color="black" v-model="playlist_image" label="Upload an Image (Optional)">
+                      <template v-slot:prepend>
+                        <q-icon name="attach_file" color="black"></q-icon>
+                      </template>
+                    </q-file>
+                    <q-separator size="3px"></q-separator>
+                  </div>
+                  <div class="col">
+                    <div class="submit_label">Title</div>
+                    <q-input color="black" clearable filled ref="title_ref" v-model="playlist_title"
+                      label="Playlist Title" lazy-rules
+                      :rules="[ val => val && val.length > 0 || 'Please enter playlist title.']"></q-input>
+                    <q-separator size="3px"></q-separator>
+                  </div>
+
+                  <div class="col">
+                    <div class="submit_label">Genre</div>
+                    <q-input color="black" clearable filled ref="genre_ref" v-model="playlist_genre"
+                      label="Playlist Genre" lazy-rules
+                      :rules="[ val => val && val.length > 0 || 'Please enter genre.']">
+                    </q-input>
+                    <q-separator size="3px"></q-separator>
+
+                  </div>
+
+                  <div class="col">
+                    <div class="submit_label">Description</div>
+                    <q-input color="black" clearable filled ref="description_ref" v-model="playlist_description"
+                      label="Playlist Description" lazy-rules
+                      :rules="[ val => val && val.length > 0 || 'Please enter description.']"></q-input>
+                    <q-separator size="3px"></q-separator>
+                  </div>
+
+                  <div class="col">
+                    <div class="submit_label">Share Playlist With Followers?</div>
+                    <q-checkbox left-label color="light-blue-6" v-model="isPublic" size="48px"
+                      :label="isPublic ? 'Yes' : 'No'"></q-checkbox>
+                    <q-separator size="3px"></q-separator>
+                  </div>
+
+                  <div class="col">
+                    <div class="submit_label">Playlist Rating</div>
+                    <q-rating v-model="rating" size="3.5em" color="light-blue-6" icon="star"></q-rating>
+                    <q-separator size="3px"></q-separator>
+                  </div>
+
+
                 </div>
-                <div class="col">
-                  <div class="submit_label">Title</div>
-                  <q-input color="black" clearable filled ref="title_ref" v-model="playlist_title"
-                    label="Playlist Title" lazy-rules
-                    :rules="[ val => val && val.length > 0 || 'Please enter playlist title.']"></q-input>
-                  <q-separator size="3px"></q-separator>
-                </div>
+              </q-step>
 
-                <div class="col">
-                  <div class="submit_label">Genre</div>
-                  <q-input color="black" clearable filled ref="genre_ref" v-model="playlist_genre"
-                    label="Playlist Genre" lazy-rules :rules="[ val => val && val.length > 0 || 'Please enter genre.']">
-                  </q-input>
-                  <q-separator size="3px"></q-separator>
+              <q-step :name="2" done-color="blue-10" title="add songs" icon="music_note"
+                :done="create_playlist_step > 2" style="max-height:60vh">
 
-                </div>
+                <div class="column" style="max-height:60vh">
+                  <div class="col">
+                    <q-list bordered class="rounded-borders"
+                      style="max-width: 80%; margin-left: 10%; max-height: 60vh;">
+                      <q-item-label header>Songs</q-item-label>
 
-                <div class="col">
-                  <div class="submit_label">Description</div>
-                  <q-input color="black" clearable filled ref="description_ref" v-model="playlist_description"
-                    label="Playlist Description" lazy-rules
-                    :rules="[ val => val && val.length > 0 || 'Please enter description.']"></q-input>
-                  <q-separator size="3px"></q-separator>
-                </div>
+                      <div v-for="(track, index) in tracks">
+                        <q-item>
+                          <q-item-section avatar top>
+                            <q-avatar color="light-blue-6" text-color="white" size="34px">[% index %]</q-avatar>
+                          </q-item-section>
+                          <q-item-section top>
 
-                <div class="col">
-                  <div class="submit_label">Share Playlist With Followers?</div>
-                  <q-checkbox left-label color="light-blue-6" v-model="isPublic" size="48px"
-                    :label="isPublic ? 'Yes' : 'No'"></q-checkbox>
-                  <q-separator size="3px"></q-separator>
-                </div>
+                            <q-item-label lines="1">
+                              <span class="text-weight-medium">Name : [% track.name %]</span>
+                              <q-popup-edit v-model="track.name" title="Enter Song Name">
+                                <q-input v-model="track.name" dense autofocus label="Playlist Name"></q-input>
+                                <template v-slot:append>
+                                  <q-icon name="edit"></q-icon>
+                                </template>
+                              </q-popup-edit>
+                            </q-item-label>
+                            <q-separator spaced></q-separator>
 
-                <div class="col">
-                  <div class="submit_label">Playlist Rating</div>
-                  <q-rating v-model="rating" size="3.5em" color="light-blue-6" icon="star"></q-rating>
-                  <q-separator size="3px"></q-separator>
-                </div>
+                            <q-item-label lines="1">
+                              <span class="text-weight-medium">Artist : [% track.author %]</span>
+                              <q-popup-edit v-model="track.author" title="Enter Artist's Name">
+                                <q-input v-model="track.author" dense autofocus label="Artist"></q-input>
+                              </q-popup-edit>
+                            </q-item-label>
+                            <q-separator spaced></q-separator>
 
+                            <q-item-label caption lines="1">
+                              <span class="text-weight-medium"> link [% track.link %] </span>
+                              <q-popup-edit v-model="track.link" title="Enter Link To Song">
+                                <q-input v-model="track.link" dense autofocus label="Link"></q-input>
+                              </q-popup-edit>
+                            </q-item-label>
 
-              </div>
-            </q-step>
+                          </q-item-section>
 
-            <q-step :name="2" done-color="blue-10" title="add songs" icon="music_note" :done="create_playlist_step > 2" style="max-height:60vh">
+                          <q-item-section top side>
+                            <div class="text-grey-8 q-gutter-xs">
+                              <q-btn class="gt-xs" size="16px" flat dense round icon="delete"
+                                @click="removeSong(index)"></q-btn>
+                              <q-btn-dropdown v-model="track.dropdown_open" size="16px" flat dense round
+                                icon="more_vert">
+                                <q-list>
+                                  <q-item clickable v-close-popup @click="addSongFromSpotify(index)">
+                                    <q-item-section avatar>
+                                      <q-avatar>
+                                        <img src="/static/images/Spotify.png">
+                                      </q-avatar>
+                                    </q-item-section>
+                                    <q-item-section>
+                                      <q-item-label>Add from Spotify</q-item-label>
+                                    </q-item-section>
+                                  </q-item>
 
-              <div class="column" style="max-height:60vh">
-                <div class="col">
-                  <q-list bordered class="rounded-borders" style="max-width: 80%; margin-left: 10%; max-height=60vh;">
-                    <q-item-label header>Songs</q-item-label>
+                                  <q-item clickable v-close-popup @click="addSongFromSpotify(index)">
+                                    <q-item-section avatar>
+                                      <q-avatar>
+                                        <img src="/static/images/AppleMusic.png">
+                                      </q-avatar>
+                                    </q-item-section>
+                                    <q-item-section>
+                                      <q-item-label>Add from Apple Music</q-item-label>
+                                    </q-item-section>
+                                    <q-item-section side>
+                                      <q-icon name="info" color="amber"></q-icon>
+                                    </q-item-section>
+                                  </q-item>
+                                </q-list>
 
-                    <div v-for="(track, index) in tracks">
+                              </q-btn-dropdown>
+                            </div>
+                          </q-item-section>
+                        </q-item>
+                        <q-separator spaced size="5px"></q-separator>
+                      </div>
+
                       <q-item>
-                        <q-item-section avatar top>
-                          <q-avatar color="light-blue-6" text-color="white" size="34px">[% index %]</q-avatar>
-                        </q-item-section>
-                        <q-item-section top>
-
-                          <q-item-label lines="1">
-                            <span class="text-weight-medium">Name : [% track.name %]</span>
-                            <q-popup-edit v-model="track.name" title="Enter Song Name">
-                              <q-input v-model="track.name" dense autofocus label="Playlist Name"></q-input>
-                              <template v-slot:append>
-                                <q-icon name="edit"></q-icon>
-                              </template>
-                            </q-popup-edit>
-                          </q-item-label>
-                          <q-separator spaced></q-separator>
-
-                          <q-item-label lines="1">
-                            <span class="text-weight-medium">Artist : [% track.author %]</span>
-                            <q-popup-edit v-model="track.author" title="Enter Artist's Name">
-                              <q-input v-model="track.author" dense autofocus label="Artist"></q-input>
-                            </q-popup-edit>
-                          </q-item-label>
-                          <q-separator spaced></q-separator>
-
-                          <q-item-label caption lines="1">
-                            <span class="text-weight-medium"> link [% track.link %] </span>
-                            <q-popup-edit v-model="track.link" title="Enter Link To Song">
-                             <q-input v-model="track.link" dense autofocus label="Link"></q-input>
-                            </q-popup-edit>
-                          </q-item-label>
-
-                        </q-item-section>
-
-                        <q-item-section top side>
-                          <div class="text-grey-8 q-gutter-xs">
-                            <q-btn class="gt-xs" size="16px" flat dense round icon="delete" @click="removeSong(index)"></q-btn>
-                            <q-btn-dropdown v-model="track.dropdown_open" size="16px" flat dense round icon="more_vert">
-                              <q-list>
-                                <q-item clickable v-close-popup @click="addSongFromSpotify(index)">
-                                  <q-item-section avatar>
-                                    <q-avatar>
-                                      <img src="/static/images/Spotify.png">
-                                    </q-avatar>
-                                  </q-item-section>
-                                  <q-item-section>
-                                    <q-item-label>Add from Spotify</q-item-label>
-                                  </q-item-section>
-                                </q-item>
-
-                                <q-item clickable v-close-popup @click="addSongFromSpotify(index)">
-                                  <q-item-section avatar>
-                                    <q-avatar>
-                                      <img src="/static/images/AppleMusic.png">
-                                    </q-avatar>
-                                  </q-item-section>
-                                  <q-item-section>
-                                    <q-item-label>Add from Apple Music</q-item-label>
-                                  </q-item-section>
-                                  <q-item-section side>
-                                    <q-icon name="info" color="amber"></q-icon>
-                                  </q-item-section>
-                                </q-item>
-                              </q-list>
-
-                            </q-btn-dropdown>
-                          </div>
+                        <q-item-section>
+                          <q-btn color="light-blue-6" @click="addNewSong()">
+                            <q-icon left size="3em" name="playlist_add"></q-icon>
+                            <div>Add New Song</div>
+                          </q-btn>
                         </q-item-section>
                       </q-item>
-                      <q-separator spaced size="5px"></q-separator>
-                    </div>
-
-                    <q-item >
-                      <q-item-section>
-                        <q-btn color="light-blue-6" @click="addNewSong()">
-                          <q-icon left size="3em" name="playlist_add" ></q-icon>
-                          <div>Add New Song</div>
-                        </q-btn>
-                      </q-item-section>
-                    </q-item>
-                  </q-list>
-                </div>
-              </div>
-
-            </q-step>
-
-            <q-step :name="3" done-color="blue-10" title="submit!" icon="done" :done="create_playlist_step > 3">
-
-              <div class="column" style="max-height:60vh">
-                <div class="col">
-                  <q-list bordered class="rounded-borders" style="max-width: 80%; margin-left: 10%;">
-                    <q-item-label header>Playlist Details</q-item-label>
-
-                    <q-item class="q-my-sm">
-                      <q-item-section>
-                        <q-item-label> Name :  [% playlist_title %]  </q-item-label>
-                      </q-item-section>
-                    </q-item>
-                    <q-separator ></q-separator>
-
-                    <q-item class="q-my-sm">
-                      <q-item-section>
-                        <q-item-label> Genre : [% playlist_genre %]  </q-item-label>
-                      </q-item-section>
-                    </q-item>
-                    <q-separator ></q-separator>
-
-                    <q-item class="q-my-sm">
-                      <q-item-section>
-                        <q-item-label> Description : [% playlist_description %]  </q-item-label>
-                      </q-item-section>
-                    </q-item>
-                    <q-separator ></q-separator>
-
-                    <q-item class="q-my-sm">
-                      <q-item-section>
-                        <q-item-label> Public : [% isPublic ? "Yes" : "No" %]  </q-item-label>
-                      </q-item-section>
-                    </q-item>
-                    <q-separator ></q-separator>
-
-                    <q-item class="q-my-sm">
-                      <q-item-section>
-                        <q-item-label> Rating : [% rating %]  </q-item-label>
-                      </q-item-section>
-                    </q-item>
-                    <q-separator ></q-separator>
-
-
-                  </q-list>
+                    </q-list>
+                  </div>
                 </div>
 
-                <div class="col" style="max-height:60vh">
+              </q-step>
 
-                  <q-list bordered class="rounded-borders" style="max-width: 80%; margin-left: 10%;">
-                    <q-item-label header>Songs</q-item-label>
-                    <q-item class="q-my-sm" v-for="track in tracks">
-                      <q-item-section>
-                        <q-item-label line="1"> Name :  [% track.name %]  </q-item-label>
-                        <q-item-label line="1" caption> [% track.author %] </q-item-label>
-                      </q-item-section>
-                    </q-item>
-                    <q-separator ></q-separator>
+              <q-step :name="3" done-color="blue-10" title="submit!" icon="done" :done="create_playlist_step > 3">
 
-                  </q-list>
+                <div class="column" style="max-height:60vh">
+                  <div class="col">
+                    <q-list bordered class="rounded-borders" style="max-width: 80%; margin-left: 10%;">
+                      <q-item-label header>Playlist Details</q-item-label>
+
+                      <q-item class="q-my-sm">
+                        <q-item-section>
+                          <q-item-label> Name : [% playlist_title %] </q-item-label>
+                        </q-item-section>
+                      </q-item>
+                      <q-separator></q-separator>
+
+                      <q-item class="q-my-sm">
+                        <q-item-section>
+                          <q-item-label> Genre : [% playlist_genre %] </q-item-label>
+                        </q-item-section>
+                      </q-item>
+                      <q-separator></q-separator>
+
+                      <q-item class="q-my-sm">
+                        <q-item-section>
+                          <q-item-label> Description : [% playlist_description %] </q-item-label>
+                        </q-item-section>
+                      </q-item>
+                      <q-separator></q-separator>
+
+                      <q-item class="q-my-sm">
+                        <q-item-section>
+                          <q-item-label> Public : [% isPublic ? "Yes" : "No" %] </q-item-label>
+                        </q-item-section>
+                      </q-item>
+                      <q-separator></q-separator>
+
+                      <q-item class="q-my-sm">
+                        <q-item-section>
+                          <q-item-label> Rating : [% rating %] </q-item-label>
+                        </q-item-section>
+                      </q-item>
+                      <q-separator></q-separator>
+
+
+                    </q-list>
+                  </div>
+
+                  <div class="col" style="max-height:60vh">
+
+                    <q-list bordered class="rounded-borders" style="max-width: 80%; margin-left: 10%;">
+                      <q-item-label header>Songs</q-item-label>
+                      <q-item class="q-my-sm" v-for="track in tracks">
+                        <q-item-section>
+                          <q-item-label line="1"> Name : [% track.name %] </q-item-label>
+                          <q-item-label line="1" caption> [% track.author %] </q-item-label>
+                        </q-item-section>
+                      </q-item>
+                      <q-separator></q-separator>
+
+                    </q-list>
+                  </div>
+
                 </div>
 
-              </div>
-
-            </q-step>
+              </q-step>
 
 
-            <template v-slot:navigation>
-              <q-stepper-navigation>
-                <q-btn @click="playlistCreationTransition" color="primary"
-                  :label="create_playlist_step === 3 ? 'Finish' : 'Continue'"></q-btn>
-                <q-btn v-if="create_playlist_step > 1" flat color="primary" @click="$refs.playlist_stepper.previous()"
-                  label="Back" class="q-ml-sm"></q-btn>
-              </q-stepper-navigation>
-            </template>
+              <template v-slot:navigation>
+                <q-stepper-navigation>
+                  <q-btn @click="playlistCreationTransition" color="primary"
+                    :label="create_playlist_step === 3 ? 'Finish' : 'Continue'"></q-btn>
+                  <q-btn v-if="create_playlist_step > 1" flat color="primary" @click="$refs.playlist_stepper.previous()"
+                    label="Back" class="q-ml-sm"></q-btn>
+                </q-stepper-navigation>
+              </template>
 
-          </q-stepper>
+            </q-stepper>
 
-        </q-form>
+          </q-form>
         </q-parallax>
       </q-card-section>
     </q-card>
@@ -505,19 +519,19 @@
     </q-card-section>
 
     <q-card-section>
-        <div class="column">
-          <q-list bordered>
-            <q-item>
-              <q-item-section avatar>
-                <img src="/static/images/Spotify.png" width="64px" height="64px"></img>
-              </q-item-section>
-              <q-item-section line="1">Name </q-item-section>
-              <q-item-section caption line="1">Artist </q-item-section>
+      <div class="column">
+        <q-list bordered>
+          <q-item>
+            <q-item-section avatar>
+              <img src="/static/images/Spotify.png" width="64px" height="64px"></img>
+            </q-item-section>
+            <q-item-section line="1">Name </q-item-section>
+            <q-item-section caption line="1">Artist </q-item-section>
 
-            </q-item>
-            <q-separator></q-separator>
+          </q-item>
+          <q-separator></q-separator>
 
-            <div v-for="(spotify_song, index) in query_data">
+          <div v-for="(spotify_song, index) in query_data">
             <q-item clickable v-ripple @click="saveSpotify(index)">
               <q-item-section avatar>
                 <img :src="spotify_song.image" width="64px" height="64px"></img>
@@ -529,13 +543,13 @@
             </q-item>
             <q-separator></q-separator>
           </div>
-          </q-list>
+        </q-list>
 
-        </div>
+      </div>
     </q-card-section>
 
     <q-card-actions align="right" class="text-primary">
-      <q-btn flat label="Cancel" v-close-popup ></q-btn>
+      <q-btn flat label="Cancel" v-close-popup></q-btn>
     </q-card-actions>
   </q-card>
 </q-dialog>
@@ -637,11 +651,11 @@
 <div class="q-pa-md q-gutter-sm">
   <q-dialog v-model="view_own_playlist_dialog" :maximized="true" transition-show="slide-up"
     transition-hide="slide-down">
-    <q-card class="bg-blue-grey-9 text-black">
+    <q-card class="bg-grey-8 text-black view_edit_dialog">
 
-      <q-bar class="bg-indigo-8">
+      <q-bar class="bg-light-blue-9">
         <q-space></q-space>
-        <q-btn dense color="white" flat icon="close" v-close-popup>
+        <q-btn dense flat icon="close" v-close-popup>
           <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
         </q-btn>
       </q-bar>
@@ -650,55 +664,205 @@
         <div class="text-h3 text-white text-center text-bold"><br>View and Edit Your Playlist<br></div>
       </q-card-section>
 
-      <q-card-section class="q-pt-none">
-        <q-form @submit="updatePlaylist" class="q-gutter-md">
-          <div class="row">
-
-            <q-file clearable color="bg-light-blue-9" v-model="playlist_image" label="Upload an Image">
-              <template v-slot:prepend>
-                <q-icon name="attach_file"></q-icon>
-              </template>
-            </q-file>
-
-            <div class="col q-pa-sm">
-
-              <div class="row">
-                <div class="col q-px-sm">
-                  <q-input color="white" bg-color="grey-6" filled v-model="current_playlist.name" label="Playlist Title"
-                    lazy-rules :rules="[ val => val && val.length > 0 || 'Please enter playlist title.']"></q-input>
-                </div>
-                <div class="col q-px-sm">
-                  <q-input color="white" bg-color="grey-6" filled v-model="current_playlist.genre"
-                    label="Playlist Genre"></q-input>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col q-pa-s">
-                  <q-input color="white" bg-color="grey-6" v-model.number="number_of_tracks" type="number" min="1"
-                    max="50" placeholder="number_of_tracks" filled style="max-width: 200px" id="number_of_tracks"
-                    onchange="TrackNumberChange();"></q-input>
-                </div>
-                <div class="col q-pa-sm">
-                  <q-checkbox v-model="public" label="Public"></q-checkbox>
-                </div>
-                <div class="col q-pa-sm">
-                  <q-btn label="Delete Playlist" @click="deletePlaylist" color="light-blue-9" padding="md xl"></q-btn>
-                </div>
-                <div class="col q-pa-sm">
-                  <q-btn label="Update Playlist" type="submit" color="light-blue-9" padding="md xl"></q-btn>
-                </div>
-              </div>
-
-              <q-input color="white" bg-color="grey-6" filled v-model="current_playlist.description"
-                label="Playlist Description (optional)" type="textarea" maxlength="200" autogrow></q-input>
-            </div>
-          </div>
-        </q-form>
-      </q-card-section>
       <q-card-section>
-        <div id="TrackInputs" style="line-height:50%;">
-        </div>
+
+        <q-scroll-area
+          style="height: 700px; max-width: 80%; margin-left: 10%; background-color: white; border-radius: 25px;">
+          <div class="column">
+            <br>
+            <div class="col">
+              <q-list bordered class="rounded-borders" style="max-width: 90%; margin-left: 5%;">
+                <q-item-label header>Playlist info</q-item-label>
+
+                <q-item class="q-my-sm">
+                  <q-item-section>
+                    <q-item-label> Name : [% playlist_title %] </q-item-label>
+
+                    <q-popup-edit v-model="playlist_title" title="edit name ( type and approve with enter )">
+                      <q-input v-model="playlist_title" dense autofocus label="name"></q-input>
+                      <template v-slot:append>
+                        <q-icon name="edit"></q-icon>
+                      </template>
+                    </q-popup-edit>
+
+                  </q-item-section>
+                </q-item>
+                <q-separator></q-separator>
+
+                <q-item class="q-my-sm">
+                  <q-item-section>
+                    <q-item-label> Genre : [% playlist_genre %] </q-item-label>
+
+                    <q-popup-edit v-model="playlist_genre" title="edit genre ( type and approve with enter )">
+                      <q-input v-model="playlist_genre" dense autofocus label="genre"></q-input>
+                      <template v-slot:append>
+                        <q-icon name="edit"></q-icon>
+                      </template>
+                    </q-popup-edit>
+
+                  </q-item-section>
+
+                </q-item>
+                <q-separator></q-separator>
+
+                <q-item class="q-my-sm">
+                  <q-item-section>
+                    <q-item-label> Description : [% playlist_description %] </q-item-label>
+
+                    <q-popup-edit v-model="playlist_description"
+                      title="edit description ( type and approve with enter )">
+                      <q-input v-model="playlist_description" dense autofocus label="description"></q-input>
+                      <template v-slot:append>
+                        <q-icon name="edit"></q-icon>
+                      </template>
+                    </q-popup-edit>
+
+
+                  </q-item-section>
+                </q-item>
+                <q-separator></q-separator>
+
+                <q-item class="q-my-sm">
+                  <q-item-section>
+                    <q-item-label>
+                      <div class="submit_label">is public playlist ?</div>
+                      <q-checkbox left-label v-model="isPublic" size="48px"
+                        :label="isPublic ? 'can be viewed by others' : 'can\'t be viewed by others'"></q-checkbox>
+                    </q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-separator></q-separator>
+
+                <q-item class="q-my-sm">
+                  <q-item-section>
+                    <q-item-label>
+                      <q-rating v-model="rating" size="3.5em" color="green" icon="star"></q-rating>
+                    </q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-separator></q-separator>
+
+
+              </q-list>
+            </div>
+
+            <div class="col">
+              <q-list bordered class="rounded-borders" style="max-width: 90%; margin-left: 5%;">
+                <q-item-label header>Songs</q-item-label>
+
+                <div v-for="(track, index) in tracks">
+                  <q-item>
+                    <q-item-section avatar top>
+                      <q-avatar color="primary" text-color="white" size="34px">[% index %]</q-avatar>
+                    </q-item-section>
+                    <q-item-section top>
+
+                      <q-item-label lines="1">
+                        <span class="text-weight-medium">Name : [% track.name %]</span>
+                        <q-popup-edit v-model="track.name" title="edit name ( type and approve with enter )">
+                          <q-input v-model="track.name" dense autofocus label="name"></q-input>
+                          <template v-slot:append>
+                            <q-icon name="edit"></q-icon>
+                          </template>
+                        </q-popup-edit>
+                      </q-item-label>
+                      <q-separator spaced></q-separator>
+
+                      <q-item-label lines="1">
+                        <span class="text-weight-medium">Author : [% track.author %]</span>
+                        <q-popup-edit v-model="track.author" title="edit author ( type and approve with enter )">
+                          <q-input v-model="track.author" dense autofocus label="author"></q-input>
+                        </q-popup-edit>
+                      </q-item-label>
+                      <q-separator spaced></q-separator>
+
+                      <q-item-label caption lines="1">
+                        <span class="text-weight-medium"> link [% track.link %] </span>
+                        <q-popup-edit v-model="track.link" title="add link ( type and approve with enter )">
+                          <q-input v-model="track.link" dense autofocus label="link"></q-input>
+                        </q-popup-edit>
+                      </q-item-label>
+
+                    </q-item-section>
+
+                    <q-item-section top side>
+                      <div class="text-grey-8 q-gutter-xs">
+                        <q-btn class="gt-xs" size="16px" flat dense round icon="delete" @click="removeSong(index)">
+                        </q-btn>
+                        <q-btn-dropdown v-model="track.dropdown_open" size="16px" flat dense round icon="more_vert">
+                          <q-list>
+                            <q-item clickable v-close-popup @click="addSongFromSpotify(index)">
+                              <q-item-section avatar>
+                                <q-avatar>
+                                  <img src="/static/images/Spotify.png">
+                                </q-avatar>
+                                </q-avatar>
+                              </q-item-section>
+                              <q-item-section>
+                                <q-item-label>Add from Spotify</q-item-label>
+                              </q-item-section>
+                            </q-item>
+
+                            <q-item clickable v-close-popup @click="addSongFromSpotify(index)">
+                              <q-item-section avatar>
+                                <q-avatar icon="assignment" color="secondary" text-color="white"></q-avatar>
+                              </q-item-section>
+                              <q-item-section>
+                                <q-item-label>Add from Apple Music</q-item-label>
+                              </q-item-section>
+                              <q-item-section side>
+                                <q-icon name="info" color="amber"></q-icon>
+                              </q-item-section>
+                            </q-item>
+                          </q-list>
+
+                        </q-btn-dropdown>
+                      </div>
+                    </q-item-section>
+                  </q-item>
+                  <q-separator spaced size="5px"></q-separator>
+                </div>
+
+                <q-item>
+                  <q-item-section>
+                    <q-btn color="green" @click="addNewSong()">
+                      <q-icon left size="3em" name="playlist_add"></q-icon>
+                      <div>click me to add new song !</div>
+                    </q-btn>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </div>
+
+            <br>
+            <q-separator></q-separator>
+            <br>
+            <div class="col">
+              <div class="row">
+                <div class="col" style="margin-left: 15%;" size="32px">
+                  <q-btn color="red" v-close-popup @click="own_playlist_close()">Close</q-btn>
+                </div>
+                <div class="col view_edit_btn" size="32px">
+                  <q-btn color="green" v-close-popup @click="own_playlist_update()">Accept</q-btn>
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="col">
+              <div class="row">
+                <div class="col" style="margin-left: 15%;" size="32px">
+                  <q-btn color="red" v-close-popup @click="own_playlist_delete()">Delete</q-btn>
+                </div>
+                <div class="col view_edit_btn" size="32px">
+                  <q-btn color="green" v-close-popup @click="spotify_export()">To spotify</q-btn>
+                </div>
+              </div>
+            </div>
+            <br>
+          </div>
+
+        </q-scroll-area>
+
       </q-card-section>
     </q-card>
   </q-dialog>
@@ -709,7 +873,8 @@
 {% block search_block %}
 <div class="q-pa-md q-gutter-sm">
   <div>
-    <q-btn label="Search" color="light-blue-13" class="full-width" @click="if ($cookies.get('token') != null){search_dialog = true;}">
+    <q-btn label="Search" color="light-blue-13" class="full-width"
+      @click="if ($cookies.get('token') != null){search_dialog = true;}">
       <q-tooltip transition-show="rotate" transition-hide="rotate">
         Find Playlists, Songs Or Users
       </q-tooltip>
@@ -758,11 +923,13 @@
           </q-card-section>
 
           <q-card-section>
-            <div class="column userResults" style="background-image: url(https://data.whicdn.com/images/145282643/original.jpg); background-size: contain; height:72vh;">
+            <div class="column userResults"
+              style="background-image: url(https://data.whicdn.com/images/145282643/original.jpg); background-size: contain; height:72vh;">
               <div class="col">
                 <q-scroll-area class="q-pt-xl" style="height:65vh">
                   <div v-for="playlist in search_playlists">
-                    <q-card class="my-card text-white" style="background: radial-gradient(ellipse at top, #0288D1 0%, #303F9F 100%)" bordered>
+                    <q-card class="my-card text-white"
+                      style="background: radial-gradient(ellipse at top, #0288D1 0%, #303F9F 100%)" bordered>
                       <q-card-section>
                         <div class="row items-center no-wrap">
                           <div class="col">
@@ -770,17 +937,20 @@
                               <div class="text-h4 text-weight-bold float-left">[% playlist.name %]</div>
                             </div>
                             <div class="row">
-                              <div class="text-subtitle1 float-left"><strong>Creator:</strong> [% playlist.creator %]</div>
+                              <div class="text-subtitle1 float-left"><strong>Creator:</strong> [% playlist.creator %]
+                              </div>
                             </div>
                             <div class="row">
                               <div class="text-subtitle1 float-left"><strong>Genre:</strong> [% playlist.genre %]</div>
                             </div>
                             <div class="row">
-                              <div class="text-subtitle1 float-left"><strong>Description:</strong> [% playlist.description %]</div>
+                              <div class="text-subtitle1 float-left"><strong>Description:</strong> [%
+                                playlist.description %]</div>
                             </div>
                           </div>
                           <div class="col-auto">
-                            <q-btn color="text-h4 light-blue-13" flat icon="search" label="View Playlist" @click="viewPlaylist(playlist.id)"></q-btn>
+                            <q-btn color="text-h4 light-blue-13" flat icon="search" label="View Playlist"
+                              @click="viewPlaylist(playlist.id)"></q-btn>
                           </div>
                         </div>
                       </q-card-section>
@@ -799,7 +969,8 @@
           <div class="text-h3 q-py-sm">Search For Your Favourite Songs</div>
           <q-card-section class="q-pt-none">
             <q-form @submit="songSearch">
-              <q-input standout bottom-slots v-model="song_search_text" label="Search For Song Name" color="light-blue-13" label-color="white" bg-color="blue-grey-7">
+              <q-input standout bottom-slots v-model="song_search_text" label="Search For Song Name"
+                color="light-blue-13" label-color="white" bg-color="blue-grey-7">
                 <template v-slot:before>
                   <div>
                     <q-spinner-audio color="light-blue-13" size="2em"></q-spinner-audio>
@@ -850,53 +1021,57 @@
             </q-form>
           </q-card-section>
 
-          <div class="column userResults" style="background-image: url(https://images.pexels.com/photos/761543/pexels-photo-761543.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260); background-size: contain; height:72vh;">
+          <div class="column userResults"
+            style="background-image: url(https://images.pexels.com/photos/761543/pexels-photo-761543.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260); background-size: contain; height:72vh;">
 
             <div class="col">
               <q-scroll-area class="q-pt-xl" style="height:65vh">
-              <div v-for="usr in search_users">
-                <q-card class="my-card text-white" style="background: radial-gradient(ellipse at top, #0288D1 0%, #303F9F 100%)" bordered>
-                  <q-card-section>
-                    <div class="col q-px-sm">
-                      <div class="row">
-                        <div class="text-h4 text-weight-bold float-left">[% usr.username %]</div>
-                      </div>
-                      <div class="row">
-                        <div class="text-subtitle2 float-left"><strong>Name:</strong> [% usr.first_name %] [% usr.last_name %]</div>
-                      </div>
-                      <div class="row">
-                        <div class="text-subtitle2 float-left"><strong>Member Since:</strong> [% usr.date_joined %] || <strong>Last Login:</strong> [% usr.last_login%]</div>
-                      </div>
-                      <div class="row">
-                        <div class="text-subtitle2 float-left"><strong>Location:</strong> [% usr.location %]</div>
-                      </div>
-                    </div>
-                  </q-card-section>
-
-                  <q-card-actions>
-                    <q-btn color="light-blue-13" flat @click="viewUserProfile(usr.username)">
-                      <div class="row items-center no-wrap">
-                        <q-icon left name="account_circle">
-                        </q-icon>
-                        <div class="text-center text-h5 text-bold">
-                          View Profile
+                <div v-for="usr in search_users">
+                  <q-card class="my-card text-white"
+                    style="background: radial-gradient(ellipse at top, #0288D1 0%, #303F9F 100%)" bordered>
+                    <q-card-section>
+                      <div class="col q-px-sm">
+                        <div class="row">
+                          <div class="text-h4 text-weight-bold float-left">[% usr.username %]</div>
+                        </div>
+                        <div class="row">
+                          <div class="text-subtitle2 float-left"><strong>Name:</strong> [% usr.first_name %] [%
+                            usr.last_name %]</div>
+                        </div>
+                        <div class="row">
+                          <div class="text-subtitle2 float-left"><strong>Member Since:</strong> [% usr.date_joined %] ||
+                            <strong>Last Login:</strong> [% usr.last_login%]</div>
+                        </div>
+                        <div class="row">
+                          <div class="text-subtitle2 float-left"><strong>Location:</strong> [% usr.location %]</div>
                         </div>
                       </div>
-                    </q-btn>
-                    <q-btn v-if="$cookies.get('token')" color="light-blue-13" flat @click="follow(usr.username)">
-                      <div class="row items-center no-wrap">
-                        <q-icon left name="add_circle">
-                        </q-icon>
-                        <div class="text-center text-h5 text-bold">
-                          Follow
-                        </div>
-                      </div>
-                    </q-btn>
+                    </q-card-section>
 
-                  </q-card-actions>
-                </q-card>
-                <br>
-              </div>
+                    <q-card-actions>
+                      <q-btn color="light-blue-13" flat @click="viewUserProfile(usr.username)">
+                        <div class="row items-center no-wrap">
+                          <q-icon left name="account_circle">
+                          </q-icon>
+                          <div class="text-center text-h5 text-bold">
+                            View Profile
+                          </div>
+                        </div>
+                      </q-btn>
+                      <q-btn v-if="$cookies.get('token')" color="light-blue-13" flat @click="follow(usr.username)">
+                        <div class="row items-center no-wrap">
+                          <q-icon left name="add_circle">
+                          </q-icon>
+                          <div class="text-center text-h5 text-bold">
+                            Follow
+                          </div>
+                        </div>
+                      </q-btn>
+
+                    </q-card-actions>
+                  </q-card>
+                  <br>
+                </div>
               </q-scroll-area>
             </div>
 
@@ -1129,12 +1304,13 @@
             <div class="text-h4 text-grey-1 text-center">Explore the Playlists You Love</div>
           </div>
           <div class="q-mt-md row fixed-top-left on-right">
-            <q-fab padding="50px" outline="true" v-model="fab1" label="Menu" label-position="bottom" label-class="text-h6" color="blue-grey-5"
-              icon="keyboard_arrow_down" direction="down" :hide-label="hideLabels">
+            <q-fab padding="50px" outline="true" v-model="fab1" label="Menu" label-position="bottom"
+              label-class="text-h6" color="blue-grey-5" icon="keyboard_arrow_down" direction="down"
+              :hide-label="hideLabels">
               <q-fab-action :hide-label="hideLabels" color="blue-grey-6" @click="landing_dialog=false"
                 icon="play_circle_outline" label="Explore"></q-fab-action>
-              <q-fab-action :hide-label="hideLabels" color="blue-grey-7" @click="register_dialog=true"
-                icon="person_add" label="Register"></q-fab-action>
+              <q-fab-action :hide-label="hideLabels" color="blue-grey-7" @click="register_dialog=true" icon="person_add"
+                label="Register"></q-fab-action>
               <q-fab-action :hide-label="hideLabels" color="blue-grey-8" @click="login_dialog=true" icon="person"
                 label="Login"></q-fab-action>
               <q-fab-action :hide-label="hideLabels" color="blue-grey-9" @click="about_us_dialog=true"
