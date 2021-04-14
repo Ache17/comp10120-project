@@ -255,9 +255,9 @@ var app = new Vue({
         },
         playlistCreationDone()
         {
-            //let data = {"name" : this.playlist_title,  "genre" : this.playlist_genre, "description" : this.playlist_description,
-            //            "isPublic" : this.isPublic, "Tracks" : this.tracks, "image" : this.playlist_image};
-            // this.make_authenticated_request(data, "POST", "/api/userPlaylists", this.playlistSubmissionSuccess, this.playlistSubmissionFailure);
+            // let data = {"name" : this.playlist_title,  "genre" : this.playlist_genre, "description" : this.playlist_description,
+            //             "isPublic" : this.isPublic, "Tracks" : this.tracks, "image" : this.playlist_image};
+            //  this.make_authenticated_request(data, "POST", "/api/userPlaylists", this.playlistSubmissionSuccess, this.playlistSubmissionFailure);
 
              // store token in cookies
              this.token = $cookies.get("token");
@@ -497,7 +497,7 @@ var app = new Vue({
         },
         inspectPlaylistFailure(req)
         {
-          this.failureNotification("could not display playlist");
+          this.failureNotification("Could not display playlist");
         },
         viewPlaylist(val)
         {

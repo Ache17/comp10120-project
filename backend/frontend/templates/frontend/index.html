@@ -139,7 +139,7 @@
   <q-card class="inspect text-blue-grey-10" style="background: radial-gradient(ellipse at top, #93aeba 30%, #6b9eb5 70%)">
     <q-bar class="bg-indigo-8">
       <q-space></q-space>
-      <q-btn dense flat icon="close" v-close-popup>
+      <q-btn dense flat color="white" icon="close" v-close-popup>
         <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
       </q-btn>
     </q-bar>
@@ -171,9 +171,15 @@
               by [% song.author %]
             </div>
           </q-item-section>
-        </q-item>
-      </q-list>
 
+        </q-item>
+
+      </q-list>
+    </q-card-section>
+
+    <!-- RATING the playlist -->
+    <q-card-section>
+      <q-rating v-model="rating" size="3.5em" color="light-blue-10" icon="star" no-reset></q-rating>
     </q-card-section>
 
 
