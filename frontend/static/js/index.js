@@ -940,8 +940,8 @@ var app = new Vue({
 
             getSpotifyIDSuccess(req) {
                 let DATA = JSON.parse(req.response);
-                this.spotify_user_id = data['id'];
-
+                this.spotify_user_id = DATA['id'];
+                this.createSpotifyPlaylist();
             },
 
             getSpotifyIDFailure(req) {
