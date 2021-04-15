@@ -53,6 +53,9 @@ var app = new Vue({
         last_name: "",
         last_login: "",
         date_joined: "",
+        followers: [],
+        following: [],
+        follow_id: null,
         landing_dialog: true,
         fab1: false,
         hideLabels: false,
@@ -394,12 +397,16 @@ var app = new Vue({
         // the edit toggle)
         retrieveAccountSuccess(req){
           data = JSON.parse(req.response);
+          console.log(data);
+          this.username_f = data.username;
           this.loc = data.location;
           this.mail_f = data.email;
           this.first_name = data.first_name;
           this.last_name = data.last_name;
           this.date_joined = this.dateClean(data.date_joined);
           this.last_login = this.dateClean(data.last_login);
+          this.followers = data.followers;
+          this.following = data.following;
           this.profile_edit = false;
         },
         retrieveAccountFailure(req){
@@ -420,8 +427,6 @@ var app = new Vue({
             "first_name": this.first_name,
             "last_name": this.last_name,
           	"email": this.mail_f,
-            "last_login": this.last_login,
-            "date_joined": this.date_joined,
             "location": this.loc
           };
           this.make_authenticated_request(data, "PUT", "/api/userInfo", this.submitAccountSuccess, this.submitAccountFailure);
@@ -594,6 +599,43 @@ var app = new Vue({
         selectUser(num){
           this.current_profile = num;
         },
+        follow(id){
+          this.follow_id = id;
+          var data = {
+            "id": id
+          };
+          this.make_authenticated_request(data, "PUT", "/api/checkFollow", this.checkSuccess, this.checkFailure);
+        },
+        checkSuccess(req){
+          data = JSON.parse(req.response);
+          if (data.follows == false){
+            var data = {
+              "id": this.follow_id
+            };
+            this.make_authenticated_request(data, "PUT", "/api/follow", this.followSuccess, this.followFailure);
+          }
+          if (data.follows == true){
+            var data = {
+              "id": this.follow_id
+            };
+            this.make_authenticated_request(data, "PUT", "/api/unfollow", this.unfollowSuccess, this.unfollowFailure);
+          }
+        },
+        checkFailure(req){
+          this.failureNotification("Failure to Follow/Unfollow");
+        },
+        followSuccess(req){
+          this.sucessNotification("Followed User");
+        },
+        followFailure(req){
+          this.failureNotification("Failed to Follow User");
+        },
+        unfollowSuccess(req){
+          this.sucessNotification("Unfollowed User");
+        },
+        unfollowFailure(req){
+          this.failureNotification("Failed to Unfollow User");
+        },
          //  ___   _                 _   _        _        ___         _   _              _     _                  ___   _             __    __
          // | _ \ | |  __ _   _  _  | | (_)  ___ | |_     / __|  ___  | | | |  ___   __  | |_  (_)  ___   _ _     / __| | |_   _  _   / _|  / _|
          // |  _/ | | / _` | | || | | | | | (_-< |  _|   | (__  / _ \ | | | | / -_) / _| |  _| | | / _ \ | ' \    \__ \ |  _| | || | |  _| |  _|
@@ -718,6 +760,7 @@ var app = new Vue({
           for (i = 0; i < data.length; i++){
             this.playlists[i] = data[i];
           }
+          console.log(this.playlists);
         },
         // PUT method didn't work as I had thought (my fault), so repurposed it so
         // it just deletes the entire playlist and creates a new one.

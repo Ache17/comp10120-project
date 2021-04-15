@@ -48,7 +48,17 @@
       </q-btn>
     </q-bar>
     <q-card-section>
-      <div class="text-h3 text-bold text-center">[% inspected_user_data["username"] %]</div>
+      <div class="text-h3 text-bold text-center">[% inspected_user_data["username"] %]
+        <q-btn v-if="$cookies.get('token')" flat @click="follow(inspected_user_data['id'])">
+          <div class="row items-center no-wrap">
+            <q-icon left name="add_circle">
+            </q-icon>
+            <div class="text-center text-h5 text-bold">
+              Follow/Unfollow
+            </div>
+          </div>
+        </q-btn>
+      </div>
     </q-card-section>
 
     <!-- DISPLAY the user data -->
@@ -575,7 +585,8 @@
       </q-bar>
 
       <q-card-section>
-        <div class="text-white text-center text-bold text-h3"><br>Your Playlists<br></div>
+        <div class="text-white text-center text-bold text-h3"><br>[% username_f %]Your Playlists<br></div>
+        <div class="text-white text-center text-italic text-h6"><br>You may need to press "Sort Collection" if something is missing!<br></div>
       </q-card-section>
 
       <q-card-section>
@@ -1053,12 +1064,12 @@
                           </div>
                         </div>
                       </q-btn>
-                      <q-btn v-if="$cookies.get('token')" color="light-blue-13" flat @click="follow(usr.username)">
+                      <q-btn v-if="$cookies.get('token')" color="light-blue-13" flat @click="follow(usr.id)">
                         <div class="row items-center no-wrap">
                           <q-icon left name="add_circle">
                           </q-icon>
                           <div class="text-center text-h5 text-bold">
-                            Follow
+                            Follow/Unfollow
                           </div>
                         </div>
                       </q-btn>
@@ -1121,7 +1132,7 @@
 
       <q-bar class="bg-indigo-8">
         <q-space></q-space>
-        <q-btn color="white" dense flat icon="close" v-close-popup>
+        <q-btn color="white" dense flat icon="close" v-close-popup @click="retrieveAccount">
           <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
         </q-btn>
       </q-bar>
@@ -1195,38 +1206,44 @@
       <q-card-section class="text-h3 text-center text-bold text-white bg-grey-">
         <div></div>
       </q-card-section>
-      <q-card-section>
-        <div class="row text-h7 text-center text-bold text-white bg-grey-8">
-          <div class="col">
-            <div>Followers</div>
-          </div>
-          <div class="col">
-            <div>Following</div>
-          </div>
+
+      <div class="row">
+        <div class="col q-pa-sm">
+          <q-card-section class="bg-grey-6 q-pt-none">
+            <div class="text-h6 text-bold">Followers: [% Len(followers) %]</div>
+            <q-list bordered>
+              <q-item v-for="user in followers" class="q-my-sm" clickable v-ripple
+                @click="viewUserProfile(user.username); app.inspect_user = false;">
+                <q-item-section avatar>
+                  <q-avatar color="blue-10" text-color="white">
+                    [% user.username[0] %]
+                  </q-avatar>
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>[% user.username %]</q-item-label>
+                  <q-item-label caption lines="1"> [% user.first_name %] [% user.second_name %]</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-card-section>
         </div>
-      </q-card-section>
-
-      <q-card-section>
-        <div class="q-ma-md row no-wrap"
-          style="background-image: url(https://images.pexels.com/photos/6966/abstract-music-rock-bw.jpg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260); background-size: contain; height:850px;">
-          <q-scroll-area visible style="height: 500px; width: 30%;" class="col q-pr-lg q-pt-xl">
-            <div v-for="n in 100" :key="n" class="q-py-xs text-center">
-              Lorem ipsum dolor sit amet, consectetur adipisicing
-              elit, sed do eiusmod tempor incididunt ut labore et
-              dolore magna aliqua.
-
-            </div>
-          </q-scroll-area>
-          <q-scroll-area visible style="height: 500px; width: 30%;" class="col q-pl-lg q-pt-xl">
-            <div v-for="n in 100" :key="n" class="q-py-xs text-center">
-              Lorem ipsum dolor sit amet, consectetur adipisicing
-              elit, sed do eiusmod tempor incididunt ut labore et
-              dolore magna aliqua.
-            </div>
-          </q-scroll-area>
+        <div class="col q-pa-sm">
+          <q-card-section class="bg-grey-6 q-pt-none">
+            <div class="text-h6 text-bold">Following: [% Len(following) %]</div>
+            <q-list bordered>
+              <q-item v-for="user in following" class="q-my-sm" clickable v-ripple
+                @click="viewUserProfile(user.username)">
+                <q-item-section avatar>
+                  <q-avatar color="blue-10" text-color="white">
+                    [% user.username[0] %]
+                  </q-avatar>
+                </q-item-section>
+                <q-item-label>[% user.username %]</q-item-label>
+              </q-item>
+            </q-list>
+          </q-card-section>
         </div>
-      </q-card-section>
-
+      </div>
     </q-card>
   </q-dialog>
 </div>
