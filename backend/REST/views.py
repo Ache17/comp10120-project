@@ -76,7 +76,6 @@ class userInfoView(APIView):
                          "location": profile.location, "followers": followers_ser, "following": following_ser})
 
     def put(self, request):
-        print("asd")
         user = request.user
         profile = UserProfile.objects.get(user=user)
         changed = False
@@ -92,6 +91,10 @@ class userInfoView(APIView):
 
         if "location" in data:
             profile.location = data["location"]
+            changed = True
+
+        if "last_login" in data:
+            user.last_login = data["last_login"]
             changed = True
 
         # updating password / email should have different mechanism for security reasons
@@ -169,10 +172,9 @@ class searchUsersView(APIView):
         for idx, user in enumerate(users):
             up = profiles[idx]
             ret.append({"username": user.username, "first_name": user.first_name,
-                       "last_name": user.last_name, "location": up.location})
+                       "last_name": user.last_name, "location": up.location, "id": user.id})
 
         return Response({"page_nums": paginator.num_pages, "data": ret}, status=status.HTTP_200_OK)
-
 
 class playlistsView(APIView):
     permission_classes = (IsAuthenticated,)
@@ -220,7 +222,7 @@ class playlistsView(APIView):
         except KeyError:
             return Response({"message": "playlist id not specified"}, status=status.HTTP_400_BAD_REQUEST)
         print("2")
-        
+
         user = request.user
         profile = UserProfile.objects.get(user=user)
         try:
@@ -546,6 +548,42 @@ class spotifyQuery(APIView):
         else:
             return Response({"message": "no query provided !"}, status=status.HTTP_400_BAD_REQUEST)
 
+class checkFollowView(APIView):
+    permission_classes = (IsAuthenticated,)
+    def put(self, request):
+        User1 = request.user
+        UP1 = UserProfile.objects.get(user=User1)
+        User2 = User.objects.get(id=request.data["id"])
+        UP2 = UserProfile.objects.get(user=User2)
+        if UP2 in UP1.follows.all():
+            return Response({"follows": True}, status=status.HTTP_200_OK)
+        if UP2 not in UP1.follows.all():
+            return Response({"follows": False}, status=status.HTTP_200_OK)
+        return Response({"message": "Issue Arose"}, status=status.HTTP_400_BAD_REQUEST)
+
+class followView(APIView):
+    permission_classes = (IsAuthenticated,)
+    def put(self, request):
+        User1 = request.user
+        UP1 = UserProfile.objects.get(user=User1)
+        User2 = User.objects.get(id=request.data["id"])
+        UP2 = UserProfile.objects.get(user=User2)
+        UP1.follows.add(UP2)
+        UP1.save()
+        User1.save()
+        return Response({"message": "Follow successful "}, status=status.HTTP_200_OK)
+
+class unfollowView(APIView):
+    permission_classes = (IsAuthenticated,)
+    def put(self, request):
+        User1 = request.user
+        UP1 = UserProfile.objects.get(user=User1)
+        User2 = User.objects.get(id=request.data["id"])
+        UP2 = UserProfile.objects.get(user=User2)
+        UP1.follows.remove(UP2)
+        UP1.save()
+        User1.save()
+        return Response({"message": "Unollow successful "}, status=status.HTTP_200_OK)
 
 class inspectUserInfo(APIView):
 
@@ -583,4 +621,5 @@ class inspectUserInfo(APIView):
         return Response({"username": theUser.username, "first_name": first_name,
                         "last_name": theUser.last_name, "location": location,
                          "date_joined": date_joined, "last_login": last_login,
-                         "following": following, "followers": followers, "playlists": playlists.data}, status=status.HTTP_200_OK)
+                         "following": following, "followers": followers,
+                         "playlists": playlists.data, "id": theUser.id}, status=status.HTTP_200_OK)
