@@ -500,7 +500,7 @@ var app = new Vue({
         },
         inspectPlaylistFailure(req)
         {
-          this.failureNotification("could not display playlist");
+          this.failureNotification("Could not display playlist");
         },
         viewPlaylist(val)
         {
@@ -758,7 +758,10 @@ var app = new Vue({
           data = JSON.parse(req.response);
           var i;
           for (i = 0; i < data.length; i++){
-            this.playlists[i] = data[i];
+            if (data[i].link == ""){
+              data[i].link = "testing.png";
+              }
+              this.playlists[i] = data[i];
           }
           console.log(this.playlists);
         },

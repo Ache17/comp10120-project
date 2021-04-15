@@ -43,7 +43,7 @@
     style="background: radial-gradient(ellipse at top, #93aeba 30%, #6b9eb5 70%)">
     <q-bar class="bg-indigo-8">
       <q-space></q-space>
-      <q-btn dense flat icon="close" v-close-popup>
+      <q-btn dense color="white" flat icon="close" v-close-popup>
         <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
       </q-btn>
     </q-bar>
@@ -152,7 +152,7 @@
     style="background: radial-gradient(ellipse at top, #93aeba 30%, #6b9eb5 70%)">
     <q-bar class="bg-indigo-8">
       <q-space></q-space>
-      <q-btn dense flat icon="close" v-close-popup>
+      <q-btn dense color="white" flat icon="close" v-close-popup>
         <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
       </q-btn>
     </q-bar>
@@ -618,8 +618,8 @@
               <div class="bg-grey-8 my-content" style="height:300px">
 
                 <div class="row">
-                  <div class="col q-pa-sm">
-                    <q-img src="" :ratio="1"></q-img>
+                    <div class="col q-pa-sm" style="height:300px">
+                      <q-img :src="'/static/media/' + p.link" ratio="1" style="max-height:100%"></q-img>
                   </div>
                   <div class="col q-pa-sm">
                     <div class="row text-h3 text-white q-py-md q-gutter-sm">[% p.name %]</div>
@@ -663,9 +663,9 @@
     transition-hide="slide-down">
     <q-card class="bg-grey-8 text-black view_edit_dialog">
 
-      <q-bar class="bg-light-blue-9">
+      <q-bar class="bg-indigo-8">
         <q-space></q-space>
-        <q-btn dense flat icon="close" v-close-popup>
+      <q-btn dense color="white" flat icon="close" v-close-popup>
           <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
         </q-btn>
       </q-bar>
@@ -677,10 +677,10 @@
       <q-card-section>
 
         <q-scroll-area
-          style="height: 700px; max-width: 80%; margin-left: 10%; background-color: white; border-radius: 25px;">
+          style="height: 80vh; max-width: 80%; margin-left: 10%; background-color: white; border-radius: 25px;">
           <div class="column">
             <br>
-            <div class="col">
+            <div class="col q-pt-md">
               <q-list bordered class="rounded-borders" style="max-width: 90%; margin-left: 5%;">
                 <q-item class="q-my-sm">
                   <q-item-section>
@@ -802,7 +802,6 @@
                                 <q-avatar>
                                   <img src="/static/images/Spotify.png">
                                 </q-avatar>
-                                </q-avatar>
                               </q-item-section>
                               <q-item-section>
                                 <q-item-label>Add from Spotify</q-item-label>
@@ -811,7 +810,9 @@
 
                             <q-item clickable v-close-popup @click="addSongFromSpotify(index)">
                               <q-item-section avatar>
-                                <q-avatar icon="assignment" color="secondary" text-color="white"></q-avatar>
+                                <q-avatar>
+                                  <img src="/static/images/AppleMusic.png">
+                                </q-avatar>
                               </q-item-section>
                               <q-item-section>
                                 <q-item-label>Add from Apple Music</q-item-label>
@@ -845,10 +846,10 @@
             <br>
             <div class="col">
               <div class="row">
-                <div class="col" style="margin-left: 15%;" size="32px">
+                <div class="col q-pt-lg" style="margin-left: 15%;" size="32px">
                   <q-btn color="blue-10" rounded size="xl" v-close-popup @click="own_playlist_close()">Cancel Changes</q-btn>
                 </div>
-                <div class="col view_edit_btn" size="32px">
+                <div class="col q-pt-lg" style="margin-left: 15%;" size="32px">
                   <q-btn color="blue-10" rounded size="xl"v-close-popup @click="own_playlist_update()">Submit Changes</q-btn>
                 </div>
               </div>
