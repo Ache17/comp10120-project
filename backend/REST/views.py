@@ -623,3 +623,19 @@ class inspectUserInfo(APIView):
                          "date_joined": date_joined, "last_login": last_login,
                          "following": following, "followers": followers,
                          "playlists": playlists.data, "id": theUser.id}, status=status.HTTP_200_OK)
+
+class discoverPlaylist(APIView):
+    permission_classes = (IsAuthenticated,)
+    def get(self, request):
+        playlist_ids = list(Playlist.objects.filter(isPublic=True).values_list("id", flat=True))
+        ids = random.sample(playlist_ids, min(len(playlist_ids), 10))
+        playlists = Playlist.objects.filter(id__in=ids)
+
+        k = []
+        for playlist in playlists:
+            songs = Item.objects.filter(whichPlaylist=playlist)
+            songs_data = ItemDisplaySerializer(songs, many=True).data
+            k.append({"name": playlist.name, "creator": playlist.creator.user.username, "genre": playlist.genre, "link": playlist.link,
+                         "rating": playlist.rating, "description": playlist.description, "songs": songs_data})
+
+        return Response(k, status=status.HTTP_200_OK)

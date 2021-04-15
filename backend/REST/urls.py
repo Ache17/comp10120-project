@@ -19,4 +19,5 @@ urlpatterns = [path("test", views.testView.as_view()),
                path("follow", views.followView.as_view(), name="follow"),
                path("unfollow", views.unfollowView.as_view(), name="unfollow"),
                path("checkFollow", views.checkFollowView.as_view(), name="checkFollow"),
-               path("inspectUser", views.inspectUserInfo.as_view(), name="retreves")]
+               path("inspectUser", views.inspectUserInfo.as_view(), name="retreves"),
+               path("discover", views.discoverPlaylist.as_view(),name="discover")]
