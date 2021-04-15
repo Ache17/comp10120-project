@@ -676,8 +676,18 @@ var app = new Vue({
                     "/api/userPlaylists", this.own_playlist_delete_success, this.own_playlist_delete_failure);
             },
 
+            spotify_export_other()
+            {
+                let songs = [];
+
+                for (let i in this.inspected_playlist_data.songs)
+                    songs.push(this.inspected_playlist_data.songs[i]["spotify_id"]);
+
+                this.createSpotifyPlaylist(songs, this.inspected_playlist_data.name,
+                    this.inspected_playlist_data.description);
+            },
+
             spotify_export() {
-                console.log("spotify export");
                 let songs = [];
 
                 for (let i in this.tracks)
