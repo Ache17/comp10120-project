@@ -608,13 +608,13 @@ var app = new Vue({
         },
         checkSuccess(req){
           data = JSON.parse(req.response);
-          if (data.follows == false){
+          if (data.follows === false){
             var data = {
               "id": this.follow_id
             };
             this.make_authenticated_request(data, "PUT", "/api/follow", this.followSuccess, this.followFailure);
           }
-          if (data.follows == true){
+          if (data.follows === true){
             var data = {
               "id": this.follow_id
             };
@@ -657,7 +657,7 @@ var app = new Vue({
         {
             this.sucessNotification("playlist update successfull!");
 
-            let current_playlist = this.playlists.filter(el => el.id == this.own_playlist_view_id)[0];
+            let current_playlist = this.playlists.filter(el => el.id === this.own_playlist_view_id)[0];
             current_playlist.name         = this.playlist_title;
             current_playlist.genre        = this.playlist_genre;
             current_playlist.description  = this.playlist_description;
@@ -702,19 +702,19 @@ var app = new Vue({
         // Resorts the playlists array according to the sorting parameters.
         sortCollection(){
           this.make_authenticated_request(data, "GET", "/api/userPlaylists", this.retrievePlaylistColectionSuccess, this.retrievePlaylistColectionFailure);
-          if (this.sort_filter != ""){ // Filters for a specific substring.
+          if (this.sort_filter !== ""){ // Filters for a specific substring.
             this.playlists = this.playlists.filter(el => el.name.includes(this.sort_filter));
           }
-          if (this.sort_selection == this.sort_options[0]){ // Alphabetically ordered names
+          if (this.sort_selection === this.sort_options[0]){ // Alphabetically ordered names
             this.playlists = this.playlists.sort(this.sorting("name"));
           }
-          else if (this.sort_selection == this.sort_options[1]){ // Ordered ratings. Currently they're all 0.
+          else if (this.sort_selection === this.sort_options[1]){ // Ordered ratings. Currently they're all 0.
             this.playlists = this.playlists.sort(this.sorting("rating"));
           }
-          else if (this.sort_selection == this.sort_options[2]){ // Alphabetical ordering of genre. Helps categorise.
+          else if (this.sort_selection === this.sort_options[2]){ // Alphabetical ordering of genre. Helps categorise.
             this.playlists = this.playlists.sort(this.sorting("genre"));
           }
-          if (this.order_selection == "Descending"){ // Reverses order of the collection. So you can effectively sort by "Reverse Alphabetical, of Genre"
+          if (this.order_selection === "Descending"){ // Reverses order of the collection. So you can effectively sort by "Reverse Alphabetical, of Genre"
             this.playlists = this.playlists.reverse();
           }
         },
@@ -727,7 +727,7 @@ var app = new Vue({
         },
         // Opens the page for viewing / editing one of your selected playlists.
         selectPlaylist(id){
-          if ($cookies.get("token") != ""){
+          if ($cookies.get("token") !== ""){
             // Filters the playlists for a specific id. There is only one
             // playlist of this id, so the data will just be in the first element of the collected array.
 
@@ -807,7 +807,7 @@ var app = new Vue({
           // Runs through the playlists and find the one which has the id of
           // the one deleted, and removes it from the array (by index).
           for (var i = 0; i < this.playlists.length; i++){
-            if (this.playlists[i].id == this.current_playlist.id){
+            if (this.playlists[i].id === this.current_playlist.id){
               index = i;
             }
           }
@@ -862,23 +862,24 @@ var app = new Vue({
         let redirect = window.location.origin + "/";
         let q = {
             "response_type": "code", "client_id": "5ef4bb85e1a9499593ac6a9477993c08",
-            "scope": "user-read-private user-read-email playlist-modify-private", "redirect_uri": redirect, state: generateRandomString(16)
+            "scope": "user-read-private user-read-email playlist-modify-private", "redirect_uri": redirect,
+            state: this.generateRandomString(16)
         };
-        let p = encode(q);
+        let p = this.encode(q);
         window.location.replace("https://accounts.spotify.com/authorize?" + p);
     },
 
     getTokenSuccess(req) {
       let data = JSON.parse(req.response);
-      access_token = data['access_token'];
-      token_type = data['token_type'];
-      expires_in = data['expires_in'];
-      refresh_token = data['refresh_token'];
-      scope = data['scope'];
+      this.access_token = data['access_token'];
+      this.token_type = data['token_type'];
+      this.expires_in = data['expires_in'];
+      this.refresh_token = data['refresh_token'];
+      this.scope = data['scope'];
 
       let d = document.getElementById("button1");
       d.innerHTML = "get user id";
-      d.onclick = getSpotifyID;
+      d.onclick = this.getSpotifyID;
     },
 
      getTokenFailure(req) {
@@ -888,7 +889,7 @@ var app = new Vue({
      getToken() {
         let req = new XMLHttpRequest();
         let param = { "grant_type": "authorization_code", "code": code, "redirect_uri": window.location.origin + "/" };
-        let p = encode(param);
+        let p = this.encode(param);
         req.open("POST", "https://accounts.spotify.com/api/token", true);
         //console.log(p);
 
@@ -897,9 +898,9 @@ var app = new Vue({
 
         req.addEventListener("load", () => {
             if (req.status < 300 && req.status >= 200)
-                getTokenSuccess(req);
+                this.getTokenSuccess(req);
             else
-                getTokenFailure(req);
+                this.getTokenFailure(req);
         });
 
         req.send(p);
@@ -976,21 +977,25 @@ var app = new Vue({
       reqS.open("GET", "https://api.spotify.com/v1/me", true);
       reqS.setRequestHeader("Accept", "application/json");
       reqS.setRequestHeader("Content-Type", "application/json");
-      reqS.setRequestHeader("Authorization", "Bearer " + access_token);
+      reqS.setRequestHeader("Authorization", "Bearer " + this.access_token);
 
       reqS.addEventListener("load", () => {
           if (reqS.status < 300 && reqS.status >= 200)
-              getSpotifyIDSuccess(reqS);
+              this.getSpotifyIDSuccess(reqS);
           else
-              getSpotifyIDFailure(reqS);
+              this.getSpotifyIDFailure(reqS);
       });
-
       reqS.send();
+    },
+    linkInSpotify(evt, navFn)
+    {
+        console.log("asdasd");
+        this.get_spotify_auth();
     }
 
-        // spotify user management
 
 
     }
+
 
   });
