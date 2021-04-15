@@ -495,7 +495,7 @@ var app = new Vue({
         },
         inspectPlaylistFailure(req)
         {
-          this.failureNotification("could not display playlist");
+          this.failureNotification("Could not display playlist");
         },
         viewPlaylist(val)
         {
