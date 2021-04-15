@@ -4,3 +4,4 @@ django-cors-headers
 spotipy
 gunicorn
 django-heroku
+Pillow
