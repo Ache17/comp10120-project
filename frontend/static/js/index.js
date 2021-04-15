@@ -56,7 +56,7 @@ var app = new Vue({
         followers: [],
         following: [],
         follow_id: null,
-        landing_dialog: true,
+        landing_dialog: false, // TODO: should be true
         fab1: false,
         hideLabels: false,
         num_of_playlists: 0,
@@ -659,12 +659,31 @@ var app = new Vue({
                     "PUT", "/api/userPlaylists", this.update_playlist_success, this.update_playlist_failure);
             },
 
+            own_playlist_delete_success()
+            {
+                this.playlists.splice(this.playlist_idx, 1);
+                this.$forceUpdate();
+                this.sucessNotification("deleted successfully");
+            },
+            own_playlist_delete_failure()
+            {
+                this.failureNotification("deleted not successfully");
+            },
+
+
             own_playlist_delete() {
-                console.log("delete");
+                this.make_authenticated_request({"id" : this.own_playlist_view_id}, "DELETE",
+                    "/api/userPlaylists", this.own_playlist_delete_success, this.own_playlist_delete_failure);
             },
 
             spotify_export() {
                 console.log("spotify export");
+                let songs = [];
+
+                for (let i in this.tracks)
+                    songs.push(this.tracks[i]["spotify_id"]);
+
+                this.createSpotifyPlaylist(songs, this.playlist_title, this.playlist_description);
             },
 
 
@@ -691,6 +710,7 @@ var app = new Vue({
                 if (this.order_selection === "Descending") { // Reverses order of the collection. So you can effectively sort by "Reverse Alphabetical, of Genre"
                     this.playlists = this.playlists.reverse();
                 }
+                this.$forceUpdate();
             },
             // Used for sorting an array of objects, in this case the array of playlists.
             sorting(sortby) {
@@ -705,6 +725,17 @@ var app = new Vue({
                     // Filters the playlists for a specific id. There is only one
                     // playlist of this id, so the data will just be in the first element of the collected array.
 
+                    let i = 0;
+                    for (let el in this.playlists)
+                    {
+                        console.log(el);
+                        if (el.id === id)
+                        {
+                            break;
+                        }
+                        i += 1;
+                    }
+                    this.playlist_idx = i;
                     this.current_playlist = this.playlists.filter(el => el.id == id)[0];
                     this.own_playlist_view_id = id;
 
@@ -922,12 +953,10 @@ var app = new Vue({
                 reqS.send(JSON.stringify({"uris": newSongs}));
             },
 
-            createSpotifyPlaylistSuccess(req) {
+            createSpotifyPlaylistSuccess(req, songs) {
                 console.log("successfully created playlist");
                 let DATA = JSON.parse(req.response);
                 let new_playlist_spotify_id = DATA["id"];
-                let songs = ['2zYzyRzz6pRmhPzyfMEC8s', '08mG3Y1vljYA6bvDt4Wqkj', '57bgtoPSgt236HzfBOd8kj',
-                    '2SiXAy7TuUkycRVbbWDEpo', '7LRMbd3LEoV5wZJvXT1Lwb'];
                 this.addToThePlaylist(new_playlist_spotify_id, songs);
             },
             createSpotifyPlaylistFailure(req) {
@@ -936,7 +965,7 @@ var app = new Vue({
                 // console.log(data);
             },
 
-            createSpotifyPlaylist() {
+            createSpotifyPlaylist(songs, name="spotify_songspace_test", description="some sample text") {
                 let reqS = new XMLHttpRequest();
                 reqS.open("POST", "	https://api.spotify.com/v1/users/" + this.spotify_user_id + "/playlists");
                 reqS.setRequestHeader("Accept", "application/json");
@@ -944,14 +973,14 @@ var app = new Vue({
                 reqS.setRequestHeader("Authorization", "Bearer " + this.access_token);
                 reqS.addEventListener("load", () => {
                     if (reqS.status < 300 && reqS.status >= 200)
-                        this.createSpotifyPlaylistSuccess(reqS);
+                        this.createSpotifyPlaylistSuccess(reqS, songs);
                     else
                         this.createSpotifyPlaylistFailure(reqS);
                 });
 
                 reqS.send(JSON.stringify({
-                    "name": "spotify_api_project_test",
-                    "description": "spotify api project test",
+                    "name": name,
+                    "description": description,
                     "public": false
                 }));
             },

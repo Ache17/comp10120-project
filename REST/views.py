@@ -23,7 +23,7 @@ import random
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 
-# sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id="5ef4bb85e1a9499593ac6a9477993c08",  client_secret="e7fb20a797e54b88bfa34220d82b7d3d"))
+sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id="5ef4bb85e1a9499593ac6a9477993c08",  client_secret="e7fb20a797e54b88bfa34220d82b7d3d"))
 
 sigma = "".join([ascii_letters, digits])
 PER_PAGE = 10
@@ -195,7 +195,8 @@ class playlistsView(APIView):
 
             for song in songs:
                 songs_serialized.append(
-                    {"id": song.id, "name": song.name, "author": song.author})
+                    {"id": song.id, "name": song.name, "author": song.author, "spotify_id" : song.spotify_id,
+                     "manual_link" : song.manual_link})
             response.append({"id": p.id, "name": p.name, "genre": p.genre, "description": p.description,
                              "rating": p.rating, "songs": songs_serialized, "isPublic": p.isPublic, "link": p.link})
         return Response(response)
@@ -318,6 +319,7 @@ class playlistsView(APIView):
         data = request.data.copy()
         data["creator"] = UserProfile.objects.get(user=request.user).id
         serializer = playlistSerializer(data=data)
+        print(data)
 
         if serializer.is_valid():
 
@@ -349,27 +351,38 @@ class playlistsView(APIView):
                 Items = json.loads(request.data["Tracks"])
                 for item in Items:
                     item["whichPlaylist"] = playlistId
+                    item["spotify_id"] = item["sp_id"]
+                    if item["spotify_id"] == "":
+                        item["spotify_id"] = "None"
+
+                    item["manual_link"] = item["link"]
+                    if item["manual_link"] == "":
+                        item["manual_link"] = "None"
+
 
                 # validate all items in the serializer
                 items_serializer = ItemSerializer(data=Items, many=True)
                 if items_serializer.is_valid():
                     # save the items associated with the playlist
+                    print(items_serializer.data)
+
                     items_serializer.save()
-                    return Response({"message": "playlist submission sucessfull"}, status=status.HTTP_201_CREATED)
+                    return Response({"message": "playlist submission successful"}, status=status.HTTP_201_CREATED)
 
                 # not valid items : playlist will be saved though
                 # someone messing with the REST
                 # print(serializer.errors)
-                return Response({"message": "playlist submission not sucessfull"}, status=status.HTTP_400_BAD_REQUEST)
+                print("not cewl")
+                return Response({"message": "playlist submission not successful"}, status=status.HTTP_400_BAD_REQUEST)
 
             # don't have Tracks :
             # someone messing with the REST
             except KeyError:
-                return Response({"message": "playlist submission not sucessfull"}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"message": "playlist submission not successful"}, status=status.HTTP_400_BAD_REQUEST)
 
         # playlist serialization not valid !
         #        print(serializer.errors)
-        return Response({"message": "playlist submission not sucessfull"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"message": "playlist submission not successful"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class othersPlaylists(APIView):
@@ -503,7 +516,7 @@ class playlistView(APIView):
 
         name = Object.name
 
-        if (Object.isPublic == False):
+        if Object.isPublic == False:
             return Response({"message": "playlist does not exists or is private"}, status=status.HTTP_400_BAD_REQUEST)
 
         songs = Item.objects.filter(whichPlaylist=Object)
