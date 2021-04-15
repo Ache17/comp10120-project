@@ -899,7 +899,6 @@
 
       <q-tabs v-model="tab" class="bg-light-blue-8 text-white" align="justify" narrow-indicator>
         <q-tab name="Playlists" label="Playlists"></q-tab>
-        <q-tab name="Songs" label="Songs"></q-tab>
         <q-tab name="Users" label="Users"></q-tab>
       </q-tabs>
 
@@ -967,38 +966,6 @@
                   </div>
                 </q-scroll-area>
               </div>
-            </div>
-          </q-card-section>
-
-        </q-tab-panel>
-
-        <q-tab-panel name="Songs">
-          <div class="text-h3 q-py-sm">Search For Your Favourite Songs</div>
-          <q-card-section class="q-pt-none">
-            <q-form @submit="songSearch">
-              <q-input standout bottom-slots v-model="song_search_text" label="Search For Song Name"
-                color="light-blue-13" label-color="white" bg-color="blue-grey-7">
-                <template v-slot:before>
-                  <div>
-                    <q-spinner-audio color="light-blue-13" size="2em"></q-spinner-audio>
-                  </div>
-                </template>
-                <template v-if="song_search_text" v-slot:append>
-                  <q-icon name="cancel" @click.stop="song_search_text = null" class="cursor-pointer"></q-icon>
-                </template>
-                <template v-slot:hint>
-                  <div class="text-white">
-                    To Search For Playlists Or Users, Change Tab!
-                  </div>
-                </template>
-              </q-input>
-            </q-form>
-          </q-card-section>
-
-          <q-card-section>
-            <div class="q-pa-md q-pt-md"
-              style="background-image: url(https://unlocktheguitar.net/wp-content/uploads/2017/04/guitarstock.jpg); background-size: contain; height:70vh;">
-
             </div>
           </q-card-section>
 
