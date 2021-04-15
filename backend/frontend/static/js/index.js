@@ -1,10 +1,7 @@
-
-
 var app = new Vue({
     el: '#app',
 
     data: {
-        message : "Hello world!",
         left : false,
         right : false,
         maximizedToggle : true,
@@ -285,9 +282,10 @@ var app = new Vue({
             formData.append("name", this.playlist_title);
             formData.append("genre", this.playlist_genre);
             formData.append("description", this.playlist_description);
-            formData.append("isPublic", this.public);
+            formData.append("isPublic", this.isPublic);
             formData.append("rating", this.rating);
             formData.append("Tracks",JSON.stringify(this.tracks));
+            console.log(formData);
 
             authRequest.send(formData);
         },
@@ -612,7 +610,7 @@ var app = new Vue({
           }
         },
 
-        
+
         update_playlist_success(req)
         {
             this.sucessNotification("playlist update successfull!");
@@ -623,7 +621,7 @@ var app = new Vue({
             current_playlist.description  = this.playlist_description;
             current_playlist.isPublic     = this.isPublic;
             current_playlist.rating       = this.rating;
-            current_playlist.songs        = this.tracks;           
+            current_playlist.songs        = this.tracks;
         },
         update_playlist_failure(re)
         {
@@ -633,9 +631,9 @@ var app = new Vue({
         own_playlist_update()
         {
           // this is sloppy : should do a partial update, not recreate a playlist
-          this.make_authenticated_request({"id" : this.own_playlist_view_id, "title" : this.playlist_title, 
-                                           "genre" : this.playlist_genre, "description" : this.playlist_description, 
-                                          "isPublic" : this.isPublic, "rating" : this.rating, "tracks" : this.tracks}, 
+          this.make_authenticated_request({"id" : this.own_playlist_view_id, "title" : this.playlist_title,
+                                           "genre" : this.playlist_genre, "description" : this.playlist_description,
+                                          "isPublic" : this.isPublic, "rating" : this.rating, "tracks" : this.tracks},
                                           "PUT", "/api/userPlaylists", this.update_playlist_success, this.update_playlist_failure);
         },
 
@@ -690,7 +688,7 @@ var app = new Vue({
           if ($cookies.get("token") != ""){
             // Filters the playlists for a specific id. There is only one
             // playlist of this id, so the data will just be in the first element of the collected array.
-            
+
             this.current_playlist = this.playlists.filter(el => el.id == id)[0];
             this.own_playlist_view_id = id;
 
@@ -699,7 +697,7 @@ var app = new Vue({
             this.playlist_description = this.current_playlist.description;
             this.isPublic             = this.current_playlist.isPublic;
             this.rating               = this.current_playlist.rating;
-            this.tracks               = this.current_playlist.songs;           
+            this.tracks               = this.current_playlist.songs;
 
             this.number_of_tracks = this.current_playlist.songs.length;
             this.view_own_playlist_dialog = true;
@@ -805,9 +803,9 @@ var app = new Vue({
           let v = [];
           for (let k in d)
               v.push(encodeURIComponent(k) + "=" + encodeURIComponent(d[k]));
-  
+
           let ret = v[0];
-  
+
           for (let i = 1; i < v.length; ++i) {
               ret = ret + "&" + v[i];
           }

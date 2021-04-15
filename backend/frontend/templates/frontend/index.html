@@ -268,7 +268,7 @@
           <q-form @submit="submitPlaylist" class="q-gutter-md">
 
             <q-stepper v-model="create_playlist_step" ref="playlist_stepper" active-color="cyan-14" animated>
-              <q-step :name="1" done-color="blue-10" title="add playlist info" icon="settings"
+              <q-step :name="1" done-color="blue-10" title="Playlist Information" icon="settings"
                 :done="create_playlist_step > 1">
 
                 <div class="column">
@@ -308,9 +308,8 @@
                   </div>
 
                   <div class="col">
-                    <div class="submit_label">Share Playlist With Followers?</div>
-                    <q-checkbox left-label color="light-blue-6" v-model="isPublic" size="48px"
-                      :label="isPublic ? 'Yes' : 'No'"></q-checkbox>
+                    <div class="submit_label">Share Playlist with Others?
+                    <q-checkbox left-label color="light-blue-6" v-model="isPublic" size="48px"></q-checkbox></div>
                     <q-separator size="3px"></q-separator>
                   </div>
 
@@ -324,7 +323,7 @@
                 </div>
               </q-step>
 
-              <q-step :name="2" done-color="blue-10" title="add songs" icon="music_note"
+              <q-step :name="2" done-color="blue-10" title="Track Listing" icon="music_note"
                 :done="create_playlist_step > 2" style="max-height:60vh">
 
                 <div class="column" style="max-height:60vh">
@@ -336,7 +335,7 @@
                       <div v-for="(track, index) in tracks">
                         <q-item>
                           <q-item-section avatar top>
-                            <q-avatar color="light-blue-6" text-color="white" size="34px">[% index %]</q-avatar>
+                            <q-avatar color="light-blue-6" text-color="white" size="34px">[% index + 1%]</q-avatar>
                           </q-item-section>
                           <q-item-section top>
 
@@ -422,7 +421,7 @@
 
               </q-step>
 
-              <q-step :name="3" done-color="blue-10" title="submit!" icon="done" :done="create_playlist_step > 3">
+              <q-step :name="3" done-color="blue-10" title="Submit Playlist" icon="done" :done="create_playlist_step > 3">
 
                 <div class="column" style="max-height:60vh">
                   <div class="col">
@@ -471,7 +470,7 @@
                   <div class="col" style="max-height:60vh">
 
                     <q-list bordered class="rounded-borders" style="max-width: 80%; margin-left: 10%;">
-                      <q-item-label header>Songs</q-item-label>
+                      <q-item-label header>Track Listing</q-item-label>
                       <q-item class="q-my-sm" v-for="track in tracks">
                         <q-item-section>
                           <q-item-label line="1"> Name : [% track.name %] </q-item-label>
@@ -672,34 +671,34 @@
             <br>
             <div class="col">
               <q-list bordered class="rounded-borders" style="max-width: 90%; margin-left: 5%;">
-                <q-item-label header>Playlist info</q-item-label>
-
                 <q-item class="q-my-sm">
                   <q-item-section>
+                    <div class="submit_label">
                     <q-item-label> Name : [% playlist_title %] </q-item-label>
 
-                    <q-popup-edit v-model="playlist_title" title="edit name ( type and approve with enter )">
+                    <q-popup-edit v-model="playlist_title" title="Press Enter to Update Name">
                       <q-input v-model="playlist_title" dense autofocus label="name"></q-input>
                       <template v-slot:append>
                         <q-icon name="edit"></q-icon>
                       </template>
                     </q-popup-edit>
-
+                    </div>
                   </q-item-section>
                 </q-item>
                 <q-separator></q-separator>
 
                 <q-item class="q-my-sm">
                   <q-item-section>
+                    <div class="submit_label">
                     <q-item-label> Genre : [% playlist_genre %] </q-item-label>
 
-                    <q-popup-edit v-model="playlist_genre" title="edit genre ( type and approve with enter )">
+                    <q-popup-edit v-model="playlist_genre" title="Press Enter to Update Genre">
                       <q-input v-model="playlist_genre" dense autofocus label="genre"></q-input>
                       <template v-slot:append>
                         <q-icon name="edit"></q-icon>
                       </template>
                     </q-popup-edit>
-
+                    </div>
                   </q-item-section>
 
                 </q-item>
@@ -707,17 +706,17 @@
 
                 <q-item class="q-my-sm">
                   <q-item-section>
+                    <div class="submit_label">
                     <q-item-label> Description : [% playlist_description %] </q-item-label>
 
                     <q-popup-edit v-model="playlist_description"
-                      title="edit description ( type and approve with enter )">
+                      title="Press Enter to Update Description">
                       <q-input v-model="playlist_description" dense autofocus label="description"></q-input>
                       <template v-slot:append>
                         <q-icon name="edit"></q-icon>
                       </template>
                     </q-popup-edit>
-
-
+                    </div>
                   </q-item-section>
                 </q-item>
                 <q-separator></q-separator>
@@ -725,9 +724,8 @@
                 <q-item class="q-my-sm">
                   <q-item-section>
                     <q-item-label>
-                      <div class="submit_label">is public playlist ?</div>
-                      <q-checkbox left-label v-model="isPublic" size="48px"
-                        :label="isPublic ? 'can be viewed by others' : 'can\'t be viewed by others'"></q-checkbox>
+                      <div class="submit_label">Share Playlist with Others?
+                      <q-checkbox left-label v-model="isPublic" size="48px"></q-checkbox></div>
                     </q-item-label>
                   </q-item-section>
                 </q-item>
@@ -736,31 +734,28 @@
                 <q-item class="q-my-sm">
                   <q-item-section>
                     <q-item-label>
-                      <q-rating v-model="rating" size="3.5em" color="green" icon="star"></q-rating>
+                      <q-rating v-model="rating" size="3.5em" color="light-blue-13" icon="star"></q-rating>
                     </q-item-label>
                   </q-item-section>
                 </q-item>
-                <q-separator></q-separator>
-
-
               </q-list>
             </div>
 
             <div class="col">
               <q-list bordered class="rounded-borders" style="max-width: 90%; margin-left: 5%;">
-                <q-item-label header>Songs</q-item-label>
+                <q-item-label header>Track Listing</q-item-label>
 
                 <div v-for="(track, index) in tracks">
                   <q-item>
                     <q-item-section avatar top>
-                      <q-avatar color="primary" text-color="white" size="34px">[% index %]</q-avatar>
+                      <q-avatar color="blue-10" text-color="white" size="34px">[% index + 1%]</q-avatar>
                     </q-item-section>
                     <q-item-section top>
 
                       <q-item-label lines="1">
-                        <span class="text-weight-medium">Name : [% track.name %]</span>
-                        <q-popup-edit v-model="track.name" title="edit name ( type and approve with enter )">
-                          <q-input v-model="track.name" dense autofocus label="name"></q-input>
+                        <span class="text-weight-medium">Name: [% track.name %]</span>
+                        <q-popup-edit v-model="track.name" title="Press Enter to Update Track Name">
+                          <q-input v-model="track.name" dense autofocus label="Name"></q-input>
                           <template v-slot:append>
                             <q-icon name="edit"></q-icon>
                           </template>
@@ -769,16 +764,16 @@
                       <q-separator spaced></q-separator>
 
                       <q-item-label lines="1">
-                        <span class="text-weight-medium">Author : [% track.author %]</span>
-                        <q-popup-edit v-model="track.author" title="edit author ( type and approve with enter )">
-                          <q-input v-model="track.author" dense autofocus label="author"></q-input>
+                        <span class="text-weight-medium">Artist: [% track.author %]</span>
+                        <q-popup-edit v-model="track.author" title="Press Enter to Update Artist">
+                          <q-input v-model="track.author" dense autofocus label="Artist"></q-input>
                         </q-popup-edit>
                       </q-item-label>
                       <q-separator spaced></q-separator>
 
                       <q-item-label caption lines="1">
-                        <span class="text-weight-medium"> link [% track.link %] </span>
-                        <q-popup-edit v-model="track.link" title="add link ( type and approve with enter )">
+                        <span class="text-weight-medium">Link: [% track.link %] </span>
+                        <q-popup-edit v-model="track.link" title="Press Enter to Update Link">
                           <q-input v-model="track.link" dense autofocus label="link"></q-input>
                         </q-popup-edit>
                       </q-item-label>
@@ -825,9 +820,9 @@
 
                 <q-item>
                   <q-item-section>
-                    <q-btn color="green" @click="addNewSong()">
+                    <q-btn color="blue-10" @click="addNewSong()">
                       <q-icon left size="3em" name="playlist_add"></q-icon>
-                      <div>click me to add new song !</div>
+                      <div>ADD A NEW TRACK</div>
                     </q-btn>
                   </q-item-section>
                 </q-item>
@@ -840,10 +835,10 @@
             <div class="col">
               <div class="row">
                 <div class="col" style="margin-left: 15%;" size="32px">
-                  <q-btn color="red" v-close-popup @click="own_playlist_close()">Close</q-btn>
+                  <q-btn color="blue-10" rounded size="xl" v-close-popup @click="own_playlist_close()">Cancel Changes</q-btn>
                 </div>
                 <div class="col view_edit_btn" size="32px">
-                  <q-btn color="green" v-close-popup @click="own_playlist_update()">Accept</q-btn>
+                  <q-btn color="blue-10" rounded size="xl"v-close-popup @click="own_playlist_update()">Submit Changes</q-btn>
                 </div>
               </div>
             </div>
@@ -851,10 +846,10 @@
             <div class="col">
               <div class="row">
                 <div class="col" style="margin-left: 15%;" size="32px">
-                  <q-btn color="red" v-close-popup @click="own_playlist_delete()">Delete</q-btn>
+                  <q-btn color="red" rounded size="xl"v-close-popup @click="own_playlist_delete()">Delete Playlist</q-btn>
                 </div>
                 <div class="col view_edit_btn" size="32px">
-                  <q-btn color="green" v-close-popup @click="spotify_export()">To spotify</q-btn>
+                  <q-btn color="green" rounded size="xl"v-close-popup @click="spotify_export()">Export Playlist to Spotify</q-btn>
                 </div>
               </div>
             </div>
