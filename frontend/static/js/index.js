@@ -133,8 +133,10 @@ var app = new Vue({
               var data = {};
               this.make_authenticated_request(data, "GET", "/api/discover", this.discoverSuccess, this.noMsg);
               this.landing_dialog = false;
+              this.$forceUpdate();
             },
             discoverSuccess(req){
+              this.$forceUpdate();
               data = JSON.parse(req.response);
               var i;
               for (i = 0; i < data.length; i++){
