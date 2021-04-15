@@ -716,6 +716,9 @@ var app = new Vue({
           data = JSON.parse(req.response);
           var i;
           for (i = 0; i < data.length; i++){
+            if (data[i].link == ""){
+              data[i].link = "testing.png";
+            }
             this.playlists[i] = data[i];
           }
         },
