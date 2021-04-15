@@ -24,7 +24,6 @@ var app = new Vue({
         mail : "",
         isPwd : true,
         token : "",
-        discover_playlists: [],
         // Playlist creation details, some reused for playlist editing.
         create_playlist_step : 1,
         playlist_title : "",
@@ -129,21 +128,6 @@ var app = new Vue({
         failureNotification(msg)
         {
             app.$q.notify({type : "negative", message : msg});
-        },
-        discoverTrigger(){
-          var data = {};
-          this.make_authenticated_request(data, "GET", "/api/discover", this.discoverSuccess, this.noMsg);
-          this.landing_dialog = false;
-        },
-        discoverSuccess(req){
-          data = JSON.parse(req.response);
-          var i;
-          for (i = 0; i < data.length; i++){
-            if (data[i].link == ""){
-              data[i].link = "testing.png";
-            }
-            this.discover_playlists[i] = data[i];
-          }
         },
         // Success message, closes tab.
         playlistSubmissionSuccess(req)

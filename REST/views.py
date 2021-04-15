@@ -642,7 +642,7 @@ class discoverPlaylist(APIView):
 
     def get(self, request):
         playlist_ids = list(Playlist.objects.filter(isPublic=True).values_list("id", flat=True))
-        ids = random.sample(playlist_ids, min(len(playlist_ids), 10))
+        ids = random.sample(playlist_ids, min(len(playlist_ids), 9))
         playlists = Playlist.objects.filter(id__in=ids)
 
         k = []
