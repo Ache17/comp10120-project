@@ -824,7 +824,7 @@ var app = new Vue({
             },
 
             getTokenSuccess(req) {
-                this.sucessNotification("correctly received spotify token !");
+                console.log("correctly received spotify token !");
 
                 let DATA = JSON.parse(req.response);
                 this.access_token = DATA['access_token'];
@@ -845,7 +845,7 @@ var app = new Vue({
             },
 
             getTokenFailure(req) {
-                this.failureNotification("spotify token failure !");
+                console.log("spotify token failure !");
             },
 
             getToken() {
@@ -884,7 +884,7 @@ var app = new Vue({
             },
 
             addToThePlaylistFailure(req) {
-                this.failureNotification("adding songs failure!");
+                console.log("adding songs failure!");
             },
 
             addToThePlaylist(new_playlist_spotify_id, spotify_songs_ids) {
@@ -905,7 +905,7 @@ var app = new Vue({
             },
 
             createSpotifyPlaylistSuccess(req) {
-                this.sucessNotification("successfully created playlist");
+                console.log("successfully created playlist");
                 let DATA = JSON.parse(req.response);
                 let new_playlist_spotify_id = DATA["id"];
                 let songs = ['2zYzyRzz6pRmhPzyfMEC8s', '08mG3Y1vljYA6bvDt4Wqkj', '57bgtoPSgt236HzfBOd8kj',
@@ -913,7 +913,7 @@ var app = new Vue({
                 this.addToThePlaylist(new_playlist_spotify_id, songs);
             },
             createSpotifyPlaylistFailure(req) {
-                this.failureNotification("failure during creating playlist !");
+                console.log("failure during creating playlist !");
                 let DATA = JSON.parse(req.response);
                 // console.log(data);
             },
@@ -978,7 +978,7 @@ var app = new Vue({
         state = u.searchParams.get("state");
 
         if (code !== null) {
-            this.sucessNotification("spotify connected !");
+            console.log("spotify connected !");
             this.getToken();
         }
     }
