@@ -5,7 +5,8 @@ from rest_framework.response import Response
 from rest_framework import response, serializers, status, authentication, permissions
 from django.contrib.auth.hashers import is_password_usable, make_password
 from django.contrib.auth.models import User
-from .serializers import UserSerializer, playlistSerializer, ItemSerializer, displayPlaylistSerializer, ItemDisplaySerializer
+from .serializers import UserSerializer, playlistSerializer, ItemSerializer, displayPlaylistSerializer, \
+    ItemDisplaySerializer
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import UserProfile, Playlist, Item
@@ -17,6 +18,7 @@ from string import ascii_letters, digits
 from random import choice
 import os
 import json
+import random
 
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
@@ -29,6 +31,7 @@ PER_PAGE = 10
 
 def getRand(n=16):
     return "".join([choice(sigma) for _ in range(n)])
+
 
 # Create your views here.
 
@@ -140,8 +143,9 @@ class searchPlaylistView(APIView):
         for playlist in playlists:
             creator = playlist.creator
             user = creator.user
-            ret.append({"id": playlist.id, "creator_username": user.username, "name": playlist.name, "genre": playlist.genre,
-                        "description": playlist.description, "rating": playlist.rating})
+            ret.append(
+                {"id": playlist.id, "creator_username": user.username, "name": playlist.name, "genre": playlist.genre,
+                 "description": playlist.description, "rating": playlist.rating})
         return Response({"pages": paginator.num_pages, "data": ret}, status=status.HTTP_200_OK)
 
 
@@ -172,9 +176,10 @@ class searchUsersView(APIView):
         for idx, user in enumerate(users):
             up = profiles[idx]
             ret.append({"username": user.username, "first_name": user.first_name,
-                       "last_name": user.last_name, "location": up.location, "id": user.id})
+                        "last_name": user.last_name, "location": up.location, "id": user.id})
 
         return Response({"page_nums": paginator.num_pages, "data": ret}, status=status.HTTP_200_OK)
+
 
 class playlistsView(APIView):
     permission_classes = (IsAuthenticated,)
@@ -293,7 +298,6 @@ class playlistsView(APIView):
                 to_delete.delete()
                 print("4")
 
-
                 # add the new songs
                 items_serializer = ItemSerializer(data=new_tracks, many=True)
                 if items_serializer.is_valid():
@@ -369,7 +373,7 @@ class playlistsView(APIView):
 
 
 class othersPlaylists(APIView):
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request):
 
@@ -383,7 +387,7 @@ class othersPlaylists(APIView):
                 ret = []
                 for playlist in playlists:
                     ret.append({"name": playlist.name, "genre": playlist.genre,
-                               "description": playlist.description, "rating": playlist.rating})
+                                "description": playlist.description, "rating": playlist.rating})
                 return Response(ret, status=status.HTTP_200_OK)
 
             except User.DoesNotExist:
@@ -505,8 +509,10 @@ class playlistView(APIView):
         songs = Item.objects.filter(whichPlaylist=Object)
         songs_data = ItemDisplaySerializer(songs, many=True).data
         print(songs_data)
-        return Response({"name": Object.name, "creator": Object.creator.user.username, "genre": Object.genre, "link": Object.link,
-                         "rating": Object.rating, "description": Object.description, "songs": songs_data}, status=status.HTTP_200_OK)
+        return Response(
+            {"name": Object.name, "creator": Object.creator.user.username, "genre": Object.genre, "link": Object.link,
+             "rating": Object.rating, "description": Object.description, "songs": songs_data},
+            status=status.HTTP_200_OK)
 
 
 class imageUpload(APIView):
@@ -548,8 +554,10 @@ class spotifyQuery(APIView):
         else:
             return Response({"message": "no query provided !"}, status=status.HTTP_400_BAD_REQUEST)
 
+
 class checkFollowView(APIView):
     permission_classes = (IsAuthenticated,)
+
     def put(self, request):
         User1 = request.user
         UP1 = UserProfile.objects.get(user=User1)
@@ -561,8 +569,10 @@ class checkFollowView(APIView):
             return Response({"follows": False}, status=status.HTTP_200_OK)
         return Response({"message": "Issue Arose"}, status=status.HTTP_400_BAD_REQUEST)
 
+
 class followView(APIView):
     permission_classes = (IsAuthenticated,)
+
     def put(self, request):
         User1 = request.user
         UP1 = UserProfile.objects.get(user=User1)
@@ -573,8 +583,10 @@ class followView(APIView):
         User1.save()
         return Response({"message": "Follow successful "}, status=status.HTTP_200_OK)
 
+
 class unfollowView(APIView):
     permission_classes = (IsAuthenticated,)
+
     def put(self, request):
         User1 = request.user
         UP1 = UserProfile.objects.get(user=User1)
@@ -585,8 +597,8 @@ class unfollowView(APIView):
         User1.save()
         return Response({"message": "Unollow successful "}, status=status.HTTP_200_OK)
 
-class inspectUserInfo(APIView):
 
+class inspectUserInfo(APIView):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request):
@@ -619,13 +631,15 @@ class inspectUserInfo(APIView):
         print(playlists.data)
 
         return Response({"username": theUser.username, "first_name": first_name,
-                        "last_name": theUser.last_name, "location": location,
+                         "last_name": theUser.last_name, "location": location,
                          "date_joined": date_joined, "last_login": last_login,
                          "following": following, "followers": followers,
                          "playlists": playlists.data, "id": theUser.id}, status=status.HTTP_200_OK)
 
+
 class discoverPlaylist(APIView):
     permission_classes = (IsAuthenticated,)
+
     def get(self, request):
         playlist_ids = list(Playlist.objects.filter(isPublic=True).values_list("id", flat=True))
         ids = random.sample(playlist_ids, min(len(playlist_ids), 10))
@@ -635,7 +649,8 @@ class discoverPlaylist(APIView):
         for playlist in playlists:
             songs = Item.objects.filter(whichPlaylist=playlist)
             songs_data = ItemDisplaySerializer(songs, many=True).data
-            k.append({"name": playlist.name, "creator": playlist.creator.user.username, "genre": playlist.genre, "link": playlist.link,
-                         "rating": playlist.rating, "description": playlist.description, "songs": songs_data})
+            k.append({"id": playlist.id, "name": playlist.name, "creator": playlist.creator.user.username,
+                      "genre": playlist.genre, "link": playlist.link,
+                      "rating": playlist.rating, "description": playlist.description, "songs": songs_data})
 
         return Response(k, status=status.HTTP_200_OK)
