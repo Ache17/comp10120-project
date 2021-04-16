@@ -66,13 +66,37 @@ class userInfoView(APIView):
         following_ser = []
         for f in following:
             _user = f.user
-            following_ser.append({"id": f.id, "username": _user.username})
+            xx = str(f.user.last_login)[0:10]
+            if xx == "None":
+                xx = "No Recent Login"
+            else:
+                xx = "Last Seen: " + xx
+            yy = str(f.user.first_name)
+            if yy == "":
+                yy = "*Forename Not Provided*"
+            zz = str(f.user.last_name)
+            if zz == "":
+                zz = "*Surname Not Provided*"
+            following_ser.append({"id": f.id, "username": _user.username, "first_name": yy, "second_name": zz, "last_login": xx})
+
 
         followers = profile.followed_by.all()
         followers_ser = []
         for f in followers:
             _user = f.user
-            followers_ser.append({"id": f.id, "username": _user.username})
+            xx = str(f.user.last_login)[0:10]
+            if xx == "None":
+                xx = "No Recent Login"
+            else:
+                xx = "Last Seen: " + xx
+            yy = str(f.user.first_name)
+            if yy == "":
+                yy = "*Forename Not Provided*"
+            zz = str(f.user.last_name)
+            if zz == "":
+                zz = "*Surname Not Provided*"
+            followers_ser.append({"id": f.id, "username": _user.username, "first_name": yy, "second_name": zz, "last_login": xx})
+
 
         return Response({"username": user.username, "first_name": user.first_name,
                          "last_name": user.last_name, "email": user.email,

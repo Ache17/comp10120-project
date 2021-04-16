@@ -1204,7 +1204,7 @@
             </q-bar>
 
             <q-card-section class="text-h3 text-center text-white text-bold bg-blue-grey-10">
-                <div>Your Account</div>
+              <div>[% username_f %]'s Account</div>
             </q-card-section>
 
             <q-card-section class="q-pt-none bg-blue-grey-9">
@@ -1257,8 +1257,10 @@
                                 </div>
                             </div>
                             <q-separator></q-separator>
-                            <br><br>
-                            <div class="row">
+                          </q-card-section>
+
+                          <q-card-section class="q-pt-none bg-blue-grey-9">
+                          <div class="row q-pt-lg">
                                 <div class="col q-px-sm text-white">
                                     Number of Playlists: [% playlists.length %]
                                 </div>
@@ -1268,14 +1270,8 @@
                                 <div class="col q-px-sm text-white">
                                     Last Visited: [% last_login %]
                                 </div>
-                                <div class="col q-px-sm"></div>
-                                <div class="col q-px-sm"></div>
-                            </div>
-                            <br>
-                            <q-separator></q-separator>
-                            <div class="row">
-                                <div class="col q-px-sm text-white">
-                                    <q-btn color="green" @click="linkInSpotify">
+                                <div class=" q-px-sm q text-white justify-top">
+                                    <q-btn class="justify-top" full-width color="green" @click="linkInSpotify" align="center" size="lg">
                                         <q-avatar size="42px">
                                             <img src="/static/images/Spotify.png">
                                         </q-avatar>
@@ -1293,43 +1289,47 @@
                     </div>
                 </q-form>
             </q-card-section>
-            <q-card-section class="text-h3 text-center text-bold text-white bg-grey-">
-                <div></div>
-            </q-card-section>
+            <q-separator></q-separator>
 
             <div class="row">
                 <div class="col q-pa-sm">
-                    <q-card-section class="bg-grey-6 q-pt-none">
-                        <div class="text-h6 text-bold">Followers: [% Len(followers) %]</div>
+                  <q-card-section class="bg-blue-grey-8 q-pt-none">
+                      <div class="text-h4 text-bold text-center text-white q-py-md">
+                        <q-spinner-hearts color="light-blue-7" size="xl"></q-spinner-hearts>
+                        Followers: [% Len(followers) %]
+                        <q-spinner-hearts color="light-blue-7 " size="xl"></q-spinner-hearts>
+                      </div>
                         <q-list bordered>
                             <q-item v-for="user in followers" class="q-my-sm" clickable v-ripple
                                     @click="viewUserProfile(user.username); app.inspect_user = false;">
                                 <q-item-section avatar>
-                                    <q-avatar color="blue-10" text-color="white">
+                                    <q-avatar color="light-blue-7" text-color="white">
                                         [% user.username[0] %]
                                     </q-avatar>
                                 </q-item-section>
                                 <q-item-section>
-                                    <q-item-label>[% user.username %]</q-item-label>
-                                    <q-item-label caption lines="1"> [% user.first_name %] [% user.second_name %]
-                                    </q-item-label>
+                                    <q-item-label class="text-white">[% user.username %] || [% user.first_name %] [% user.second_name %] || [% user.last_login %]</q-item-label>
                                 </q-item-section>
                             </q-item>
                         </q-list>
                     </q-card-section>
                 </div>
                 <div class="col q-pa-sm">
-                    <q-card-section class="bg-grey-6 q-pt-none">
-                        <div class="text-h6 text-bold">Following: [% Len(following) %]</div>
+                  <q-card-section class="bg-blue-grey-8 q-pt-none">
+                      <div class="text-h4 text-bold text-white text-center q-py-md">
+                        <q-spinner-hearts color="light-blue-7 " size="xl"></q-spinner-hearts>
+                        Following: [% Len(following) %]
+                        <q-spinner-hearts color="light-blue-7 " size="xl"></q-spinner-hearts>
+                      </div>
                         <q-list bordered>
                             <q-item v-for="user in following" class="q-my-sm" clickable v-ripple
                                     @click="viewUserProfile(user.username)">
                                 <q-item-section avatar>
-                                    <q-avatar color="blue-10" text-color="white">
+                                    <q-avatar color="light-blue-7" text-color="white">
                                         [% user.username[0] %]
                                     </q-avatar>
                                 </q-item-section>
-                                <q-item-label>[% user.username %]</q-item-label>
+                                <q-item-label class="text-white">[% user.username %] || [% user.first_name %] [% user.second_name %] || [% user.last_login %]</q-item-label>
                             </q-item>
                         </q-list>
                     </q-card-section>
