@@ -10,6 +10,7 @@ class UserProfile(models.Model):
 
 class Playlist(models.Model):
     creator = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    fork_of = models.IntegerField(default=-1)
     name = models.CharField(max_length=50)
     image = models.ImageField()
     genre = models.CharField(max_length=100)

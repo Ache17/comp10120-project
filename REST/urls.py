@@ -2,7 +2,6 @@ from rest_framework.authtoken.views import obtain_auth_token
 from django.urls import path
 from . import views
 
-
 urlpatterns = [path("test", views.testView.as_view()),
                path("register", views.registerView.as_view()),
                path("auth", obtain_auth_token, name="auth"),
@@ -20,4 +19,4 @@ urlpatterns = [path("test", views.testView.as_view()),
                path("unfollow", views.unfollowView.as_view(), name="unfollow"),
                path("checkFollow", views.checkFollowView.as_view(), name="checkFollow"),
                path("inspectUser", views.inspectUserInfo.as_view(), name="retreves"),
-               path("discover", views.discoverPlaylist.as_view(),name="discover")]
+               path("discover", views.discoverPlaylist.as_view(), name="discover")]

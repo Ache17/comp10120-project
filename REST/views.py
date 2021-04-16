@@ -23,7 +23,8 @@ import random
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 
-sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id="5ef4bb85e1a9499593ac6a9477993c08",  client_secret="e7fb20a797e54b88bfa34220d82b7d3d"))
+sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id="5ef4bb85e1a9499593ac6a9477993c08",
+                                                           client_secret="e7fb20a797e54b88bfa34220d82b7d3d"))
 
 sigma = "".join([ascii_letters, digits])
 PER_PAGE = 10
@@ -115,8 +116,8 @@ class userInfoView(APIView):
         if changed:
             profile.save()
             user.save()
-            return Response({"message": "Update sucessfull "}, status=status.HTTP_200_OK)
-        return Response({"message": "Update not sucessfull"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "Update successful"}, status=status.HTTP_200_OK)
+        return Response({"message": "Update not successful"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class searchPlaylistView(APIView):
@@ -195,8 +196,8 @@ class playlistsView(APIView):
 
             for song in songs:
                 songs_serialized.append(
-                    {"id": song.id, "name": song.name, "author": song.author, "spotify_id" : song.spotify_id,
-                     "manual_link" : song.manual_link})
+                    {"id": song.id, "name": song.name, "author": song.author, "spotify_id": song.spotify_id,
+                     "manual_link": song.manual_link})
             response.append({"id": p.id, "name": p.name, "genre": p.genre, "description": p.description,
                              "rating": p.rating, "songs": songs_serialized, "isPublic": p.isPublic, "link": p.link})
         return Response(response)
@@ -319,10 +320,8 @@ class playlistsView(APIView):
         data = request.data.copy()
         data["creator"] = UserProfile.objects.get(user=request.user).id
         serializer = playlistSerializer(data=data)
-        print(data)
 
         if serializer.is_valid():
-
             playlistObj = serializer.save()
             # get the image
             try:
@@ -351,14 +350,16 @@ class playlistsView(APIView):
                 Items = json.loads(request.data["Tracks"])
                 for item in Items:
                     item["whichPlaylist"] = playlistId
-                    item["spotify_id"] = item["sp_id"]
+                    if "sp_id" in item:
+                        item["spotify_id"] = item["sp_id"]
+
                     if item["spotify_id"] == "":
                         item["spotify_id"] = "None"
 
-                    item["manual_link"] = item["link"]
+                    if "link" in item:
+                        item["manual_link"] = item["link"]
                     if item["manual_link"] == "":
                         item["manual_link"] = "None"
-
 
                 # validate all items in the serializer
                 items_serializer = ItemSerializer(data=Items, many=True)

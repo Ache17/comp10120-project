@@ -129,22 +129,22 @@ var app = new Vue({
             failureNotification(msg) {
                 app.$q.notify({type: "negative", message: msg});
             },
-            discoverTrigger(){
-              var data = {};
-              this.make_authenticated_request(data, "GET", "/api/discover", this.discoverSuccess, this.noMsg);
-              this.landing_dialog = false;
-              this.$forceUpdate();
+            discoverTrigger() {
+                var data = {};
+                this.make_authenticated_request(data, "GET", "/api/discover", this.discoverSuccess, this.noMsg);
+                this.landing_dialog = false;
+                this.$forceUpdate();
             },
-            discoverSuccess(req){
-              this.$forceUpdate();
-              data = JSON.parse(req.response);
-              var i;
-              for (i = 0; i < data.length; i++){
-                if (data[i].link == ""){
-                  data[i].link = "testing.png";
+            discoverSuccess(req) {
+                this.$forceUpdate();
+                data = JSON.parse(req.response);
+                var i;
+                for (i = 0; i < data.length; i++) {
+                    if (data[i].link == "") {
+                        data[i].link = "testing.png";
+                    }
+                    this.discover_playlists[i] = data[i];
                 }
-                this.discover_playlists[i] = data[i];
-              }
             },
             // Success message, closes tab.
             playlistSubmissionSuccess(req) {
@@ -262,7 +262,6 @@ var app = new Vue({
 
                 // store token in cookies
                 this.token = $cookies.get("token");
-                console.log("asdasd");
 
                 let addr = document.location.origin;
                 var authRequest = new XMLHttpRequest();
@@ -659,25 +658,22 @@ var app = new Vue({
                     "PUT", "/api/userPlaylists", this.update_playlist_success, this.update_playlist_failure);
             },
 
-            own_playlist_delete_success()
-            {
+            own_playlist_delete_success() {
                 this.playlists.splice(this.playlist_idx, 1);
                 this.$forceUpdate();
                 this.sucessNotification("deleted successfully");
             },
-            own_playlist_delete_failure()
-            {
+            own_playlist_delete_failure() {
                 this.failureNotification("deleted not successfully");
             },
 
 
             own_playlist_delete() {
-                this.make_authenticated_request({"id" : this.own_playlist_view_id}, "DELETE",
+                this.make_authenticated_request({"id": this.own_playlist_view_id}, "DELETE",
                     "/api/userPlaylists", this.own_playlist_delete_success, this.own_playlist_delete_failure);
             },
 
-            spotify_export_other()
-            {
+            spotify_export_other() {
                 let songs = [];
 
                 for (let i in this.inspected_playlist_data.songs)
@@ -736,11 +732,9 @@ var app = new Vue({
                     // playlist of this id, so the data will just be in the first element of the collected array.
 
                     let i = 0;
-                    for (let el in this.playlists)
-                    {
+                    for (let el in this.playlists) {
                         console.log(el);
-                        if (el.id === id)
-                        {
+                        if (el.id === id) {
                             break;
                         }
                         i += 1;
@@ -857,6 +851,46 @@ var app = new Vue({
                 }
                 return text;
             },
+            save_playlist_success() {
+                this.sucessNotification("saved playlist!");
+            },
+            save_playlist_failure() {
+                this.failureNotification("couldn't save playlist!");
+            },
+
+            //let data = {"name" : this.playlist_title,  "genre" : this.playlist_genre, "description" : this.playlist_description,
+            //            "isPublic" : this.isPublic, "Tracks" : this.tracks, "image" : this.playlist_image};
+
+            save_playlist() {
+                let DATA = this.inspected_playlist_data;
+                this.token = $cookies.get("token");
+
+                let addr = document.location.origin;
+                var authRequest = new XMLHttpRequest();
+                authRequest.open("POST", addr + "/api/userPlaylists", true);
+                authRequest.setRequestHeader("Authorization", "Token " + this.token);
+                authRequest.addEventListener("load", () => {
+                    var response = authRequest.response;
+                    var returned_json = JSON.parse(response);
+                    if (authRequest.status < 300 && authRequest.status >= 200) {
+                        this.save_playlist_success(authRequest);
+                    } else {
+                        this.save_playlist_failure(authRequest);
+                    }
+                });
+
+                var formData = new FormData();
+                formData.append("name", DATA.name);
+                formData.append("genre", DATA.genre);
+                formData.append("description", DATA.description);
+                formData.append("isPublic", false);
+                formData.append("Tracks", JSON.stringify(DATA.songs));
+                console.log(formData);
+
+                authRequest.send(formData);
+
+
+            },
 
             encode(d) {
                 let v = [];
@@ -944,6 +978,7 @@ var app = new Vue({
 
             addToThePlaylistFailure(req) {
                 console.log("adding songs failure!");
+                this.failureNotification("adding songs failure!");
             },
 
             addToThePlaylist(new_playlist_spotify_id, spotify_songs_ids) {
@@ -971,11 +1006,12 @@ var app = new Vue({
             },
             createSpotifyPlaylistFailure(req) {
                 console.log("failure during creating playlist !");
+                this.failureNotification("failure during creating playlist !");
                 let DATA = JSON.parse(req.response);
                 // console.log(data);
             },
 
-            createSpotifyPlaylist(songs, name="spotify_songspace_test", description="some sample text") {
+            createSpotifyPlaylist(songs, name = "spotify_songspace_test", description = "some sample text") {
                 let reqS = new XMLHttpRequest();
                 reqS.open("POST", "	https://api.spotify.com/v1/users/" + this.spotify_user_id + "/playlists");
                 reqS.setRequestHeader("Accept", "application/json");
