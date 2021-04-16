@@ -738,11 +738,28 @@
                         <br>
                         <div class="col q-pt-md">
                             <q-list bordered class="rounded-borders" style="max-width: 90%; margin-left: 5%;">
+
+                              <q-item class="q-my-sm">
+                                <q-item-section>
+                                  <div>
+                                      <div class="submit_label">Upload Image</div>
+                                      <q-file clearable filled color="black" v-model="playlist_image"
+                                              label="Upload an Image (Optional)">
+                                          <template v-slot:append>
+                                              <q-icon name="attach_file" color="black"></q-icon>
+                                          </template>
+                                      </q-file>
+                                      <q-separator size="3px"></q-separator>
+                                  </div>
+                                </q-item-section>
+                              </q-item>
+                              <q-separator></q-separator>
+
+
                                 <q-item class="q-my-sm">
                                     <q-item-section>
                                         <div class="submit_label">
                                             <q-item-label> Name : [% playlist_title %]</q-item-label>
-
                                             <q-popup-edit v-model="playlist_title" title="Press Enter to Update Name">
                                                 <q-input v-model="playlist_title" dense autofocus
                                                          label="name"></q-input>

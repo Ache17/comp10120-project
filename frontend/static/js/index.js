@@ -634,7 +634,8 @@ var app = new Vue({
 
 
             update_playlist_success(req) {
-                this.sucessNotification("playlist update successfull!");
+                this.sucessNotification("Playlist Update Successfull!");
+
 
                 let current_playlist = this.playlists.filter(el => el.id === this.own_playlist_view_id)[0];
                 current_playlist.name = this.playlist_title;
@@ -643,6 +644,7 @@ var app = new Vue({
                 current_playlist.isPublic = this.isPublic;
                 current_playlist.rating = this.rating;
                 current_playlist.songs = this.tracks;
+                current_playlist.link = this.playlist_image;
             },
             update_playlist_failure(re) {
                 this.failureNotification("Update failed !");
@@ -653,9 +655,10 @@ var app = new Vue({
                 this.make_authenticated_request({
                         "id": this.own_playlist_view_id, "title": this.playlist_title,
                         "genre": this.playlist_genre, "description": this.playlist_description,
-                        "isPublic": this.isPublic, "rating": this.rating, "tracks": this.tracks
+                        "isPublic": this.isPublic, "rating": this.rating, "tracks": this.tracks,
                     },
                     "PUT", "/api/userPlaylists", this.update_playlist_success, this.update_playlist_failure);
+
             },
 
             own_playlist_delete_success() {
@@ -788,13 +791,14 @@ var app = new Vue({
                     Tracks.push(Track)
                 }
                 // This here is the file that is submitted.
-                console.log(this.playlist_image)
+                console.log(this.playlist_image);
                 // Then this is the playlist data JSON file.
                 data =
                     {
                         "name": this.current_playlist.name,
+                        "file": this.current_playlist.link,
                         "genre": this.current_playlist.genre,
-                        "image": this.playlist_image,
+                        //"image": this.playlist_image,
                         "description": this.current_playlist.description,
                         "isPublic": this.public,
                         "Tracks": Tracks
