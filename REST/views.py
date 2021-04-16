@@ -27,7 +27,7 @@ sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id="5ef4bb85e1
                                                            client_secret="e7fb20a797e54b88bfa34220d82b7d3d"))
 
 sigma = "".join([ascii_letters, digits])
-PER_PAGE = 10
+PER_PAGE = 50
 
 
 def getRand(n=16):
