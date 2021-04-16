@@ -163,6 +163,10 @@
 
         <q-card-section>
             <div class="text-h3 text-bold q-pb-sm">[% inspected_playlist_data["name"] %]</div>
+            <div class="q-py-sm" style="height:20vh;">
+              <q-img :src="'/static/media/' + inspected_playlist_data.link" ratio="1" contain
+                     style="max-height:100%;" alt="Playlist Thumbnail"></q-img>
+            </div>
             <div class="row text-h7 text-italics">by⠀<a style="color: #263238;" href="javascript:void(0);"
                                                         onclick='app.viewUserProfile(app.inspected_playlist_data["creator"]); app.inspect_playlist = false;'>[%
                 inspected_playlist_data["creator"] %]</a>
