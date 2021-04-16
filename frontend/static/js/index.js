@@ -56,7 +56,7 @@ var app = new Vue({
         followers: [],
         following: [],
         follow_id: null,
-        landing_dialog: false, // TODO: should be true
+        landing_dialog: true, // TODO: should be true 
         fab1: false,
         hideLabels: false,
         num_of_playlists: 0,
