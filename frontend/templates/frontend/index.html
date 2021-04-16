@@ -635,9 +635,7 @@
             </q-bar>
 
             <q-card-section>
-                <div class="text-white text-center text-bold text-h3"><br>[% username_f %]Your Playlists<br></div>
-                <div class="text-white text-center text-italic text-h6"><br>You may need to press "Sort Collection" if
-                    something is missing!<br></div>
+                <div class="text-white text-center text-bold text-h3"><br>Your Playlist Collection<br></div>
             </q-card-section>
 
             <q-card-section>
@@ -669,7 +667,7 @@
                      style="background-image: url(https://i.pinimg.com/originals/0b/a8/df/0ba8dfceaa16c47b713cbed42c1e6b34.jpg); background-size: contain; height:1500px;">
                     <div class="row q-col-gutter-x-xs q-col-gutter-y-lg">
                         <div class="col-4" v-for="p in this.playlists" :key="p.id">
-                            <div class="bg-grey-8 my-content" style="height:300px">
+                            <div class="bg-grey-8 my-content">
 
                                 <div class="row">
                                     <div class="col q-pa-sm" style="height:300px">
@@ -1277,8 +1275,8 @@
                                         </q-avatar>
                                         <div class="row items-center no-wrap">
                                             <div class="text-center">
-                                                Listen on <br>
-                                                Spotify
+                                                Enable Spotify<br>
+                                                Features
                                             </div>
                                         </div>
                                     </q-btn>
@@ -1642,7 +1640,7 @@
     <div class="q-pa-md q-pt-md">
         <div class="row q-col-gutter-x-xs q-col-gutter-y-lg">
             <div class="col-4" v-for="p in this.discover_playlists" :key="p.id">
-                <div class="bg-grey-8 my-content" style="height:300px">
+                <div class="bg-grey-8 my-content">
 
                     <div class="row">
                         <div class="col q-pa-sm" style="height:300px">

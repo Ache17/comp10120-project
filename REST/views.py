@@ -27,7 +27,7 @@ sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id="5ef4bb85e1
                                                            client_secret="e7fb20a797e54b88bfa34220d82b7d3d"))
 
 sigma = "".join([ascii_letters, digits])
-PER_PAGE = 10
+PER_PAGE = 50
 
 
 def getRand(n=16):
@@ -72,11 +72,13 @@ class userInfoView(APIView):
             else:
                 xx = "Last Seen: " + xx
             yy = str(f.user.first_name)
-            if yy == "":
-                yy = "*Forename Not Provided*"
             zz = str(f.user.last_name)
-            if zz == "":
-                zz = "*Surname Not Provided*"
+            if yy == "" and zz == "":
+                yy = "Name Not Provided"
+            elif yy == "":
+                yy = "Forename Not Provided, "
+            elif zz == "":
+                zz = " ,Surname Not Provided"
             following_ser.append({"id": f.id, "username": _user.username, "first_name": yy, "second_name": zz, "last_login": xx})
 
 
