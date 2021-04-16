@@ -56,7 +56,7 @@ var app = new Vue({
         followers: [],
         following: [],
         follow_id: null,
-        landing_dialog: true, // TODO: should be true 
+        landing_dialog: true, // TODO: should be true
         fab1: false,
         hideLabels: false,
         num_of_playlists: 0,
@@ -716,7 +716,6 @@ var app = new Vue({
                 if (this.order_selection === "Descending") { // Reverses order of the collection. So you can effectively sort by "Reverse Alphabetical, of Genre"
                     this.playlists = this.playlists.reverse();
                 }
-                this.$forceUpdate();
             },
             // Used for sorting an array of objects, in this case the array of playlists.
             sorting(sortby) {
